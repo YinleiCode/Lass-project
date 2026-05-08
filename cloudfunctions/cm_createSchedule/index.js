@@ -1,5 +1,6 @@
 // 创建排课（单次或周期性）
 const cloud = require('wx-server-sdk')
+const { requireTeacher, isAuthError } = require('./auth')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 
@@ -11,6 +12,8 @@ exports.main = async (event, context) => {
   }
 
   try {
+    await requireTeacher()
+
     if (type === 'once') {
       // 单次排课
       await db.collection('schedules').add({
@@ -77,6 +80,9 @@ exports.main = async (event, context) => {
 
     return { success: false, message: '未知排课类型' }
   } catch (err) {
+    if (isAuthError(err)) {
+      return { success: false, message: err.message, code: err.code }
+    }
     console.error('排课失败', err)
     return { success: false, message: '排课失败: ' + err.message }
   }

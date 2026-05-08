@@ -1,5 +1,6 @@
 // 创建缴费订单 + 更新课时余额
 const cloud = require('wx-server-sdk')
+const { requireTeacher, isAuthError } = require('./auth')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 const _ = db.command
@@ -12,6 +13,8 @@ exports.main = async (event, context) => {
   }
 
   try {
+    await requireTeacher()
+
     // 1. 创建订单记录
     const orderRes = await db.collection('orders').add({
       data: {
@@ -58,6 +61,9 @@ exports.main = async (event, context) => {
 
     return { success: true, message: '缴费已登记', orderId: orderRes._id }
   } catch (err) {
+    if (isAuthError(err)) {
+      return { success: false, message: err.message, code: err.code }
+    }
     console.error('缴费失败', err)
     return { success: false, message: '缴费失败: ' + err.message }
   }

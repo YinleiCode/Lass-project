@@ -1,5 +1,6 @@
 // 删除学员及相关数据
 const cloud = require('wx-server-sdk')
+const { requireTeacher, isAuthError } = require('./auth')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 const _ = db.command
@@ -12,6 +13,8 @@ exports.main = async (event, context) => {
   }
 
   try {
+    await requireTeacher()
+
     // 删除学员记录
     await db.collection('students').doc(studentId).remove()
 
@@ -47,6 +50,9 @@ exports.main = async (event, context) => {
 
     return { success: true, message: '学员已删除' }
   } catch (err) {
+    if (isAuthError(err)) {
+      return { success: false, message: err.message, code: err.code }
+    }
     console.error('删除学员失败', err)
     return { success: false, message: '删除失败: ' + err.message }
   }

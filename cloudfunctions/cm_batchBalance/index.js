@@ -1,5 +1,6 @@
 // 批量查询学员课时余额
 const cloud = require('wx-server-sdk')
+const { requireTeacher, isAuthError } = require('./auth')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 const _ = db.command
@@ -12,6 +13,8 @@ exports.main = async (event, context) => {
   }
 
   try {
+    await requireTeacher()
+
     const res = await db.collection('course_balance').where({
       student_id: _.in(studentIds)
     }).get()
@@ -33,6 +36,9 @@ exports.main = async (event, context) => {
 
     return { success: true, data: result }
   } catch (err) {
+    if (isAuthError(err)) {
+      return { success: false, message: err.message, code: err.code }
+    }
     console.error('批量查余额失败', err)
     return { success: false, message: err.message }
   }

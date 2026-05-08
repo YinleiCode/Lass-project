@@ -1,20 +1,21 @@
 // 批量点名 - 原子操作
 // 入参: { scheduleId, students: [{ id, status, deduct_count }] }
 const cloud = require('wx-server-sdk')
+const { requireTeacher, isAuthError } = require('./auth')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 const _ = db.command
 
 exports.main = async (event, context) => {
   const { scheduleId, students } = event
-  const wxContext = cloud.getWXContext()
-  const openid = wxContext.OPENID
 
   if (!scheduleId || !students || !students.length) {
     return { success: false, message: '参数不完整' }
   }
 
   try {
+    const { openid } = await requireTeacher()
+
     // 获取排课信息
     const scheduleRes = await db.collection('schedules').doc(scheduleId).get()
     const schedule = scheduleRes.data
@@ -94,6 +95,9 @@ exports.main = async (event, context) => {
 
     return { success: true, message: '点名成功' }
   } catch (err) {
+    if (isAuthError(err)) {
+      return { success: false, message: err.message, code: err.code }
+    }
     console.error('点名失败', err)
     return { success: false, message: '点名失败: ' + err.message }
   }

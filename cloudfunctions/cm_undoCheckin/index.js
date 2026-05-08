@@ -1,6 +1,7 @@
 // 撤销点名 - 回滚所有操作
 // 入参: { scheduleId }
 const cloud = require('wx-server-sdk')
+const { requireTeacher, isAuthError } = require('./auth')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 const _ = db.command
@@ -13,6 +14,8 @@ exports.main = async (event, context) => {
   }
 
   try {
+    await requireTeacher()
+
     // 获取排课信息
     const scheduleRes = await db.collection('schedules').doc(scheduleId).get()
     const schedule = scheduleRes.data
@@ -81,6 +84,9 @@ exports.main = async (event, context) => {
 
     return { success: true, message: '撤销成功，课时已恢复' }
   } catch (err) {
+    if (isAuthError(err)) {
+      return { success: false, message: err.message, code: err.code }
+    }
     console.error('撤销失败', err)
     return { success: false, message: '撤销失败: ' + err.message }
   }

@@ -1,11 +1,14 @@
 // 首页数据聚合统计
 const cloud = require('wx-server-sdk')
+const { requireTeacher, isAuthError } = require('./auth')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 const _ = db.command
 
 exports.main = async (event, context) => {
   try {
+    await requireTeacher()
+
     const now = new Date()
     const today = now.toISOString().split('T')[0]
     const monthStart = today.substring(0, 7) + '-01'
@@ -62,6 +65,9 @@ exports.main = async (event, context) => {
       }
     }
   } catch (err) {
+    if (isAuthError(err)) {
+      return { success: false, message: err.message, code: err.code }
+    }
     console.error('统计失败', err)
     return { success: false, message: err.message }
   }
