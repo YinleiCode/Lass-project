@@ -1,0 +1,46 @@
+.form {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 10rpx 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.form-item {
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.form-item:last-child {
+  border-bottom: none;
+}
+
+.form-item .label {
+  font-size: 26rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.form-item .input {
+  font-size: 32rpx;
+  color: #333;
+}
+
+.picker {
+  font-size: 32rpx;
+  color: #333;
+  padding: 8rpx 0;
+}
+
+.preview {
+  background: #EBF3FC;
+  border-radius: 12rpx;
+  padding: 16rpx 24rpx;
+  font-size: 26rpx;
+  color: #4A90D9;
+  margin-bottom: 24rpx;
+}
+
+.save-btn {
+  width: 100%;
+}

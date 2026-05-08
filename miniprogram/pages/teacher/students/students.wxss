@@ -1,0 +1,31 @@
+.tag-scroll {
+  white-space: nowrap;
+  margin-bottom: 16rpx;
+}
+
+.tag-row {
+  display: flex;
+  gap: 12rpx;
+  padding: 4rpx 0;
+}
+
+.tag-filter {
+  display: inline-block;
+  padding: 8rpx 24rpx;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  background: #F0F0F0;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.tag-filter.active {
+  background: #4A90D9;
+  color: #fff;
+}
+
+.stats-hint {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 16rpx;
+}

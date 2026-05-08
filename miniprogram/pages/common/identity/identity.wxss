@@ -1,0 +1,71 @@
+.identity-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 120rpx;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #4A90D9 0%, #F6F6F6 50%);
+}
+
+.logo {
+  font-size: 120rpx;
+  margin-bottom: 20rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 80rpx;
+}
+
+.role-cards {
+  display: flex;
+  gap: 30rpx;
+  padding: 0 40rpx;
+}
+
+.role-card {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 50rpx 30rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.1);
+}
+
+.role-card:active {
+  transform: scale(0.97);
+}
+
+.role-icon {
+  font-size: 80rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.role-name {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.role-desc {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+}
+
+.loading {
+  margin-top: 60rpx;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 28rpx;
+}

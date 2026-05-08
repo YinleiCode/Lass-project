@@ -1,0 +1,145 @@
+.student-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: #EBF3FC;
+  color: #4A90D9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.student-meta {
+  flex: 1;
+  margin-left: 20rpx;
+}
+
+.student-name {
+  font-size: 34rpx;
+  font-weight: bold;
+  display: block;
+}
+
+.student-phone {
+  font-size: 26rpx;
+  color: #999;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.student-date {
+  font-size: 24rpx;
+  color: #BBB;
+  display: block;
+  margin-top: 2rpx;
+}
+
+.more-btn {
+  font-size: 40rpx;
+  color: #999;
+  padding: 10rpx;
+}
+
+.tag-row {
+  margin-bottom: 12rpx;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+}
+
+.status-badge.active {
+  background: #E8F5E9;
+  color: #4CAF50;
+}
+
+.status-badge.archived {
+  background: #F5F5F5;
+  color: #999;
+}
+
+.action-row {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.action-row .btn-primary {
+  flex: 1;
+}
+
+.balance-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.balance-pkg {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.balance-num {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #4A90D9;
+}
+
+.balance-num.warning { color: #FF9800; }
+.balance-num.danger { color: #F44336; }
+
+.balance-detail {
+  font-size: 24rpx;
+  color: #BBB;
+  margin-top: 8rpx;
+}
+
+.order-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-date {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.order-amount {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #F44336;
+}
+
+.order-detail {
+  font-size: 24rpx;
+  color: #4A90D9;
+}
+
+.feedback-row {
+  padding: 4rpx 0;
+}
+
+.feedback-date {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.feedback-comment {
+  font-size: 26rpx;
+  color: #333;
+}

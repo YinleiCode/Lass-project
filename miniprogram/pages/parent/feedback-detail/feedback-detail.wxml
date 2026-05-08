@@ -1,0 +1,50 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+  <view wx:elif="{{!feedback}}" class="empty-state">
+    <empty-state icon="📝" text="暂无反馈内容" />
+  </view>
+
+  <view wx:else>
+    <!-- 课程信息 -->
+    <view class="card" wx:if="{{scheduleInfo}}">
+      <text class="info-date">{{format.datetime(scheduleInfo.start_time)}}</text>
+      <text class="info-pkg">{{scheduleInfo.package_name || '课程'}}</text>
+    </view>
+
+    <!-- 维度评分 -->
+    <view class="section">
+      <view class="section-title">📊 综合评分</view>
+      <view class="card">
+        <rating-stars
+          wx:for="{{dimensions}}"
+          wx:key="key"
+          label="{{item.label}}"
+          value="{{feedback.ratings ? feedback.ratings[item.key] : 0}}"
+          readonly="{{true}}"
+        />
+      </view>
+    </view>
+
+    <!-- 评语 -->
+    <view class="section" wx:if="{{feedback.comment}}">
+      <view class="section-title">📝 老师评语</view>
+      <view class="card">
+        <text class="comment-text">{{feedback.comment}}</text>
+      </view>
+    </view>
+
+    <!-- 录音 -->
+    <view class="section" wx:if="{{feedback.audio_files && feedback.audio_files.length > 0}}">
+      <view class="section-title">🎵 录音</view>
+      <view class="card">
+        <audio-recorder
+          wx:for="{{feedback.audio_files}}"
+          wx:key="*this"
+          value="{{item}}"
+          readonly="{{true}}"
+        />
+      </view>
+    </view>
+  </view>
+</view>

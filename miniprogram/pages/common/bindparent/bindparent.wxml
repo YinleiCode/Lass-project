@@ -1,0 +1,38 @@
+<view class="container">
+  <view class="header">
+    <text class="title">家长绑定</text>
+    <text class="desc">请输入孩子姓名和您的手机号，与老师录入的信息匹配后即可使用</text>
+  </view>
+
+  <view class="form">
+    <view class="form-item">
+      <text class="label">孩子姓名</text>
+      <input
+        class="input"
+        placeholder="请输入孩子姓名"
+        value="{{studentName}}"
+        bindinput="onNameInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="label">家长手机号</text>
+      <input
+        class="input"
+        type="number"
+        maxlength="11"
+        placeholder="请输入手机号"
+        value="{{parentPhone}}"
+        bindinput="onPhoneInput"
+      />
+    </view>
+  </view>
+
+  <button class="btn-primary bind-btn" bindtap="onBind" loading="{{loading}}">
+    确认绑定
+  </button>
+
+  <view class="tips">
+    <text>💡 如果绑定失败，请联系老师确认录入的信息</text>
+  </view>
+</view>

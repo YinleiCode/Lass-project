@@ -1,0 +1,50 @@
+.form {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 10rpx 30rpx;
+  margin-bottom: 32rpx;
+}
+
+.form-item {
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.form-item:last-child {
+  border-bottom: none;
+}
+
+.form-item .label {
+  font-size: 26rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.value-text {
+  font-size: 32rpx;
+  color: #333;
+}
+
+.picker {
+  font-size: 30rpx;
+  color: #333;
+  padding: 8rpx 0;
+}
+
+.radio-label {
+  display: block;
+  margin-bottom: 12rpx;
+  font-size: 28rpx;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 120rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.submit-btn {
+  width: 100%;
+}

@@ -1,0 +1,38 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+  <block wx:else>
+    <!-- 累计统计 -->
+    <view class="summary-card">
+      <view class="summary-row">
+        <view class="summary-item">
+          <text class="summary-value">{{format.money(totalAmount)}}</text>
+          <text class="summary-label">累计缴费</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-value">{{totalCourseCount}}</text>
+          <text class="summary-label">共 {{totalCourseCount}} 节</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 缴费列表 -->
+    <view wx:if="{{orders.length === 0}}" class="empty-state">
+      <empty-state icon="💰" text="暂无缴费记录" />
+    </view>
+
+    <view wx:else>
+      <view class="card" wx:for="{{orders}}" wx:key="_id">
+        <view class="order-header">
+          <text class="order-date">{{item.pay_date}}</text>
+          <text class="order-amount">{{format.money(item.amount)}}</text>
+        </view>
+        <view class="order-body">
+          <text class="order-count">+{{item.course_count}}节</text>
+          <text class="order-pkg">{{item.package_name || ''}}</text>
+        </view>
+        <text class="order-method" wx:if="{{item.pay_method}}">支付方式: {{item.pay_method}}</text>
+      </view>
+    </view>
+  </block>
+</view>

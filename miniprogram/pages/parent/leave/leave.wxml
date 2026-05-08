@@ -1,0 +1,37 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+  <block wx:else>
+    <view class="form">
+      <view class="form-item">
+        <text class="label">孩子</text>
+        <text class="value-text">{{studentName || '未知'}}</text>
+      </view>
+
+      <view class="form-item">
+        <text class="label">请假课程 *</text>
+        <picker bindchange="onScheduleChange" range="{{schedules}}" range-key="start_time">
+          <view class="picker">
+            {{selectedScheduleIndex >= 0 ? schedules[selectedScheduleIndex].start_time : '选择即将上的课'}}
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">请假原因</text>
+        <radio-group bindchange="onReasonChange">
+          <label class="radio-label" wx:for="{{leaveReasons}}" wx:key="*this">
+            <radio value="{{index}}" checked="{{index === selectedReasonIndex}}" /> {{item}}
+          </label>
+        </radio-group>
+      </view>
+
+      <view class="form-item">
+        <text class="label">备注(选填)</text>
+        <textarea class="textarea" placeholder="如有特殊情况请说明" value="{{notes}}" bindinput="onNotesInput" />
+      </view>
+    </view>
+
+    <button class="btn-primary submit-btn" bindtap="onSubmit" loading="{{submitting}}">提交请假</button>
+  </block>
+</view>

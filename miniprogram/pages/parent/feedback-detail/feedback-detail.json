@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "反馈详情",
+  "usingComponents": {
+    "rating-stars": "/components/rating-stars/rating-stars",
+    "audio-recorder": "/components/audio-recorder/audio-recorder",
+    "empty-state": "/components/empty-state/empty-state"
+  }
+}

@@ -1,0 +1,46 @@
+<view class="audio-recorder">
+  <!-- 只读模式：播放按钮 -->
+  <block wx:if="{{readonly}}">
+    <view class="audio-row" wx:if="{{value}}">
+      <view class="play-btn {{playing ? 'active' : ''}}" bindtap="togglePlay">
+        <text>{{playing ? '⏸' : '▶'}}</text>
+      </view>
+      <text class="duration">录音 {{playing ? '播放中' : ''}}</text>
+    </view>
+    <view class="no-audio" wx:else>
+      <text class="hint">暂无录音</text>
+    </view>
+  </block>
+
+  <!-- 编辑模式 -->
+  <block wx:else>
+    <!-- 空闲状态 -->
+    <view class="record-area" wx:if="{{state === 'idle'}}">
+      <view class="record-btn" bindtap="startRecord">
+        <text class="record-icon">🎤</text>
+        <text class="record-text">按住录音</text>
+      </view>
+    </view>
+
+    <!-- 录音中 -->
+    <view class="record-area recording" wx:elif="{{state === 'recording'}}">
+      <view class="record-btn active" bindtap="stopRecord">
+        <text class="record-icon">⏹</text>
+        <text class="record-text">停止 {{recordingTime}}s</text>
+      </view>
+    </view>
+
+    <!-- 完成状态 -->
+    <view class="audio-row" wx:elif="{{state === 'done'}}">
+      <view class="play-btn {{playing ? 'active' : ''}}" bindtap="togglePlay">
+        <text>{{playing ? '⏸' : '▶'}}</text>
+      </view>
+      <text class="duration">{{duration}}秒</text>
+      <view class="del-btn" bindtap="deleteRecord">
+        <text>🗑 删除</text>
+      </view>
+    </view>
+
+    <view class="hint" wx:if="{{state === 'uploading'}}">上传中...</view>
+  </block>
+</view>

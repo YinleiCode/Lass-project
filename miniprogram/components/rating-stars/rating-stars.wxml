@@ -1,0 +1,12 @@
+<view class="rating-stars">
+  <text class="label" wx:if="{{label}}">{{label}}</text>
+  <view class="stars">
+    <text
+      wx:for="{{[1,2,3,4,5]}}"
+      wx:key="*this"
+      class="star {{item <= value ? 'active' : ''}}"
+      bindtap="onTap"
+      data-score="{{item}}"
+    >★</text>
+  </view>
+</view>

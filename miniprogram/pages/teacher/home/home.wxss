@@ -1,0 +1,70 @@
+.greeting {
+  padding: 20rpx 0;
+}
+
+.greeting-text {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.section {
+  margin-bottom: 30rpx;
+}
+
+.stat-card .value.danger {
+  color: #F44336;
+}
+
+.schedule-list {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.schedule-time {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #4A90D9;
+  min-width: 100rpx;
+  flex-shrink: 0;
+}
+
+.schedule-info {
+  flex: 1;
+  margin-left: 16rpx;
+}
+
+.schedule-name {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+}
+
+.schedule-meta {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.schedule-action .btn-primary.small {
+  padding: 10rpx 24rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+  display: inline-block;
+}
+
+.schedule-status .tag-success {
+  background: #E8F5E9;
+  color: #4CAF50;
+}
+
+.student-warning-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.skeleton {
+  opacity: 0.6;
+}

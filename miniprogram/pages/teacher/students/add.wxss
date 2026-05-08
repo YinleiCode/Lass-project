@@ -1,0 +1,83 @@
+.form {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 10rpx 30rpx;
+  margin-bottom: 40rpx;
+}
+
+.form-item {
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.form-item:last-child {
+  border-bottom: none;
+}
+
+.form-item .label {
+  font-size: 26rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.form-item .input {
+  font-size: 32rpx;
+  color: #333;
+}
+
+.form-item .textarea {
+  width: 100%;
+  font-size: 28rpx;
+  color: #333;
+  min-height: 120rpx;
+}
+
+.picker {
+  font-size: 32rpx;
+  color: #333;
+  padding: 8rpx 0;
+}
+
+.tag-input-row {
+  display: flex;
+  gap: 16rpx;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.tag-input-row .input {
+  flex: 1;
+}
+
+.btn-secondary.small {
+  padding: 8rpx 20rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  background: #EBF3FC;
+  color: #4A90D9;
+}
+
+.tag-close {
+  font-size: 20rpx;
+  color: #999;
+}
+
+.save-btn {
+  width: 100%;
+}

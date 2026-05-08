@@ -1,0 +1,45 @@
+<view class="container">
+  <!-- 搜索框 -->
+  <view class="search-bar">
+    <text>🔍</text>
+    <input placeholder="搜索姓名/手机号" bindinput="onSearchInput" value="{{searchKeyword}}" />
+  </view>
+
+  <!-- 标签筛选 -->
+  <scroll-view class="tag-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="tag-row">
+      <view class="tag-filter {{activeTag === '' ? 'active' : ''}}" bindtap="onTagTap" data-tag="">全部</view>
+      <view class="tag-filter {{activeTag === tag ? 'active' : ''}}" wx:for="{{allTags}}" wx:key="*this" bindtap="onTagTap" data-tag="{{tag}}">{{tag}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 统计 -->
+  <view class="stats-hint">
+    <text>在读 {{stats.active}} 人 · 结业 {{stats.archived}} 人</text>
+  </view>
+
+  <!-- 学员列表 -->
+  <view wx:if="{{loading}}" class="empty-state">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:elif="{{filteredStudents.length === 0}}" class="empty-state">
+    <text class="empty-text">暂无学员</text>
+  </view>
+
+  <view wx:else>
+    <student-card
+      wx:for="{{filteredStudents}}"
+      wx:key="_id"
+      student="{{item}}"
+      remaining="{{item.remaining}}"
+      bindtap="goDetail"
+      bindlongpress="onStudentLongPress"
+    />
+  </view>
+
+  <!-- 浮动添加按钮 -->
+  <view class="fab" bindtap="goAdd">
+    <text>+</text>
+  </view>
+</view>

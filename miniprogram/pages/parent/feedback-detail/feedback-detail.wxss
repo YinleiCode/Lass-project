@@ -1,0 +1,19 @@
+.info-date {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.info-pkg {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+}
+
+.comment-text {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.8;
+}

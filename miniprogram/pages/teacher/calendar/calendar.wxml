@@ -1,0 +1,127 @@
+<view class="container">
+  <!-- 周切换 -->
+  <view class="week-nav" wx:if="{{weekInfo}}">
+    <view class="nav-btn" bindtap="prevWeek">‹</view>
+    <view class="week-label" bindtap="goToday">
+      {{weekInfo.start}} ~ {{weekInfo.end}}
+      <text class="today-btn"> 今天</text>
+    </view>
+    <view class="nav-btn" bindtap="nextWeek">›</view>
+  </view>
+
+  <!-- 周日历 -->
+  <view class="week-days" wx:if="{{weekInfo}}">
+    <view
+      class="day-item {{item.date === selectedDate ? 'active' : ''}} {{item.isToday ? 'today' : ''}}"
+      wx:for="{{weekInfo.days}}"
+      wx:key="date"
+      data-date="{{item.date}}"
+      bindtap="selectDay"
+    >
+      <text class="day-weekday">{{item.weekday}}</text>
+      <text class="day-num">{{item.day}}</text>
+    </view>
+  </view>
+
+  <!-- 当日课程 -->
+  <view class="day-schedules">
+    <view class="section-title">
+      <text>{{selectedDate ? format.friendlyDate(selectedDate) + ' ' + format.weekday(selectedDate) : ''}}</text>
+    </view>
+
+    <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+    <view wx:elif="{{!groupedSchedules[selectedDate] || groupedSchedules[selectedDate].length === 0}}" class="empty-state">
+      <text class="empty-text">当天没有课程</text>
+    </view>
+
+    <view wx:else>
+      <view class="schedule-card" wx:for="{{groupedSchedules[selectedDate]}}" wx:key="_id">
+        <view class="card-header">
+          <text class="card-time">{{format.time(item.start_time)}}</text>
+          <text class="card-status {{item.status}}">
+            {{item.status === 'pending' ? '待上' : (item.status === 'done' ? '已点名' : '已取消')}}
+          </text>
+        </view>
+        <view class="card-body">
+          <text class="card-students">{{item.student_names || item.package_name || '课程'}}</text>
+          <text class="card-classroom" wx:if="{{item.classroom}}">{{item.classroom}}</text>
+        </view>
+        <view class="card-actions">
+          <button wx:if="{{item.status === 'pending'}}" class="btn-primary small" data-id="{{item._id}}" bindtap="goCheckin">点名</button>
+          <button wx:if="{{item.status === 'done'}}" class="btn-secondary small" data-id="{{item._id}}" bindtap="goFeedback">反馈</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 浮动排课按钮 -->
+  <view class="fab" bindtap="showCreate">
+    <text>+</text>
+  </view>
+
+  <!-- 排课弹窗 -->
+  <view class="modal-mask" wx:if="{{showCreateModal}}" bindtap="hideCreate"></view>
+  <view class="modal" wx:if="{{showCreateModal}}">
+    <view class="modal-header">
+      <text>新增排课</text>
+      <text class="close" bindtap="hideCreate">✕</text>
+    </view>
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="label">排课类型</text>
+        <radio-group bindchange="onScheduleTypeChange">
+          <label class="radio-label"><radio value="0" checked="{{scheduleType === 'once'}}" /> 单次</label>
+          <label class="radio-label"><radio value="1" checked="{{scheduleType === 'recurring'}}" /> 每周固定</label>
+        </radio-group>
+      </view>
+
+      <view class="form-item">
+        <text class="label">学员</text>
+        <view class="student-check-list">
+          <view class="check-item" wx:for="{{students}}" wx:key="_id" data-id="{{item._id}}" bindtap="onStudentToggle">
+            <text>{{item.name}}</text>
+            <text class="check-mark {{selectedStudents.indexOf(item._id) >= 0 ? 'checked' : ''}}">✓</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-item">
+        <text class="label">课程包</text>
+        <picker bindchange="onPackageChange" range="{{packages}}" range-key="name">
+          <view class="picker">{{packageId ? '已选' : '请选择课程包'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">开始日期</text>
+        <picker mode="date" value="{{startDate}}" bindchange="onDateChange">
+          <view class="picker">{{startDate}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">开始时间</text>
+        <picker mode="time" value="{{startTime}}" bindchange="onTimeChange">
+          <view class="picker">{{startTime || '请选择时间'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">教室(选填)</text>
+        <input class="input" placeholder="如：1号教室" value="{{classroom}}" bindinput="onClassroomInput" />
+      </view>
+
+      <view class="form-item" wx:if="{{scheduleType === 'recurring'}}">
+        <text class="label">截止日期</text>
+        <picker mode="date" value="{{recurringEnd}}" bindchange="onRecurringEndChange">
+          <view class="picker">{{recurringEnd || '请选择截止日期'}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn-primary" bindtap="onCreateSchedule" loading="{{submitting}}">保存</button>
+    </view>
+  </view>
+</view>

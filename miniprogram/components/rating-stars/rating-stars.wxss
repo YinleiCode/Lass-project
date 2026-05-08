@@ -1,0 +1,26 @@
+.rating-stars {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 0;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666;
+  width: 140rpx;
+  flex-shrink: 0;
+}
+
+.stars {
+  display: flex;
+  gap: 12rpx;
+}
+
+.star {
+  font-size: 40rpx;
+  color: #DDDDDD;
+}
+
+.star.active {
+  color: #FFB800;
+}

@@ -1,0 +1,82 @@
+<view class="container">
+  <!-- 加载中 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <view class="stats-grid">
+      <view class="stat-card skeleton" wx:for="{{4}}" wx:key="*this"><view class="value">--</view><view class="label">加载中</view></view>
+    </view>
+  </view>
+
+  <block wx:else>
+    <!-- 问候 -->
+    <view class="greeting">
+      <text class="greeting-text">Hi, 老师 👋</text>
+    </view>
+
+    <!-- 数据概览卡片 -->
+    <view class="stats-grid" wx:if="{{stats}}">
+      <view class="stat-card" bindtap="goCalendar">
+        <text class="value">{{stats.todayPending || 0}}</text>
+        <text class="label">今日待上</text>
+      </view>
+      <view class="stat-card" bindtap="goCalendar">
+        <text class="value">{{stats.monthAttendance || 0}}</text>
+        <text class="label">本月课消</text>
+      </view>
+      <view class="stat-card" bindtap="goCalendar">
+        <text class="value">{{format.money(stats.monthIncome)}}</text>
+        <text class="label">本月收入</text>
+      </view>
+      <view class="stat-card" bindtap="goStudents">
+        <text class="value {{stats.warningCount > 0 ? 'danger' : ''}}">{{stats.warningCount || 0}}</text>
+        <text class="label">课时预警</text>
+      </view>
+    </view>
+
+    <!-- 今日课表 -->
+    <view class="section">
+      <view class="section-title">
+        <text>📅 今日课表</text>
+        <text class="more" bindtap="goCalendar">全部 →</text>
+      </view>
+
+      <view wx:if="{{todaySchedules.length === 0}}" class="empty-state">
+        <text class="empty-text">今天没有排课，休息一下吧 ☕️</text>
+      </view>
+
+      <view class="schedule-list" wx:else>
+        <view class="list-item" wx:for="{{todaySchedules}}" wx:key="_id">
+          <view class="schedule-time">{{format.time(item.start_time)}}</view>
+          <view class="schedule-info">
+            <text class="schedule-name">{{item.student_names || '课程'}}</text>
+            <text class="schedule-meta" wx:if="{{item.package_name}}">{{item.package_name}}</text>
+          </view>
+          <view class="schedule-action" wx:if="{{item.status === 'pending'}}">
+            <button class="btn-primary small" data-id="{{item._id}}" bindtap="goCheckin">点名</button>
+          </view>
+          <view class="schedule-status" wx:else>
+            <text class="tag tag-success">已完成</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 课时预警 -->
+    <view class="section">
+      <view class="section-title">
+        <text>⚠️ 课时预警</text>
+        <text class="more" bindtap="goStudents">全部 →</text>
+      </view>
+
+      <view wx:if="{{warningList.length === 0}}" class="empty-state">
+        <text class="empty-text">所有学员课时充足 ✅</text>
+      </view>
+
+      <view wx:else>
+        <view class="list-item" wx:for="{{warningList}}" wx:key="_id" data-id="{{item._id}}" bindtap="goStudentDetail">
+          <text class="student-warning-name">{{item.name}}</text>
+          <text class="tag tag-danger">剩余 {{item.remaining}} 节</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

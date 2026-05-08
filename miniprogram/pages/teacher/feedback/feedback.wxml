@@ -1,0 +1,61 @@
+<view class="container" wx:if="{{loading}}">
+  <view class="empty-state">加载中...</view>
+</view>
+
+<view class="container" wx:else>
+  <!-- 课程信息 -->
+  <view class="card" wx:if="{{schedule}}">
+    <view class="feedback-header">
+      <text class="feedback-title">{{schedule.package_name || '课程'}}</text>
+      <text class="feedback-date">{{schedule.start_time}}</text>
+    </view>
+
+    <!-- 学员切换 -->
+    <view class="student-switch" wx:if="{{students.length > 1}}">
+      <view class="switch-item {{s._id === studentId ? 'active' : ''}}" wx:for="{{students}}" wx:key="_id" data-index="{{index}}" bindtap="switchStudent">
+        <text>{{s.name}}</text>
+      </view>
+    </view>
+
+    <text class="current-student" wx:if="{{student}}">反馈: {{student.name}}</text>
+  </view>
+
+  <!-- 维度评分 -->
+  <view class="section">
+    <view class="section-title">📊 维度评分</view>
+    <view class="card">
+      <view wx:for="{{dimensions}}" wx:key="key">
+        <rating-stars
+          label="{{item.label}}"
+          value="{{ratings[item.key] || 0}}"
+          data-key="{{item.key}}"
+          bindchange="onRatingChange"
+        />
+      </view>
+    </view>
+  </view>
+
+  <!-- 评语 -->
+  <view class="section">
+    <view class="section-title">📝 评语</view>
+    <view class="template-row">
+      <text class="template-btn" data-type="encourage" bindtap="useTemplate">鼓励型</text>
+      <text class="template-btn" data-type="problem" bindtap="useTemplate">问题点</text>
+      <text class="template-btn" data-type="homework" bindtap="useTemplate">作业建议</text>
+    </view>
+    <textarea class="comment-input" placeholder="输入评语或选择快捷模板" value="{{comment}}" bindinput="onCommentInput" maxlength="500" />
+  </view>
+
+  <!-- 录音 -->
+  <view class="section">
+    <view class="section-title">🎤 录音(选填)</view>
+    <view class="card">
+      <audio-recorder value="{{audioFileId}}" readonly="{{false}}" bindchange="onAudioChange" />
+    </view>
+  </view>
+
+  <!-- 保存 -->
+  <button class="btn-primary save-btn" bindtap="onSave" loading="{{submitting}}">
+    {{studentId ? '保存并继续' : '保存'}}
+  </button>
+</view>

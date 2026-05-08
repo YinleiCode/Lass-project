@@ -1,0 +1,23 @@
+<view class="container identity-page">
+  <view class="logo">🎤</view>
+  <text class="title">课程管理</text>
+  <text class="subtitle">播音主持培训助手</text>
+
+  <view class="role-cards">
+    <view class="role-card" bindtap="selectTeacher">
+      <text class="role-icon">👨‍🏫</text>
+      <text class="role-name">我是老师</text>
+      <text class="role-desc">管理学员、排课、点名</text>
+    </view>
+
+    <view class="role-card" bindtap="selectParent">
+      <text class="role-icon">👨‍👩‍👧</text>
+      <text class="role-name">我是家长</text>
+      <text class="role-desc">查看孩子学习情况</text>
+    </view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">
+    <text>正在识别身份...</text>
+  </view>
+</view>

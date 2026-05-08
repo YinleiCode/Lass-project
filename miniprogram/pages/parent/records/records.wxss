@@ -1,0 +1,67 @@
+.filter-bar {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.filter-item {
+  padding: 8rpx 28rpx;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  background: #F0F0F0;
+  color: #666;
+}
+
+.filter-item.active {
+  background: #4A90D9;
+  color: #fff;
+}
+
+.record-item {
+  display: flex;
+  margin-bottom: 24rpx;
+  padding-left: 20rpx;
+  border-left: 4rpx solid #E0E0E0;
+  position: relative;
+}
+
+.record-dot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  position: absolute;
+  left: -12rpx;
+  top: 6rpx;
+}
+
+.record-dot.green { background: #4CAF50; }
+.record-dot.gray { background: #BBB; }
+
+.record-content {
+  flex: 1;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-left: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.record-date {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.record-comment {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+  line-height: 1.5;
+}
+
+.record-tags {
+  display: flex;
+  gap: 8rpx;
+}

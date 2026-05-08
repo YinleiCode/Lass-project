@@ -1,0 +1,16 @@
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+  color: #CCCCCC;
+}
+
+.icon {
+  font-size: 80rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.text {
+  font-size: 28rpx;
+  display: block;
+}

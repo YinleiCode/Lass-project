@@ -1,0 +1,119 @@
+.card .form-item {
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.card .form-item:last-child {
+  border-bottom: none;
+}
+
+.card .label {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.card .input {
+  font-size: 30rpx;
+  color: #333;
+}
+
+.card .btn-primary {
+  width: 100%;
+  margin-top: 16rpx;
+}
+
+.pkg-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pkg-info {
+  flex: 1;
+}
+
+.pkg-name {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+  font-weight: bold;
+}
+
+.pkg-meta {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.pkg-price {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #4A90D9;
+}
+
+.modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
+.modal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 100;
+  padding: 30rpx;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+  font-size: 34rpx;
+  font-weight: bold;
+}
+
+.close {
+  font-size: 36rpx;
+  color: #999;
+  padding: 8rpx;
+}
+
+.modal-body .form-item {
+  margin-bottom: 20rpx;
+}
+
+.modal-body .label {
+  font-size: 26rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.modal-body .input {
+  font-size: 30rpx;
+  color: #333;
+  border-bottom: 1rpx solid #F0F0F0;
+  padding: 8rpx 0;
+}
+
+.picker {
+  font-size: 30rpx;
+  color: #333;
+  padding: 8rpx 0;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.modal-footer .btn-primary {
+  width: 100%;
+}

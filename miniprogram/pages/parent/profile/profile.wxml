@@ -1,0 +1,32 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+  <view wx:elif="{{!student}}" class="empty-state">
+    <empty-state icon="👤" text="未获取到学员信息" />
+  </view>
+
+  <view wx:else>
+    <!-- 学员信息 -->
+    <view class="card">
+      <view class="profile-header">
+        <view class="avatar">{{student.name[0] || '?'}}</view>
+        <view class="profile-info">
+          <text class="profile-name">{{student.name}}</text>
+          <text class="profile-phone" wx:if="{{student.parent_phone}}">{{format.maskPhone(student.parent_phone)}}</text>
+          <text class="profile-date" wx:if="{{student.enroll_date}}">入学 {{student.enroll_date}}</text>
+        </view>
+      </view>
+      <view class="tag-row" wx:if="{{student.tags && student.tags.length}}">
+        <text class="tag" wx:for="{{student.tags}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 设置项 -->
+    <view class="settings-list">
+      <view class="setting-item" bindtap="rebind">
+        <text class="setting-label">重新绑定</text>
+        <text class="setting-arrow">→</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,57 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+  <block wx:else>
+    <view class="form">
+      <view class="form-item">
+        <text class="label">学员 *</text>
+        <picker bindchange="onStudentChange" range="{{students}}" range-key="name" value="{{selectedStudentIndex}}">
+          <view class="picker">{{selectedStudentIndex >= 0 ? students[selectedStudentIndex].name : '选择学员'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">课程包 *</text>
+        <picker bindchange="onPackageChange" range="{{packages}}" range-key="name" value="{{selectedPackageIndex}}">
+          <view class="picker">{{selectedPackageIndex >= 0 ? packages[selectedPackageIndex].name : '选择课程包'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">课时数 *</text>
+        <input class="input" type="number" placeholder="请输入课时数" value="{{courseCount}}" bindinput="onCountInput" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">实付金额 *</text>
+        <input class="input" type="number" placeholder="自动计算或手动输入" value="{{amount}}" bindinput="onAmountInput" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">缴费日期</text>
+        <picker mode="date" value="{{payDate}}" bindchange="onDateChange">
+          <view class="picker">{{payDate}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">支付方式</text>
+        <picker bindchange="onPayMethodChange" range="{{payMethods}}">
+          <view class="picker">{{payMethod}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">备注</text>
+        <input class="input" placeholder="备注(选填)" value="{{remark}}" bindinput="onRemarkInput" />
+      </view>
+    </view>
+
+    <!-- 余额预览 -->
+    <view class="preview" wx:if="{{previewRemaining > 0}}">
+      <text>💡 缴费后该学员剩余: {{previewRemaining}} 节</text>
+    </view>
+
+    <button class="btn-primary save-btn" bindtap="onSave" loading="{{submitting}}">保存</button>
+  </block>
+</view>

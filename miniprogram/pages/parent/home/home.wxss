@@ -1,0 +1,129 @@
+.greeting {
+  padding: 20rpx 0;
+}
+
+.greeting-text {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.student-overview {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: #EBF3FC;
+  color: #4A90D9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.overview-info {
+  flex: 1;
+  margin-left: 20rpx;
+}
+
+.student-name {
+  font-size: 34rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.stats-row {
+  display: flex;
+  gap: 40rpx;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #4A90D9;
+  display: block;
+}
+
+.stat-value.warning { color: #FF9800; }
+.stat-value.danger { color: #F44336; }
+
+.stat-label {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.warning-tip {
+  margin-top: 8rpx;
+}
+
+.schedule-time {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #4A90D9;
+  display: block;
+}
+
+.schedule-classroom {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.feedback-date {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.feedback-comment {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+  line-height: 1.5;
+}
+
+.audio-hint {
+  font-size: 24rpx;
+  color: #FF9800;
+  display: block;
+  margin-top: 8rpx;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-item {
+  flex: 1;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.action-icon {
+  font-size: 48rpx;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.action-text {
+  font-size: 24rpx;
+  color: #666;
+}

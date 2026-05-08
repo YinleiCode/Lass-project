@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "学员详情",
+  "usingComponents": {
+    "empty-state": "/components/empty-state/empty-state"
+  }
+}

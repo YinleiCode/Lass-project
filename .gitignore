@@ -1,0 +1,16 @@
+# 云函数依赖（每个云函数独立 npm install 后产生）
+cloudfunctions/*/node_modules/
+
+# 本地私有配置（含 appid、devtools 配置）
+project.private.config.json
+
+# macOS
+.DS_Store
+
+# 日志
+*.log
+npm-debug.log*
+
+# 编辑器
+.vscode/
+.idea/

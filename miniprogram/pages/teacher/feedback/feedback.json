@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "课后反馈",
+  "usingComponents": {
+    "rating-stars": "/components/rating-stars/rating-stars",
+    "audio-recorder": "/components/audio-recorder/audio-recorder"
+  }
+}

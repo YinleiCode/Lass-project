@@ -1,0 +1,74 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+  <block wx:else>
+    <!-- 问候 -->
+    <view class="greeting" wx:if="{{student}}">
+      <text class="greeting-text">你好, {{student.name}}的家长 👋</text>
+    </view>
+
+    <!-- 学员概览卡片 -->
+    <view class="card" wx:if="{{student}}">
+      <view class="student-overview">
+        <view class="avatar">{{student.name[0] || '?'}}</view>
+        <view class="overview-info">
+          <text class="student-name">{{student.name}}</text>
+          <view class="stats-row">
+            <view class="stat">
+              <text class="stat-value {{totalRemaining <= 3 ? 'danger' : (totalRemaining <= 5 ? 'warning' : '')}}">{{totalRemaining}}</text>
+              <text class="stat-label">剩余课时</text>
+            </view>
+            <view class="stat">
+              <text class="stat-value">{{student.total_attended || 0}}</text>
+              <text class="stat-label">累计上课</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="warning-tip" wx:if="{{totalRemaining <= 3}}">
+        <text class="tag tag-danger">课时不足, 请联系老师续费</text>
+      </view>
+    </view>
+
+    <!-- 下次上课 -->
+    <view class="section" wx:if="{{upcomingSchedules.length > 0}}">
+      <view class="section-title">📅 下次上课</view>
+      <view class="card" wx:for="{{upcomingSchedules}}" wx:key="_id">
+        <text class="schedule-time">{{format.datetime(item.start_time)}}</text>
+        <text class="schedule-classroom" wx:if="{{item.classroom}}">📍 {{item.classroom}}</text>
+      </view>
+    </view>
+
+    <!-- 最新反馈 -->
+    <view class="section" wx:if="{{latestFeedback}}">
+      <view class="section-title">
+        <text>📝 最新反馈</text>
+        <text class="more" bindtap="goFeedbackDetail">查看完整 →</text>
+      </view>
+      <view class="card" bindtap="goFeedbackDetail">
+        <text class="feedback-date">{{format.datetime(latestFeedback.created_at)}}</text>
+        <text class="feedback-comment">{{latestFeedback.comment ? latestFeedback.comment.substring(0, 80) + '...' : '无评语'}}</text>
+        <text class="audio-hint" wx:if="{{hasAudio}}">🎵 含录音</text>
+      </view>
+    </view>
+
+    <!-- 快捷操作 -->
+    <view class="section">
+      <view class="section-title">快捷操作</view>
+      <view class="quick-actions">
+        <view class="action-item" bindtap="goLeave">
+          <text class="action-icon">📋</text>
+          <text class="action-text">请假</text>
+        </view>
+        <view class="action-item" bindtap="goPaymentList">
+          <text class="action-icon">💰</text>
+          <text class="action-text">缴费记录</text>
+        </view>
+        <view class="action-item" bindtap="goRecords">
+          <text class="action-icon">📖</text>
+          <text class="action-text">全部反馈</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

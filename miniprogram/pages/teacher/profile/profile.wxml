@@ -1,0 +1,77 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+  <block wx:else>
+    <!-- 个人信息 -->
+    <view class="section">
+      <view class="section-title">👤 个人信息</view>
+      <view class="card">
+        <view class="form-item">
+          <text class="label">老师姓名</text>
+          <input class="input" placeholder="请输入姓名" value="{{name}}" bindinput="onNameInput" />
+        </view>
+        <view class="form-item">
+          <text class="label">联系电话</text>
+          <input class="input" type="number" placeholder="选填" value="{{phone}}" bindinput="onPhoneInput" />
+        </view>
+        <button class="btn-primary" bindtap="onSaveTeacher" loading="{{submitting}}">保存</button>
+      </view>
+    </view>
+
+    <!-- 课程包管理 -->
+    <view class="section">
+      <view class="section-title">
+        <text>📦 课程包管理</text>
+        <text class="more" bindtap="showPackageForm">+ 新增</text>
+      </view>
+
+      <view class="card" wx:for="{{packages}}" wx:key="_id">
+        <view class="pkg-row">
+          <view class="pkg-info">
+            <text class="pkg-name">{{item.name}}</text>
+            <text class="pkg-meta">
+              {{item.duration_min}}分钟 · {{constants.COURSE_TYPES[item.type] || item.type}}
+            </text>
+          </view>
+          <text class="pkg-price">{{format.money(item.unit_price)}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{packages.length === 0}}" class="empty-state">
+        <text class="empty-text">暂无课程包, 点击右上角新增</text>
+      </view>
+    </view>
+
+    <!-- 新增课程包弹窗 -->
+    <view class="modal-mask" wx:if="{{showPackageForm}}" bindtap="hidePackageForm"></view>
+    <view class="modal" wx:if="{{showPackageForm}}">
+      <view class="modal-header">
+        <text>新增课程包</text>
+        <text class="close" bindtap="hidePackageForm">✕</text>
+      </view>
+      <view class="modal-body">
+        <view class="form-item">
+          <text class="label">名称 *</text>
+          <input class="input" placeholder="如一対一45分钟" value="{{pkgName}}" bindinput="onPkgNameInput" />
+        </view>
+        <view class="form-item">
+          <text class="label">单课时价格(元) *</text>
+          <input class="input" type="number" placeholder="如 200" value="{{pkgPrice}}" bindinput="onPkgPriceInput" />
+        </view>
+        <view class="form-item">
+          <text class="label">时长(分钟)</text>
+          <input class="input" type="number" placeholder="45" value="{{pkgDuration}}" bindinput="onPkgDurationInput" />
+        </view>
+        <view class="form-item">
+          <text class="label">类型</text>
+          <picker bindchange="onPkgTypeChange" range="{{courseTypes}}">
+            <view class="picker">{{courseTypes[pkgType] || pkgType}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="btn-primary" bindtap="onAddPackage" loading="{{submitting}}">添加</button>
+      </view>
+    </view>
+  </block>
+</view>

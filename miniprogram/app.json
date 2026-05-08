@@ -1,0 +1,47 @@
+{
+  "cloud": true,
+  "pages": [
+    "pages/common/identity/identity",
+    "pages/common/bindparent/bindparent",
+    "pages/teacher/home/home",
+    "pages/teacher/students/students",
+    "pages/teacher/students/detail",
+    "pages/teacher/students/add",
+    "pages/teacher/calendar/calendar",
+    "pages/teacher/checkin/checkin",
+    "pages/teacher/feedback/feedback",
+    "pages/teacher/payment/payment",
+    "pages/teacher/profile/profile",
+    "pages/parent/home/home",
+    "pages/parent/records/records",
+    "pages/parent/feedback-detail/feedback-detail",
+    "pages/parent/payment-list/payment-list",
+    "pages/parent/leave/leave",
+    "pages/parent/profile/profile"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4A90D9",
+    "navigationBarTitleText": "课程管理",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#4A90D9",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {"pagePath": "pages/teacher/home/home", "text": "首页"},
+      {"pagePath": "pages/teacher/calendar/calendar", "text": "课表"},
+      {"pagePath": "pages/teacher/students/students", "text": "学员"},
+      {"pagePath": "pages/teacher/profile/profile", "text": "我的"},
+      {"pagePath": "pages/parent/home/home", "text": "首页"},
+      {"pagePath": "pages/parent/records/records", "text": "记录"},
+      {"pagePath": "pages/parent/profile/profile", "text": "我的"}
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

@@ -1,0 +1,45 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+  <block wx:else>
+    <!-- 课程信息 -->
+    <view class="card" wx:if="{{schedule}}">
+      <view class="schedule-header">
+        <text class="schedule-time">{{schedule.start_time}}</text>
+        <text class="schedule-pkg">{{schedule.package_name || '课程'}}</text>
+      </view>
+      <view class="schedule-hint">默认全部到课，只标记缺勤即可</view>
+    </view>
+
+    <!-- 学员点名列表 -->
+    <view class="student-list">
+      <view class="checkin-item" wx:for="{{students}}" wx:key="_id">
+        <view class="student-info">
+          <view class="avatar {{item.checkinStatus === 'absent' ? 'absent' : (item.checkinStatus === 'leave' ? 'leave' : '')}}">{{item.name[0] || '?'}}</view>
+          <view class="info">
+            <text class="name">{{item.name}}</text>
+            <text wx:if="{{item.remaining <= 3}}" class="tag tag-danger">⚠️ 剩余{{item.remaining}}节</text>
+          </view>
+        </view>
+
+        <view class="status-selector">
+          <view class="status-btn {{item.checkinStatus === 'present' ? 'active present' : ''}}" data-id="{{item._id}}" data-status="present" bindtap="setStatus">到课</view>
+          <view class="status-btn {{item.checkinStatus === 'absent' ? 'active absent' : ''}}" data-id="{{item._id}}" data-status="absent" bindtap="setStatus">缺勤</view>
+          <view class="status-btn {{item.checkinStatus === 'leave' ? 'active leave' : ''}}" data-id="{{item._id}}" data-status="leave" bindtap="setStatus">请假</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 课时扣减预览 -->
+    <view class="deduct-preview">
+      <text>本次点名将扣减 <text class="deduct-num">{{deductCount}}</text> 课时</text>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-area">
+      <button class="btn-primary" bindtap="onConfirm" loading="{{submitting}}">确认点名</button>
+
+      <button wx:if="{{canUndo}}" class="btn-secondary undo-btn" bindtap="onUndo" loading="{{undoLoading}}">撤销点名</button>
+    </view>
+  </block>
+</view>
