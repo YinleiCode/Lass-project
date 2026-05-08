@@ -34,18 +34,11 @@ const api = {
   },
 
   addStudent(data) {
-    const db = wx.cloud.database()
-    data.total_attended = 0
-    data.status = 'active'
-    data.created_at = db.serverDate()
-    data.updated_at = db.serverDate()
-    return db.collection('students').add({ data })
+    return this.call('cm_addStudent', data)
   },
 
   updateStudent(id, data) {
-    const db = wx.cloud.database()
-    data.updated_at = db.serverDate()
-    return db.collection('students').doc(id).update({ data })
+    return this.call('cm_updateStudent', { studentId: id, data })
   },
 
   // ===== 课程包 =====
@@ -55,10 +48,7 @@ const api = {
   },
 
   addPackage(data) {
-    const db = wx.cloud.database()
-    data.is_active = true
-    data.created_at = db.serverDate()
-    return db.collection('course_packages').add({ data })
+    return this.call('cm_addPackage', data)
   },
 
   // ===== 缴费 =====
@@ -111,22 +101,7 @@ const api = {
 
   // ===== 反馈 =====
   saveFeedback(data) {
-    const db = wx.cloud.database()
-    // 先查是否已有
-    return db.collection('feedbacks').where({
-      schedule_id: data.schedule_id,
-      student_id: data.student_id
-    }).get().then(res => {
-      if (res.data.length > 0) {
-        return db.collection('feedbacks').doc(res.data[0]._id).update({
-          data: { ...data, updated_at: db.serverDate() }
-        })
-      } else {
-        return db.collection('feedbacks').add({
-          data: { ...data, created_at: db.serverDate(), updated_at: db.serverDate() }
-        })
-      }
-    })
+    return this.call('cm_saveFeedback', data)
   },
 
   getFeedback(scheduleId, studentId) {
@@ -156,9 +131,7 @@ const api = {
 
   // ===== 请假 =====
   submitLeave(data) {
-    const db = wx.cloud.database()
-    data.created_at = db.serverDate()
-    return db.collection('leaves').add({ data })
+    return this.call('cm_submitLeave', data)
   },
 
   // ===== 老师 =====
