@@ -7,7 +7,7 @@ Page({
   data: {
     loading: true,
     student: null,
-    balance: [],
+    balances: [],
     totalRemaining: 0,
     upcomingSchedules: [],
     latestFeedback: null,
