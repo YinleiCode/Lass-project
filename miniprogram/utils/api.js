@@ -8,7 +8,6 @@ const api = {
         data,
         success: res => {
           if (res.result && res.result.success === false) {
-            wx.showToast({ title: res.result.message || '操作失败', icon: 'none' })
             reject(res.result)
           } else {
             resolve(res.result)
