@@ -117,3 +117,58 @@
 .modal-footer .btn-primary {
   width: 100%;
 }
+
+.invite-section {
+  text-align: center;
+  padding: 8rpx 0;
+}
+
+.invite-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.invite-desc {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.invite-section .btn-secondary {
+  width: 100%;
+  background: #FFF3E0;
+  color: #FF9800;
+  border: none;
+  font-size: 28rpx;
+}
+
+.invite-code-body {
+  text-align: center;
+  padding: 30rpx 0;
+}
+
+.invite-code-large {
+  font-size: 80rpx;
+  font-weight: bold;
+  color: #4A90D9;
+  letter-spacing: 12rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.invite-expiry {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.invite-warning {
+  font-size: 22rpx;
+  color: #F44336;
+  display: block;
+}

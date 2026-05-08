@@ -2,7 +2,11 @@ const app = getApp()
 
 Page({
   data: {
-    loading: true
+    loading: true,
+    showInviteForm: false,
+    inviteCode: '',
+    inviteName: '',
+    verifying: false
   },
 
   onLoad() {
@@ -26,30 +30,60 @@ Page({
   },
 
   selectTeacher() {
-    // 老师首次进入，注册老师身份
-    wx.showModal({
-      title: '确认',
-      content: '确认以老师身份使用？',
-      success: async (res) => {
-        if (res.confirm) {
-          try {
-            const openid = await app.getOpenid()
-            const db = wx.cloud.database()
-            await db.collection('teachers').add({
-              data: {
-                openid: openid,
-                name: '老师',
-                created_at: db.serverDate()
-              }
-            })
-            app.globalData.role = 'teacher'
-            wx.reLaunch({ url: '/pages/teacher/home/home' })
-          } catch (err) {
-            wx.showToast({ title: '注册失败', icon: 'none' })
-          }
-        }
-      }
+    this.setData({
+      showInviteForm: true,
+      inviteCode: '',
+      inviteName: ''
     })
+  },
+
+  onCodeInput(e) {
+    this.setData({ inviteCode: e.detail.value.trim() })
+  },
+
+  onNameInput(e) {
+    this.setData({ inviteName: e.detail.value.trim() })
+  },
+
+  cancelInviteForm() {
+    this.setData({ showInviteForm: false })
+  },
+
+  async onVerifyCode() {
+    const { inviteCode, inviteName } = this.data
+
+    if (!inviteCode || !inviteName) {
+      wx.showToast({ title: '请填写邀请码和姓名', icon: 'none' })
+      return
+    }
+
+    if (!/^\d{6}$/.test(inviteCode)) {
+      wx.showToast({ title: '邀请码为6位数字', icon: 'none' })
+      return
+    }
+
+    this.setData({ verifying: true })
+
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'cm_verifyInviteCode',
+        data: { code: inviteCode, name: inviteName }
+      })
+
+      if (res.result.success) {
+        wx.showToast({ title: '注册成功', icon: 'success' })
+        app.globalData.role = 'teacher'
+        setTimeout(() => {
+          wx.reLaunch({ url: '/pages/teacher/home/home' })
+        }, 1500)
+      } else {
+        wx.showToast({ title: res.result.message || '验证失败', icon: 'none' })
+      }
+    } catch (err) {
+      wx.showToast({ title: '验证失败', icon: 'none' })
+    } finally {
+      this.setData({ verifying: false })
+    }
   },
 
   selectParent() {

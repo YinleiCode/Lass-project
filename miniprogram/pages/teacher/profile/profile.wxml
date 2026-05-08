@@ -16,6 +16,15 @@
         </view>
         <button class="btn-primary" bindtap="onSaveTeacher" loading="{{submitting}}">保存</button>
       </view>
+
+      <!-- 邀请码（仅管理员可见） -->
+      <view class="card" wx:if="{{isAdmin}}">
+        <view class="invite-section">
+          <text class="invite-title">🔑 邀请新老师</text>
+          <text class="invite-desc">生成6位一次性邀请码，24小时有效</text>
+          <button class="btn-secondary" bindtap="onGenerateInviteCode" loading="{{submitting}}">生成邀请码</button>
+        </view>
+      </view>
     </view>
 
     <!-- 课程包管理 -->
@@ -39,6 +48,20 @@
 
       <view wx:if="{{packages.length === 0}}" class="empty-state">
         <text class="empty-text">暂无课程包, 点击右上角新增</text>
+      </view>
+    </view>
+
+    <!-- 邀请码弹窗 -->
+    <view class="modal-mask" wx:if="{{showInviteCode}}" bindtap="hideInviteCode"></view>
+    <view class="modal" wx:if="{{showInviteCode}}">
+      <view class="modal-header">
+        <text>邀请码</text>
+        <text class="close" bindtap="hideInviteCode">✕</text>
+      </view>
+      <view class="modal-body invite-code-body">
+        <text class="invite-code-large">{{inviteCode}}</text>
+        <text class="invite-expiry">有效期至：{{inviteExpiresAt}}</text>
+        <text class="invite-warning">一次性使用，请勿泄露给无关人员</text>
       </view>
     </view>
 

@@ -3,7 +3,16 @@
   <text class="title">课程管理</text>
   <text class="subtitle">播音主持培训助手</text>
 
-  <view class="role-cards">
+  <view wx:if="{{showInviteForm}}" class="invite-form">
+    <text class="form-title">输入邀请码</text>
+    <text class="form-desc">请联系管理员获取邀请码</text>
+    <input class="input" placeholder="6位数字邀请码" maxlength="6" type="number" bindinput="onCodeInput" />
+    <input class="input" placeholder="您的姓名" bindinput="onNameInput" />
+    <button class="btn-primary" bindtap="onVerifyCode" loading="{{verifying}}">验证并注册</button>
+    <button class="btn-link" bindtap="cancelInviteForm">返回</button>
+  </view>
+
+  <view class="role-cards" wx:else>
     <view class="role-card" bindtap="selectTeacher">
       <text class="role-icon">👨‍🏫</text>
       <text class="role-name">我是老师</text>

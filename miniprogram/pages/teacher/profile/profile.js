@@ -10,6 +10,10 @@ Page({
     packages: [],
     name: '',
     phone: '',
+    isAdmin: false,
+    inviteCode: '',
+    inviteExpiresAt: '',
+    showInviteCode: false,
     // 新增套餐
     showPackageForm: false,
     pkgName: '',
@@ -40,6 +44,7 @@ Page({
         packages,
         name: teacher ? teacher.name : '',
         phone: teacher ? teacher.phone : '',
+        isAdmin: teacher ? !!teacher.is_admin : false,
         loading: false
       })
     } catch (err) {
@@ -62,8 +67,8 @@ Page({
         phone: this.data.phone
       })
       wx.showToast({ title: '已保存', icon: 'success' })
-      console.error("操作失败", err)
     } catch (err) {
+      console.error('保存失败', err)
       this.setData({ submitting: false })
     }
   },
@@ -90,6 +95,30 @@ Page({
     this.setData({ pkgType: types[e.detail.value] })
   },
 
+  async onGenerateInviteCode() {
+    this.setData({ submitting: true })
+    try {
+      const res = await wx.cloud.callFunction({ name: 'cm_generateInviteCode' })
+      if (res.result.success) {
+        this.setData({
+          inviteCode: res.result.code,
+          inviteExpiresAt: res.result.expires_at,
+          showInviteCode: true
+        })
+      } else {
+        wx.showToast({ title: res.result.message || '生成失败', icon: 'none' })
+      }
+    } catch (err) {
+      wx.showToast({ title: '生成失败', icon: 'none' })
+    } finally {
+      this.setData({ submitting: false })
+    }
+  },
+
+  hideInviteCode() {
+    this.setData({ showInviteCode: false })
+  },
+
   async onAddPackage() {
     const { pkgName, pkgPrice, pkgDuration, pkgType } = this.data
     if (!pkgName || !pkgPrice) {
@@ -108,8 +137,8 @@ Page({
       wx.showToast({ title: '添加成功', icon: 'success' })
       this.hidePackageForm()
       this.loadData()
-      console.error("操作失败", err)
     } catch (err) {
+      console.error('添加套餐失败', err)
       this.setData({ submitting: false })
     }
   }
