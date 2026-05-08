@@ -61,10 +61,13 @@ Page({
 
     this.setData({ submitting: true })
     try {
-      await api.setTeacher({
-        openid,
-        name: this.data.name,
-        phone: this.data.phone
+      const db = wx.cloud.database()
+      await db.collection('teachers').where({ openid }).update({
+        data: {
+          name: this.data.name,
+          phone: this.data.phone,
+          updated_at: db.serverDate()
+        }
       })
       wx.showToast({ title: '已保存', icon: 'success' })
     } catch (err) {

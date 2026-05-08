@@ -167,19 +167,6 @@ const api = {
     return db.collection('teachers').where({ openid }).get().then(res => res.data[0] || null)
   },
 
-  setTeacher(data) {
-    const db = wx.cloud.database()
-    data.updated_at = db.serverDate()
-    return db.collection('teachers').where({ openid: data.openid }).get().then(res => {
-      if (res.data.length > 0) {
-        return db.collection('teachers').doc(res.data[0]._id).update({ data })
-      } else {
-        data.created_at = db.serverDate()
-        return db.collection('teachers').add({ data })
-      }
-    })
-  },
-
   // ===== 删除学员 =====
   deleteStudent(studentId) {
     return this.call('cm_deleteStudent', { studentId })
