@@ -1,16 +1,23 @@
+/* ============================================================
+ *  empty-state — 空状态组件
+ * ============================================================ */
 .empty-state {
   text-align: center;
-  padding: 80rpx 40rpx;
-  color: #CCCCCC;
+  padding: 60px 22px;
 }
 
-.icon {
-  font-size: 80rpx;
+.empty-state .icon {
+  font-size: 44px;
   display: block;
-  margin-bottom: 20rpx;
+  margin-bottom: 16px;
+  opacity: 0.45;
+  line-height: 1;
 }
 
-.text {
-  font-size: 28rpx;
+.empty-state .text {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--ink-soft);
   display: block;
+  letter-spacing: 0.5px;
 }

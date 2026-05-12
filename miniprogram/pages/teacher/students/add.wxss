@@ -1,13 +1,21 @@
+/* ============================================================
+ *  teacher/students/add — 新增 / 编辑学员
+ * ============================================================ */
+
 .form {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 10rpx 30rpx;
-  margin-bottom: 40rpx;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 22px;
 }
 
 .form-item {
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #F0F0F0;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .form-item:last-child {
@@ -15,69 +23,89 @@
 }
 
 .form-item .label {
-  font-size: 26rpx;
-  color: #999;
-  display: block;
-  margin-bottom: 12rpx;
+  font-size: 12px;
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.form-item .input {
-  font-size: 32rpx;
-  color: #333;
+.form-item .input,
+.form-item .picker,
+.form-item .textarea {
+  font-size: 15px;
+  color: var(--ink);
+  padding: 6px 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  min-height: 24px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-item .textarea {
-  width: 100%;
-  font-size: 28rpx;
-  color: #333;
-  min-height: 120rpx;
+  min-height: 60px;
+  line-height: 1.5;
 }
 
-.picker {
-  font-size: 32rpx;
-  color: #333;
-  padding: 8rpx 0;
+/* picker placeholder when empty */
+.form-item .picker {
+  color: var(--ink);
 }
 
+/* 标签输入行 */
 .tag-input-row {
   display: flex;
-  gap: 16rpx;
+  gap: 10px;
   align-items: center;
-  margin-bottom: 12rpx;
 }
 
 .tag-input-row .input {
   flex: 1;
 }
 
-.btn-secondary.small {
-  padding: 8rpx 20rpx;
-  font-size: 24rpx;
-  line-height: 1.5;
+.tag-input-row .btn-secondary.small {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 100px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
 }
 
-.tag-row {
+/* 已添加的标签行 */
+.form-item .tag-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 12rpx;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .tag-item {
   display: inline-flex;
   align-items: center;
-  gap: 8rpx;
-  padding: 6rpx 16rpx;
-  border-radius: 20rpx;
-  font-size: 24rpx;
-  background: #EBF3FC;
-  color: #4A90D9;
+  gap: 6px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .tag-close {
-  font-size: 20rpx;
-  color: #999;
+  color: var(--ink-mute);
+  font-size: 11px;
+  cursor: pointer;
 }
 
+/* 保存按钮 */
 .save-btn {
+  display: block;
   width: 100%;
+  margin-top: 8px;
+  letter-spacing: 2px;
 }

@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>颂恩艺术 · 家长端首页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Ma+Shan+Zheng&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    background: #1A2332;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 20px;
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+  :root {
+    --paper: #F4F7FA;
+    --paper-warm: #E8EFF5;
+    --cream: #FFFFFF;
+    --line: #DDE5ED;
+    --line-soft: #EAF0F5;
+    --ink: #2A3744;
+    --ink-soft: #5A6B7E;
+    --ink-mute: #93A3B5;
+    --accent: #2C5282;
+    --accent-soft: #BFD1E5;
+    --accent-bg: #EDF3F9;
+    --warn: #EA580C;
+    --warn-bg: #FEF3C7;
+    --green: #4D7C0F;
+    --green-bg: #ECFCCB;
+    --font-serif: 'Noto Serif SC', 'Songti SC', serif;
+    --font-sans: 'Noto Sans SC', -apple-system, sans-serif;
+    --font-script: 'Ma Shan Zheng', cursive;
+    --font-num: 'DM Serif Display', 'Noto Serif SC', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .phone-label {
+    color: #6B7E94; font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .phone {
+    width: 390px; height: 800px; background: var(--paper);
+    border-radius: 44px; border: 12px solid #0F1620;
+    box-shadow: 0 0 0 2px #1F2D3D, 0 60px 120px -30px rgba(0,0,0,0.5), 0 30px 60px -15px rgba(0,0,0,0.3);
+    overflow: hidden; position: relative;
+    display: flex; flex-direction: column;
+  }
+  .notch {
+    position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 28px; background: #0F1620; border-radius: 20px; z-index: 100;
+  }
+  .status-bar {
+    height: 50px; padding: 18px 28px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 14px; font-weight: 500; color: var(--ink); flex-shrink: 0;
+  }
+  .status-bar .right { display: flex; gap: 5px; align-items: center; }
+  .screen { flex: 1; overflow-y: auto; overflow-x: hidden; padding-bottom: 80px; }
+  .screen::-webkit-scrollbar { display: none; }
+
+  /* Hero区 - 家长端更温暖 */
+  .parent-hero {
+    padding: 16px 22px 24px;
+    background: linear-gradient(180deg,
+      #EDF3F9 0%,
+      #F4F7FA 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .parent-hero::before {
+    content: "";
+    position: absolute;
+    top: 30px; right: -30px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(44,82,130,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .top-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .brand-name {
+    font-family: var(--font-serif);
+    font-size: 16px; font-weight: 600;
+    color: var(--ink); letter-spacing: 2px;
+  }
+  .brand-name-mark {
+    display: inline-block; width: 22px; height: 22px;
+    border-radius: 50%; background: var(--accent);
+    vertical-align: -6px; margin-right: 10px; position: relative;
+  }
+  .brand-name-mark::after {
+    content: "颂"; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: white; font-family: var(--font-serif);
+    font-size: 12px; font-weight: 700;
+  }
+
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--cream); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft); position: relative;
+  }
+
+  /* 孩子切换器 - 家长可能有多个孩子 */
+  .kid-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px 5px 5px;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .kid-switcher-avatar {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .kid-switcher-name { color: var(--ink); font-weight: 500; }
+
+  .greeting-block { margin-bottom: 24px; }
+  .greeting-line {
+    font-family: var(--font-serif);
+    font-size: 26px; font-weight: 500;
+    color: var(--ink);
+    line-height: 1.35;
+    letter-spacing: -0.5px;
+  }
+  .greeting-line .em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .greeting-sub {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* 主数据卡 - 大气一些 */
+  .main-stat-card {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 20px;
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .main-stat-card::before {
+    content: "";
+    position: absolute;
+    right: -30px; top: -30px;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(191,209,229,0.15) 0%, transparent 70%);
+  }
+
+  .stat-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-card-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(250,246,240,0.6);
+    letter-spacing: 1.5px;
+  }
+
+  .stat-card-deco {
+    font-family: var(--font-script);
+    font-size: 28px;
+    color: var(--accent-soft);
+    opacity: 0.5;
+    line-height: 1;
+  }
+
+  .stat-card-num {
+    font-family: var(--font-num);
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: var(--paper);
+  }
+  .stat-card-num .unit {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: rgba(250,246,240,0.6);
+    margin-left: 6px;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .stat-card-progress {
+    margin-top: 14px;
+    height: 4px;
+    background: rgba(250,246,240,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .stat-card-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-soft) 0%, #6B91B8 100%);
+    border-radius: 2px;
+  }
+
+  .stat-card-bottom {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: rgba(250,246,240,0.7);
+    font-family: var(--font-mono);
+    letter-spacing: 0.5px;
+  }
+
+  /* mini stats */
+  .mini-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .mini-stat {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 14px;
+  }
+  .mini-stat-label {
+    font-size: 10px;
+    color: var(--ink-mute);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+    margin-bottom: 4px;
+  }
+  .mini-stat-num {
+    font-family: var(--font-num);
+    font-size: 24px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .mini-stat-unit {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-left: 4px;
+  }
+
+  /* 区段 */
+  .section {
+    padding: 24px 22px 8px;
+  }
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: 17px; font-weight: 600;
+    color: var(--ink); letter-spacing: 0.5px;
+    position: relative; padding-left: 14px;
+  }
+  .section-title::before {
+    content: ""; position: absolute; left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 4px; height: 14px; background: var(--accent); border-radius: 2px;
+  }
+  .section-action {
+    font-size: 11px; color: var(--ink-soft);
+    font-family: var(--font-mono); letter-spacing: 1px;
+  }
+
+  /* 下次上课 - 突出展示 */
+  .next-class-card {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .next-class-card::after {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--accent) 0%, #3E73A6 100%);
+  }
+
+  .next-class-date {
+    text-align: center;
+    flex-shrink: 0;
+    padding-right: 16px;
+    border-right: 1px solid var(--line-soft);
+  }
+  .next-class-day {
+    font-family: var(--font-num);
+    font-size: 32px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .next-class-month {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .next-class-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .next-class-time {
+    font-family: var(--font-num);
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .next-class-meta {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .next-class-meta .badge {
+    display: inline-block;
+    background: var(--accent-bg);
+    color: var(--accent);
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    margin-right: 4px;
+  }
+
+  /* 最新反馈卡 */
+  .feedback-card {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+    position: relative;
+  }
+
+  .feedback-quote {
+    font-family: var(--font-serif);
+    color: var(--accent);
+    font-size: 36px;
+    line-height: 0;
+    position: absolute;
+    top: 18px;
+    left: 14px;
+    opacity: 0.3;
+  }
+
+  .feedback-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .feedback-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2C5282, #3E73A6);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .feedback-teacher {
+    flex: 1;
+  }
+  .feedback-teacher-name {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .feedback-teacher-time {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+    letter-spacing: 0.5px;
+  }
+  .feedback-rating {
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .feedback-text {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+  .feedback-text strong {
+    background: linear-gradient(180deg, transparent 60%, var(--accent-soft) 60%);
+    font-weight: 500;
+  }
+
+  .feedback-tags-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .feedback-dimensions {
+    display: flex;
+    gap: 14px;
+    font-size: 10px;
+    color: var(--ink-soft);
+  }
+  .feedback-dim {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .feedback-dim-label {
+    font-family: var(--font-mono);
+    letter-spacing: 0.5px;
+  }
+  .feedback-dim-stars {
+    color: var(--accent);
+    font-size: 9px;
+    letter-spacing: 0.5px;
+  }
+
+  .feedback-audio-btn {
+    background: var(--accent-bg);
+    color: var(--accent);
+    border: 1px solid var(--accent-soft);
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* 快捷入口 */
+  .quick-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .quick-action {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .quick-action-icon {
+    width: 36px; height: 36px;
+    background: var(--accent-bg);
+    color: var(--accent);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* 底部小语 */
+  .footer-quote {
+    text-align: center;
+    padding: 28px 22px 16px;
+    opacity: 0.5;
+  }
+  .footer-quote .text {
+    font-family: var(--font-script);
+    font-size: 18px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .footer-quote .en {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-mute);
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  /* Tab栏 */
+  .tab-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 70px;
+    background: rgba(250,246,240,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--line);
+    display: flex; padding-bottom: 8px; z-index: 50;
+  }
+  .tab {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 3px;
+    color: var(--ink-mute); font-size: 10px; letter-spacing: 0.5px;
+    position: relative;
+  }
+  .tab.active { color: var(--accent); }
+  .tab.active::before {
+    content: ""; position: absolute; top: 8px;
+    width: 24px; height: 3px; background: var(--accent);
+    border-radius: 0 0 2px 2px;
+  }
+  .tab svg { width: 22px; height: 22px; }
+</style>
+</head>
+<body>
+
+<div class="phone-wrap">
+  <div class="phone-label">家长端 · 首页</div>
+
+  <div class="phone">
+    <div class="notch"></div>
+
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="right">
+        <svg width="16" height="11" viewBox="0 0 18 12" fill="none"><path d="M1 8L1 4M5 9L5 3M9 11L9 1M13 10L13 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg width="16" height="11" viewBox="0 0 16 12" fill="none"><path d="M1 4Q8 -2 15 4M3 6Q8 2 13 6M5 8Q8 6 11 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="8" cy="10" r="1" fill="currentColor"/></svg>
+        <svg width="24" height="11" viewBox="0 0 24 12" fill="none"><rect x="0.5" y="1" width="20" height="10" rx="2" stroke="currentColor"/><rect x="2" y="2.5" width="16" height="7" rx="1" fill="currentColor"/><rect x="21" y="4" width="2" height="4" rx="0.5" fill="currentColor"/></svg>
+      </div>
+    </div>
+
+    <div class="screen">
+      <!-- Hero -->
+      <div class="parent-hero">
+        <div class="top-row">
+          <div class="brand-name">
+            <span class="brand-name-mark"></span>颂恩艺术
+          </div>
+          <div class="icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          </div>
+        </div>
+
+        <div class="kid-switcher">
+          <div class="kid-switcher-avatar">明</div>
+          <span class="kid-switcher-name">张小明</span>
+          <span style="opacity: 0.5;">·</span>
+          <span style="opacity: 0.7;">8 岁</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+
+        <div class="greeting-block">
+          <h1 class="greeting-line">
+            欢迎回来，<span class="em">小明妈妈</span>
+          </h1>
+          <p class="greeting-sub">小明在颂恩学习已 <strong style="color: var(--ink); font-weight: 500;">12 个月</strong>，距下次上课还有 <strong style="color: var(--accent); font-weight: 500;">2 天</strong></p>
+        </div>
+
+        <!-- 主数据卡 - 剩余课时 -->
+        <div class="main-stat-card">
+          <div class="stat-card-top">
+            <div class="stat-card-label">REMAINING · 剩余课时</div>
+            <div class="stat-card-deco">课</div>
+          </div>
+          <div class="stat-card-num">
+            23<span class="unit">/ 60 节</span>
+          </div>
+          <div class="stat-card-progress">
+            <div class="stat-card-progress-bar" style="width: 38%;"></div>
+          </div>
+          <div class="stat-card-bottom">
+            <span>已上 37 节</span>
+            <span>还可上 ~7 周</span>
+          </div>
+        </div>
+
+        <!-- mini stats -->
+        <div class="mini-stats">
+          <div class="mini-stat">
+            <div class="mini-stat-label">累计上课</div>
+            <div>
+              <span class="mini-stat-num">47</span>
+              <span class="mini-stat-unit">次</span>
+            </div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">累计缴费</div>
+            <div>
+              <span class="mini-stat-num">9,400</span>
+              <span class="mini-stat-unit">元</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 下次上课 -->
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">下次上课</div>
+          <div class="section-action">UPCOMING</div>
+        </div>
+        <div class="next-class-card">
+          <div class="next-class-date">
+            <div class="next-class-day">10</div>
+            <div class="next-class-month">MAY · 周三</div>
+          </div>
+          <div class="next-class-info">
+            <div class="next-class-time">18:00 — 18:45</div>
+            <div class="next-class-meta">
+              <span class="badge">一对一</span>
+              王老师 · 1号教室
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 最新反馈 -->
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">最新课堂反馈</div>
+          <div class="section-action">VIEW ALL →</div>
+        </div>
+
+        <div class="feedback-card">
+          <div class="feedback-quote">"</div>
+          <div class="feedback-head">
+            <div class="feedback-avatar">王</div>
+            <div class="feedback-teacher">
+              <div class="feedback-teacher-name">王老师</div>
+              <div class="feedback-teacher-time">5月5日 · 周一 18:00</div>
+            </div>
+            <div class="feedback-rating">★★★★☆</div>
+          </div>
+
+          <div class="feedback-text">
+            今天小明的<strong>绕口令</strong>进步很大,但<strong>情感处理</strong>还需加强。本周建议回家多听新闻联播,体会播音员的情感投放方式。
+          </div>
+
+          <div class="feedback-tags-row">
+            <div class="feedback-dimensions">
+              <div class="feedback-dim">
+                <div class="feedback-dim-stars">★★★★</div>
+                <div class="feedback-dim-label">气息</div>
+              </div>
+              <div class="feedback-dim">
+                <div class="feedback-dim-stars">★★★★★</div>
+                <div class="feedback-dim-label">咬字</div>
+              </div>
+              <div class="feedback-dim">
+                <div class="feedback-dim-stars">★★★</div>
+                <div class="feedback-dim-label">情感</div>
+              </div>
+              <div class="feedback-dim">
+                <div class="feedback-dim-stars">★★★★</div>
+                <div class="feedback-dim-label">台风</div>
+              </div>
+            </div>
+            <button class="feedback-audio-btn">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+              0:45
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 快捷入口 -->
+      <div class="section">
+        <div class="quick-actions">
+          <button class="quick-action">
+            <div class="quick-action-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            上课记录
+          </button>
+          <button class="quick-action">
+            <div class="quick-action-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            缴费记录
+          </button>
+          <button class="quick-action">
+            <div class="quick-action-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-4"/><line x1="12" y1="2" x2="12" y2="15"/><polyline points="7 7 12 2 17 7"/></svg>
+            </div>
+            提交请假
+          </button>
+        </div>
+      </div>
+
+      <!-- 底部 -->
+      <div class="footer-quote">
+        <div class="text">每一次声音 都值得被听见</div>
+        <div class="en">SONG·EN ARTS · est. 2024</div>
+      </div>
+
+    </div>
+
+    <!-- Tab栏 - 家长端只有3个 -->
+    <div class="tab-bar">
+      <div class="tab active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        首页
+      </div>
+      <div class="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        记录
+      </div>
+      <div class="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+        我的
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

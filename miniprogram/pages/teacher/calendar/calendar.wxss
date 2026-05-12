@@ -1,238 +1,350 @@
+/* ============================================================
+ *  teacher/calendar — 周课表
+ * ============================================================ */
+
+/* === 周切换 === */
 .week-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16rpx;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 16px;
+  margin-bottom: 14px;
 }
 
 .nav-btn {
-  font-size: 40rpx;
-  color: #4A90D9;
-  padding: 10rpx 20rpx;
-  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--paper-warm);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .week-label {
-  font-size: 28rpx;
-  color: #333;
-  font-weight: bold;
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.5px;
 }
 
 .today-btn {
-  font-size: 24rpx;
-  color: #4A90D9;
-  font-weight: normal;
+  margin-left: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--accent-bg);
+  padding: 2px 8px;
+  border-radius: 100px;
 }
 
+/* === 周日历 === */
 .week-days {
-  display: flex;
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 16rpx 0;
-  margin-bottom: 20rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 22px;
 }
 
 .day-item {
-  flex: 1;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 4px;
   text-align: center;
-  padding: 8rpx 0;
-  border-radius: 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s;
 }
 
 .day-item.active {
-  background: #4A90D9;
+  background: var(--ink);
+  border-color: var(--ink);
 }
 
-.day-item.active .day-weekday,
-.day-item.active .day-num {
-  color: #fff;
+.day-item.today {
+  border-color: var(--accent);
+  border-width: 1.5px;
 }
 
-.day-item.today .day-num {
-  color: #4A90D9;
-  font-weight: bold;
+.day-item.today.active {
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .day-weekday {
-  font-size: 22rpx;
-  color: #999;
-  display: block;
-  margin-bottom: 4rpx;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-mute);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.day-item.active .day-weekday {
+  color: rgba(244, 247, 250, 0.6);
 }
 
 .day-num {
-  font-size: 32rpx;
-  color: #333;
-  display: block;
+  font-family: var(--font-num);
+  font-size: 18px;
+  color: var(--ink);
+  line-height: 1;
 }
 
+.day-item.active .day-num {
+  color: var(--paper);
+}
+
+/* === 当日课程区段 === */
+.day-schedules .section-title {
+  margin-bottom: 14px;
+}
+
+/* === 课程卡片 === */
 .schedule-card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 20rpx;
-  margin-bottom: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8rpx;
+  margin-bottom: 10px;
 }
 
 .card-time {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #4A90D9;
+  font-family: var(--font-num);
+  font-size: 22px;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+  line-height: 1;
 }
 
 .card-status {
-  font-size: 22rpx;
-  padding: 4rpx 16rpx;
-  border-radius: 8rpx;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
 }
 
 .card-status.pending {
-  background: #FFF3E0;
-  color: #FF9800;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
 }
 
 .card-status.done {
-  background: #E8F5E9;
-  color: #4CAF50;
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.card-status.canceled {
+  background: var(--paper-warm);
+  color: var(--ink-mute);
 }
 
 .card-body {
-  margin-bottom: 12rpx;
+  margin-bottom: 12px;
 }
 
 .card-students {
-  font-size: 28rpx;
-  color: #333;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
   display: block;
+  margin-bottom: 4px;
 }
 
 .card-classroom {
-  font-size: 24rpx;
-  color: #999;
-  display: block;
-  margin-top: 4rpx;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.5px;
 }
 
 .card-actions {
   display: flex;
-  gap: 12rpx;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
-.btn-primary.small, .btn-secondary.small {
-  padding: 8rpx 24rpx;
-  font-size: 24rpx;
-  line-height: 1.5;
+.card-actions .btn-primary.small,
+.card-actions .btn-secondary.small {
+  padding: 6px 14px;
+  font-size: 12px;
+  line-height: 1.4;
+  border-radius: 100px;
 }
 
-/* 弹窗 */
+.card-actions .btn-primary.small {
+  background: var(--ink);
+  color: var(--paper);
+  letter-spacing: 1px;
+}
+
+.card-actions .btn-secondary.small {
+  background: var(--cream);
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+}
+
+/* === 弹窗 === */
 .modal-mask {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 99;
+  inset: 0;
+  background: rgba(42, 55, 68, 0.45);
+  backdrop-filter: blur(6px);
+  z-index: 100;
 }
 
 .modal {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-radius: 24rpx 24rpx 0 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 44px);
   max-height: 80vh;
-  overflow-y: auto;
-  z-index: 100;
-  padding: 30rpx;
+  background: var(--cream);
+  border-radius: 20px;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px -16px rgba(44, 82, 130, 0.35);
+  overflow: hidden;
 }
 
 .modal-header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--line-soft);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24rpx;
-  font-size: 34rpx;
-  font-weight: bold;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.5px;
 }
 
-.close {
-  font-size: 36rpx;
-  color: #999;
-  padding: 8rpx;
+.modal-header .close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--paper-warm);
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.modal-body {
+  padding: 8px 22px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .modal-body .form-item {
-  margin-bottom: 20rpx;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.modal-body .label {
-  font-size: 26rpx;
-  color: #999;
-  display: block;
-  margin-bottom: 8rpx;
+.modal-body .form-item:last-child {
+  border-bottom: none;
 }
 
-.modal-body .input {
-  font-size: 30rpx;
-  color: #333;
-  border-bottom: 1rpx solid #F0F0F0;
-  padding: 8rpx 0;
+.modal-body .form-item .label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.picker {
-  font-size: 30rpx;
-  color: #333;
-  padding: 8rpx 0;
-  border-bottom: 1rpx solid #F0F0F0;
+.modal-body .form-item .input,
+.modal-body .form-item .picker {
+  font-size: 14px;
+  color: var(--ink);
+  padding: 4px 0;
+  min-height: 22px;
 }
 
 .radio-label {
-  margin-right: 30rpx;
-  font-size: 28rpx;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 16px;
+  font-size: 14px;
+  color: var(--ink);
 }
 
 .student-check-list {
-  max-height: 240rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
   overflow-y: auto;
+  margin-top: 4px;
 }
 
 .check-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12rpx 0;
-  font-size: 28rpx;
-  border-bottom: 1rpx solid #F5F5F5;
+  padding: 10px 12px;
+  background: var(--paper);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--ink);
 }
 
 .check-mark {
-  width: 36rpx;
-  height: 36rpx;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  border: 2rpx solid #DDD;
-  text-align: center;
-  line-height: 36rpx;
-  font-size: 20rpx;
+  background: transparent;
+  border: 1.5px solid var(--line);
   color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
 }
 
 .check-mark.checked {
-  background: #4A90D9;
-  border-color: #4A90D9;
-  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
 }
 
 .modal-footer {
-  margin-top: 20rpx;
+  padding: 14px 22px 22px;
+  border-top: 1px solid var(--line-soft);
 }
 
 .modal-footer .btn-primary {
   width: 100%;
+  letter-spacing: 2px;
 }

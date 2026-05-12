@@ -1,81 +1,121 @@
+/* ============================================================
+ *  teacher/feedback — 课后反馈
+ * ============================================================ */
+
+/* === 课程信息卡 === */
+.container > .card:first-of-type {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 22px;
+}
+
 .feedback-header {
-  margin-bottom: 16rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .feedback-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  display: block;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.5px;
 }
 
 .feedback-date {
-  font-size: 24rpx;
-  color: #999;
-  display: block;
-  margin-top: 4rpx;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.5px;
 }
 
+/* === 学员切换 tabs === */
 .student-switch {
   display: flex;
-  gap: 12rpx;
-  margin-bottom: 12rpx;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 2px 0;
+  margin-bottom: 12px;
+}
+
+.student-switch::-webkit-scrollbar {
+  display: none;
 }
 
 .switch-item {
-  padding: 6rpx 20rpx;
-  border-radius: 20rpx;
-  font-size: 24rpx;
-  background: #F0F0F0;
-  color: #666;
+  flex-shrink: 0;
+  padding: 6px 14px;
+  background: var(--paper-warm);
+  color: var(--ink-soft);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  border: 1px solid var(--line);
 }
 
 .switch-item.active {
-  background: #4A90D9;
-  color: #fff;
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
 }
 
 .current-student {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #4A90D9;
   display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
+/* === 评语模板 === */
 .template-row {
   display: flex;
-  gap: 12rpx;
-  margin-bottom: 16rpx;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 .template-btn {
-  padding: 8rpx 20rpx;
-  border-radius: 12rpx;
-  font-size: 24rpx;
-  background: #EBF3FC;
-  color: #4A90D9;
-  border: 1rpx solid #4A90D9;
+  padding: 6px 14px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
+.template-btn:active {
+  background: var(--accent);
+  color: white;
+}
+
+/* === 评语输入框 === */
 .comment-input {
   width: 100%;
-  min-height: 180rpx;
-  background: #F9F9F9;
-  border-radius: 12rpx;
-  padding: 20rpx;
-  font-size: 28rpx;
-  color: #333;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.6;
+  min-height: 120px;
+  font-family: var(--font-sans);
   box-sizing: border-box;
 }
 
+/* === 保存按钮 === */
 .save-btn {
   width: 100%;
-  margin-top: 20rpx;
-  margin-bottom: 40rpx;
-}
-
-.section-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  margin-bottom: 12rpx;
-  color: #333;
+  margin-top: 8px;
+  letter-spacing: 2px;
 }

@@ -1,26 +1,38 @@
+/* ============================================================
+ *  rating-stars — 5 星评分组件
+ * ============================================================ */
 .rating-stars {
   display: flex;
   align-items: center;
-  padding: 12rpx 0;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.rating-stars:last-of-type {
+  border-bottom: none;
 }
 
 .label {
-  font-size: 28rpx;
-  color: #666;
-  width: 140rpx;
+  font-size: 13px;
+  color: var(--ink-soft);
+  width: 90px;
   flex-shrink: 0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .stars {
   display: flex;
-  gap: 12rpx;
+  gap: 6px;
 }
 
 .star {
-  font-size: 40rpx;
-  color: #DDDDDD;
+  font-size: 20px;
+  color: var(--line);
+  transition: color 0.15s, transform 0.15s;
+  line-height: 1;
 }
 
 .star.active {
-  color: #FFB800;
+  color: var(--accent);
 }

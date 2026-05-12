@@ -1,145 +1,220 @@
+/* ============================================================
+ *  teacher/students/detail — 学员详情
+ * ============================================================ */
+
+/* === 学员信息主卡(深色 ink 主题) === */
+.container > .card:first-of-type {
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 20px;
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.container > .card:first-of-type::before {
+  content: "";
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(191, 209, 229, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
 .student-header {
   display: flex;
   align-items: center;
-  margin-bottom: 16rpx;
+  gap: 16px;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
 }
 
-.avatar {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-  background: #EBF3FC;
-  color: #4A90D9;
+.student-header .avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--accent-mid), var(--accent));
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 40rpx;
-  font-weight: bold;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.3);
 }
 
 .student-meta {
   flex: 1;
-  margin-left: 20rpx;
+  min-width: 0;
 }
 
 .student-name {
-  font-size: 34rpx;
-  font-weight: bold;
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--paper);
+  letter-spacing: 0.5px;
   display: block;
+  margin-bottom: 4px;
 }
 
 .student-phone {
-  font-size: 26rpx;
-  color: #999;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(244, 247, 250, 0.65);
+  letter-spacing: 0.5px;
   display: block;
-  margin-top: 4rpx;
 }
 
 .student-date {
-  font-size: 24rpx;
-  color: #BBB;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(244, 247, 250, 0.45);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
   display: block;
-  margin-top: 2rpx;
 }
 
 .more-btn {
-  font-size: 40rpx;
-  color: #999;
-  padding: 10rpx;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(244, 247, 250, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--paper);
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
-.tag-row {
-  margin-bottom: 12rpx;
+.container > .card:first-of-type .tag-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.container > .card:first-of-type .tag {
+  background: rgba(244, 247, 250, 0.12);
+  color: var(--paper);
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
 }
 
 .status-badge {
   display: inline-block;
-  padding: 4rpx 16rpx;
-  border-radius: 8rpx;
-  font-size: 22rpx;
+  margin-top: 12px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
 }
 
 .status-badge.active {
-  background: #E8F5E9;
-  color: #4CAF50;
+  background: rgba(76, 124, 15, 0.18);
+  color: #BEF264;
+  border: 1px solid rgba(76, 124, 15, 0.3);
 }
 
 .status-badge.archived {
-  background: #F5F5F5;
-  color: #999;
+  background: rgba(244, 247, 250, 0.08);
+  color: rgba(244, 247, 250, 0.5);
+  border: 1px solid rgba(244, 247, 250, 0.12);
 }
 
+/* === 操作行 === */
 .action-row {
-  display: flex;
-  gap: 20rpx;
-  margin-bottom: 20rpx;
+  margin: 18px 0 24px;
 }
 
 .action-row .btn-primary {
-  flex: 1;
+  width: 100%;
+  border-radius: 14px;
+  padding: 14px;
+  letter-spacing: 2px;
 }
 
-.balance-row {
+/* === 课时明细 / 缴费记录 行 === */
+.balance-row,
+.order-row,
+.feedback-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .balance-pkg {
-  font-size: 28rpx;
-  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.3px;
 }
 
 .balance-num {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #4A90D9;
+  font-family: var(--font-num);
+  font-size: 22px;
+  color: var(--accent);
+  letter-spacing: -0.5px;
 }
 
-.balance-num.warning { color: #FF9800; }
-.balance-num.danger { color: #F44336; }
+.balance-num.warning,
+.balance-num.danger {
+  color: var(--warn);
+}
 
 .balance-detail {
-  font-size: 24rpx;
-  color: #BBB;
-  margin-top: 8rpx;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.5px;
 }
 
-.order-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.order-date {
-  font-size: 26rpx;
-  color: #666;
+.order-date,
+.feedback-date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.5px;
 }
 
 .order-amount {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #F44336;
+  font-family: var(--font-num);
+  font-size: 18px;
+  color: var(--ink);
+  letter-spacing: -0.3px;
 }
 
 .order-detail {
-  font-size: 24rpx;
-  color: #4A90D9;
-}
-
-.feedback-row {
-  padding: 4rpx 0;
-}
-
-.feedback-date {
-  font-size: 24rpx;
-  color: #999;
   display: block;
-  margin-bottom: 4rpx;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
 }
 
 .feedback-comment {
-  font-size: 26rpx;
-  color: #333;
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.6;
+  letter-spacing: 0.2px;
 }

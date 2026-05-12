@@ -1,86 +1,105 @@
+/* ============================================================
+ *  audio-recorder — 录音组件
+ * ============================================================ */
 .audio-recorder {
-  padding: 16rpx 0;
+  padding: 8px 0;
 }
 
 .record-area {
-  background: #F5F5F5;
-  border-radius: 16rpx;
-  padding: 30rpx;
+  background: var(--paper-warm);
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  padding: 22px;
   text-align: center;
-  border: 2rpx dashed #DDD;
+  transition: all 0.2s;
 }
 
 .record-area.recording {
-  background: #FFF0F0;
-  border-color: #F44336;
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  border-style: solid;
 }
 
 .record-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px;
 }
 
 .record-btn.active .record-icon {
   animation: pulse 0.8s infinite;
+  color: var(--warn);
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.18); opacity: 0.85; }
 }
 
 .record-icon {
-  font-size: 60rpx;
-  margin-bottom: 10rpx;
+  font-size: 28px;
+  color: var(--accent);
+  line-height: 1;
 }
 
 .record-text {
-  font-size: 26rpx;
-  color: #666;
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .audio-row {
   display: flex;
   align-items: center;
-  background: #F5F5F5;
-  border-radius: 12rpx;
-  padding: 16rpx 20rpx;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-soft);
+  border-radius: 100px;
+  padding: 8px 14px 8px 8px;
 }
 
 .play-btn {
-  width: 60rpx;
-  height: 60rpx;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: #4A90D9;
-  color: #fff;
+  background: var(--accent);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28rpx;
+  font-size: 14px;
   flex-shrink: 0;
 }
 
 .play-btn.active {
-  background: #FF9800;
+  background: var(--warn);
 }
 
 .duration {
   flex: 1;
-  margin-left: 16rpx;
-  font-size: 26rpx;
-  color: #666;
+  margin-left: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
 }
 
 .del-btn {
-  font-size: 24rpx;
-  color: #F44336;
-  padding: 8rpx 16rpx;
+  font-size: 11px;
+  color: var(--red);
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(185, 28, 28, 0.08);
 }
 
-.no-audio, .hint {
-  font-size: 24rpx;
-  color: #BBB;
+.no-audio,
+.hint {
+  font-size: 12px;
+  color: var(--ink-mute);
   text-align: center;
-  padding: 16rpx 0;
+  padding: 10px 0;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
 }

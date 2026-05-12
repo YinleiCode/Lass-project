@@ -1,147 +1,208 @@
+/* ============================================================
+ *  teacher/checkin — 点名
+ * ============================================================ */
+
+/* === 课程信息卡(深色) === */
+.container > .card:first-of-type {
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 16px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.container > .card:first-of-type::before {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(191, 209, 229, 0.16) 0%, transparent 70%);
+}
+
 .schedule-header {
-  margin-bottom: 8rpx;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
 }
 
-.schedule-time {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #333;
-  display: block;
+.schedule-header .schedule-time {
+  font-family: var(--font-num);
+  font-size: 26px;
+  color: var(--paper);
+  letter-spacing: -0.5px;
+  line-height: 1;
 }
 
-.schedule-pkg {
-  font-size: 26rpx;
-  color: #999;
-  margin-top: 4rpx;
+.schedule-header .schedule-pkg {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(244, 247, 250, 0.65);
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .schedule-hint {
-  font-size: 24rpx;
-  color: #FF9800;
-  background: #FFF8E1;
-  padding: 12rpx 16rpx;
-  border-radius: 8rpx;
-  margin-top: 12rpx;
+  font-size: 12px;
+  color: rgba(244, 247, 250, 0.55);
+  font-family: var(--font-mono);
+  letter-spacing: 0.3px;
+  position: relative;
+  z-index: 1;
 }
 
+/* === 点名列表 === */
 .student-list {
-  margin-bottom: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
 }
 
 .checkin-item {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 20rpx;
-  margin-bottom: 12rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
 }
 
 .student-info {
   display: flex;
   align-items: center;
-  margin-bottom: 16rpx;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
-.avatar {
-  width: 64rpx;
-  height: 64rpx;
-  border-radius: 50%;
-  background: #EBF3FC;
-  color: #4A90D9;
+.student-info .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-mid));
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28rpx;
-  font-weight: bold;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
   flex-shrink: 0;
+  transition: background 0.2s;
 }
 
-.avatar.absent {
-  background: #FFEBEE;
-  color: #F44336;
+.student-info .avatar.absent {
+  background: linear-gradient(135deg, var(--red), #DC2626);
 }
 
-.avatar.leave {
-  background: #FFF3E0;
-  color: #FF9800;
+.student-info .avatar.leave {
+  background: linear-gradient(135deg, var(--warn), #F59E0B);
 }
 
 .info {
   flex: 1;
-  margin-left: 16rpx;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .info .name {
-  font-size: 28rpx;
-  font-weight: bold;
-  display: block;
-}
-
-.info .remaining {
-  font-size: 22rpx;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.3px;
 }
 
 .info .tag-danger {
-  background: #FFEBEE;
-  color: #F44336;
+  align-self: flex-start;
 }
 
+/* === 状态选择器 === */
 .status-selector {
-  display: flex;
-  gap: 12rpx;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
 }
 
 .status-btn {
-  flex: 1;
   text-align: center;
-  padding: 12rpx 0;
-  border-radius: 12rpx;
-  font-size: 26rpx;
-  background: #F5F5F5;
-  color: #999;
+  padding: 9px 0;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 100px;
+  background: var(--paper-warm);
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  letter-spacing: 1px;
+  transition: all 0.15s;
 }
 
 .status-btn.active.present {
-  background: #E8F5E9;
-  color: #4CAF50;
-  font-weight: bold;
+  background: var(--green-bg);
+  color: var(--green);
+  border-color: var(--green);
 }
 
 .status-btn.active.absent {
-  background: #FFEBEE;
-  color: #F44336;
-  font-weight: bold;
+  background: var(--red-bg);
+  color: var(--red);
+  border-color: var(--red);
 }
 
 .status-btn.active.leave {
-  background: #FFF3E0;
-  color: #FF9800;
-  font-weight: bold;
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border-color: var(--warn-border);
 }
 
+/* === 扣减预览 === */
 .deduct-preview {
+  background: linear-gradient(135deg, var(--accent-bg) 0%, #DCE9F5 100%);
+  border: 1px solid var(--accent-soft);
+  border-radius: 14px;
+  padding: 14px 18px;
   text-align: center;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 24rpx;
+  margin-bottom: 22px;
+  font-size: 13px;
+  color: var(--ink);
+  letter-spacing: 0.3px;
 }
 
 .deduct-num {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #4A90D9;
+  font-family: var(--font-num);
+  font-size: 22px;
+  color: var(--accent);
+  font-weight: 500;
+  margin: 0 4px;
+  letter-spacing: -0.5px;
 }
 
+/* === 操作区 === */
 .action-area {
-  margin-top: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .action-area .btn-primary {
   width: 100%;
-  margin-bottom: 16rpx;
+  letter-spacing: 2px;
 }
 
+.action-area .btn-secondary,
 .undo-btn {
   width: 100%;
-  font-size: 26rpx;
+  background: var(--cream);
+  color: var(--red);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 13px;
+  letter-spacing: 0.5px;
 }

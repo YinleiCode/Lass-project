@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>颂恩艺术 · 学员详情</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Ma+Shan+Zheng&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: #1A2332;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+
+  :root {
+    --paper:        #F4F7FA;
+    --paper-warm:   #E8EFF5;
+    --cream:        #FFFFFF;
+    --line:         #DDE5ED;
+    --line-soft:    #EAF0F5;
+    --ink:          #2A3744;
+    --ink-soft:     #5A6B7E;
+    --ink-mute:     #93A3B5;
+    --accent:       #2C5282;
+    --accent-soft:  #BFD1E5;
+    --accent-bg:    #EDF3F9;
+    --warn:         #B45309;
+    --warn-bg:      #FEF3C7;
+    --green:        #4D7C0F;
+    --green-bg:     #ECFCCB;
+    --font-serif: 'Noto Serif SC', 'Songti SC', serif;
+    --font-sans: 'Noto Sans SC', -apple-system, sans-serif;
+    --font-script: 'Ma Shan Zheng', cursive;
+    --font-num: 'DM Serif Display', 'Noto Serif SC', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .phone-label {
+    color: #6B7E94; font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  .phone {
+    width: 390px; height: 800px;
+    background: var(--paper);
+    border-radius: 44px;
+    border: 12px solid #0F1620;
+    box-shadow: 0 0 0 2px #1F2D3D, 0 60px 120px -30px rgba(0,0,0,0.5), 0 30px 60px -15px rgba(0,0,0,0.3);
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+
+  .notch {
+    position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 28px; background: #0F1620; border-radius: 20px; z-index: 100;
+  }
+
+  .status-bar {
+    height: 50px; padding: 18px 28px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 14px; font-weight: 500; color: var(--ink); flex-shrink: 0;
+  }
+  .status-bar .right { display: flex; gap: 5px; align-items: center; }
+
+  .screen { flex: 1; overflow-y: auto; overflow-x: hidden; padding-bottom: 30px; }
+  .screen::-webkit-scrollbar { display: none; }
+
+  /* ============ 顶部导航栏 ============ */
+  .nav-bar {
+    height: 48px;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line-soft);
+    background: rgba(250,246,240,0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-back {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink);
+    margin-left: -6px;
+  }
+  .nav-title {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 1px;
+  }
+  .nav-more {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink);
+  }
+
+  /* ============ 学员主信息卡 ============ */
+  .student-hero {
+    padding: 28px 22px 24px;
+    background: linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .student-hero::after {
+    content: "";
+    position: absolute;
+    right: -40px; bottom: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(44,82,130,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .student-id-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .student-id {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+    letter-spacing: 2px;
+  }
+
+  .student-status {
+    background: var(--green-bg);
+    color: var(--green);
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .student-status::before {
+    content: "●";
+    margin-right: 4px;
+    font-size: 8px;
+    vertical-align: 1px;
+  }
+
+  .student-name-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 6px;
+  }
+
+  .student-avatar {
+    width: 64px; height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #2C5282 0%, #3E73A6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 600;
+    flex-shrink: 0;
+    box-shadow: 0 8px 20px -6px rgba(44,82,130,0.4);
+  }
+
+  .student-name {
+    font-family: var(--font-serif);
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 1px;
+    line-height: 1.1;
+  }
+  .student-name-en {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 2px;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  .student-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    margin-top: 24px;
+    background: var(--cream);
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  .meta-cell {
+    padding: 16px 14px;
+    text-align: center;
+    border-right: 1px solid var(--line-soft);
+  }
+  .meta-cell:last-child { border-right: none; }
+
+  .meta-num {
+    font-family: var(--font-num);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .meta-num.alert { color: var(--accent); }
+  .meta-num.alert::after {
+    content: " ⚠";
+    font-size: 12px;
+    color: var(--warn);
+  }
+
+  .meta-label {
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 1.5px;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+  }
+
+  /* ============ 快捷操作 ============ */
+  .actions-row {
+    padding: 20px 22px 0;
+    display: flex;
+    gap: 10px;
+  }
+
+  .action-btn {
+    flex: 1;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .action-btn.primary {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .action-btn .icon {
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .action-btn.primary .icon { color: var(--accent-soft); }
+
+  /* ============ 区段 ============ */
+  .section {
+    padding: 24px 22px 8px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-left: 14px;
+  }
+  .section-title::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 4px; height: 14px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .section-action {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    letter-spacing: 1px;
+  }
+
+  /* ============ 课时明细 ============ */
+  .balance-card {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .balance-icon {
+    width: 44px; height: 44px;
+    background: var(--accent-bg);
+    color: var(--accent);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .balance-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .balance-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .balance-progress {
+    height: 4px;
+    background: var(--line-soft);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+  .balance-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent) 0%, #3E73A6 100%);
+    border-radius: 2px;
+  }
+  .balance-detail {
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+  }
+
+  .balance-num {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .balance-num .num {
+    font-family: var(--font-num);
+    font-size: 28px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .balance-num .label {
+    font-size: 10px;
+    color: var(--ink-mute);
+    margin-top: 3px;
+    letter-spacing: 1px;
+  }
+
+  /* ============ 时间线 ============ */
+  .timeline {
+    position: relative;
+    padding-left: 4px;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 14px;
+    padding-bottom: 16px;
+    position: relative;
+  }
+  .timeline-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 24px;
+    bottom: 0;
+    width: 1px;
+    background: var(--line);
+  }
+
+  .timeline-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+    margin-top: 5px;
+    z-index: 1;
+  }
+  .timeline-dot.leave { border-color: var(--ink-mute); }
+  .timeline-dot.absent { border-color: #DC2626; }
+
+  .timeline-content {
+    flex: 1;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+
+  .timeline-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .timeline-date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 1px;
+  }
+
+  .timeline-status {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+  .timeline-status.done {
+    background: var(--green-bg);
+    color: var(--green);
+  }
+  .timeline-status.leave {
+    background: var(--paper-warm);
+    color: var(--ink-mute);
+  }
+
+  .timeline-content-text {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .timeline-tags {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .timeline-tag {
+    font-size: 10px;
+    color: var(--ink-soft);
+    background: var(--paper-warm);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .timeline-rating {
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+  .timeline-audio {
+    color: var(--accent);
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: auto;
+  }
+
+  /* ============ 缴费记录 ============ */
+  .pay-list {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .pay-item {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .pay-item:last-child { border-bottom: none; }
+
+  .pay-date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    width: 60px;
+    flex-shrink: 0;
+    line-height: 1.4;
+  }
+
+  .pay-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .pay-name {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .pay-meta {
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+
+  .pay-amount {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .pay-amount .num {
+    font-family: var(--font-num);
+    font-size: 18px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .pay-amount .label {
+    font-size: 10px;
+    color: var(--green);
+    margin-top: 2px;
+  }
+  .pay-amount .label::before { content: "+"; }
+
+</style>
+</head>
+<body>
+
+<div class="phone-wrap">
+  <div class="phone-label">老师端 · 学员详情</div>
+
+  <div class="phone">
+    <div class="notch"></div>
+
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="right">
+        <svg width="16" height="11" viewBox="0 0 18 12" fill="none"><path d="M1 8L1 4M5 9L5 3M9 11L9 1M13 10L13 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg width="16" height="11" viewBox="0 0 16 12" fill="none"><path d="M1 4Q8 -2 15 4M3 6Q8 2 13 6M5 8Q8 6 11 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="8" cy="10" r="1" fill="currentColor"/></svg>
+        <svg width="24" height="11" viewBox="0 0 24 12" fill="none"><rect x="0.5" y="1" width="20" height="10" rx="2" stroke="currentColor"/><rect x="2" y="2.5" width="16" height="7" rx="1" fill="currentColor"/><rect x="21" y="4" width="2" height="4" rx="0.5" fill="currentColor"/></svg>
+      </div>
+    </div>
+
+    <div class="screen">
+
+      <!-- 导航栏 -->
+      <div class="nav-bar">
+        <div class="nav-back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </div>
+        <div class="nav-title">学员档案</div>
+        <div class="nav-more">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+        </div>
+      </div>
+
+      <!-- 学员主信息 -->
+      <div class="student-hero">
+        <div class="student-id-line">
+          <div class="student-id">No. 0024 · 入学 2024.05</div>
+          <div class="student-status">在读</div>
+        </div>
+
+        <div class="student-name-row">
+          <div class="student-avatar">明</div>
+          <div>
+            <div class="student-name">张小明</div>
+            <div class="student-name-en">ZHANG XIAO MING · 8 岁</div>
+          </div>
+        </div>
+
+        <div class="student-meta-grid">
+          <div class="meta-cell">
+            <div class="meta-num">23</div>
+            <div class="meta-label">剩余课时</div>
+          </div>
+          <div class="meta-cell">
+            <div class="meta-num">47</div>
+            <div class="meta-label">累计上课</div>
+          </div>
+          <div class="meta-cell">
+            <div class="meta-num">9,400</div>
+            <div class="meta-label">累计缴费</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 快捷操作 -->
+      <div class="actions-row">
+        <button class="action-btn primary">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          登记缴费
+        </button>
+        <button class="action-btn">
+          <div class="icon" style="color: var(--accent);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          查看课表
+        </button>
+        <button class="action-btn">
+          <div class="icon" style="color: var(--accent);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          发通知
+        </button>
+        <button class="action-btn">
+          <div class="icon" style="color: var(--accent);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          编辑
+        </button>
+      </div>
+
+      <!-- 课时明细 -->
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">课时余额</div>
+          <div class="section-action">DETAIL →</div>
+        </div>
+
+        <div class="balance-card">
+          <div class="balance-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <div class="balance-info">
+            <div class="balance-name">一对一 · 45分钟</div>
+            <div class="balance-progress">
+              <div class="balance-progress-bar" style="width: 38%;"></div>
+            </div>
+            <div class="balance-detail">已用 37 / 总 60 节</div>
+          </div>
+          <div class="balance-num">
+            <div class="num">23</div>
+            <div class="label">剩余</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 上课记录 -->
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">最近上课</div>
+          <div class="section-action">查看全部 →</div>
+        </div>
+
+        <div class="timeline">
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta-row">
+                <div class="timeline-date">5月5日 · 周一 18:00</div>
+                <div class="timeline-status done">已上课</div>
+              </div>
+              <div class="timeline-content-text">绕口令进步明显,情感处理还需加强,布置了新闻联播听记作业。</div>
+              <div class="timeline-tags">
+                <span class="timeline-rating">★★★★☆</span>
+                <span class="timeline-audio">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                  录音 0:45
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta-row">
+                <div class="timeline-date">5月2日 · 周五 18:00</div>
+                <div class="timeline-status done">已上课</div>
+              </div>
+              <div class="timeline-content-text">气息训练做得不错,可以尝试更长的句子练习。</div>
+              <div class="timeline-tags">
+                <span class="timeline-rating">★★★★★</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot leave"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta-row">
+                <div class="timeline-date">4月28日 · 周一 18:00</div>
+                <div class="timeline-status leave">请假</div>
+              </div>
+              <div class="timeline-content-text" style="color: var(--ink-soft);">家长备注:孩子发烧,请假一次,不扣课时。</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 缴费记录 -->
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">缴费记录</div>
+          <div class="section-action">查看全部 →</div>
+        </div>
+
+        <div class="pay-list">
+          <div class="pay-item">
+            <div class="pay-date">2026<br>04 · 10</div>
+            <div class="pay-info">
+              <div class="pay-name">一对一 · 45分钟</div>
+              <div class="pay-meta">微信支付 · +30 节</div>
+            </div>
+            <div class="pay-amount">
+              <div class="num">6,000</div>
+              <div class="label">元</div>
+            </div>
+          </div>
+
+          <div class="pay-item">
+            <div class="pay-date">2026<br>01 · 15</div>
+            <div class="pay-info">
+              <div class="pay-name">一对一 · 45分钟</div>
+              <div class="pay-meta">现金 · +30 节</div>
+            </div>
+            <div class="pay-amount">
+              <div class="num">6,000</div>
+              <div class="label">元</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

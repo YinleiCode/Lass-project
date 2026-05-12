@@ -1,91 +1,132 @@
+/* ============================================================
+ *  student-card — 学员卡片组件
+ * ============================================================ */
 .student-card {
   display: flex;
   align-items: center;
-  background: #ffffff;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  position: relative;
 }
 
-.avatar {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  background: #EBF3FC;
-  color: #4A90D9;
+.student-card:active {
+  background: var(--paper-warm);
+}
+
+.student-card .avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-mid));
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32rpx;
-  font-weight: bold;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
   flex-shrink: 0;
 }
 
 .info {
   flex: 1;
-  margin-left: 20rpx;
+  margin-left: 14px;
   overflow: hidden;
+  min-width: 0;
 }
 
 .name-row {
   display: flex;
   align-items: center;
-  gap: 10rpx;
+  gap: 6px;
+  margin-bottom: 5px;
 }
 
 .name {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #333;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.3px;
 }
 
 .tags {
   display: flex;
-  gap: 8rpx;
+  gap: 4px;
+  flex-wrap: wrap;
 }
 
-.tag {
+.tags .tag {
   display: inline-block;
-  padding: 2rpx 12rpx;
-  border-radius: 6rpx;
-  font-size: 20rpx;
-  background: #EBF3FC;
-  color: #4A90D9;
+  background: var(--accent-bg);
+  color: var(--accent);
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.6;
 }
 
 .meta {
-  font-size: 24rpx;
-  color: #999;
-  margin-top: 8rpx;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.3px;
 }
 
 .meta .phone {
-  margin-right: 20rpx;
+  margin-right: 12px;
 }
 
 .balance {
-  text-align: center;
+  text-align: right;
   flex-shrink: 0;
-  margin-left: 16rpx;
+  margin-left: 12px;
+  min-width: 52px;
 }
 
 .balance .num {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #4A90D9;
+  font-family: var(--font-num);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.5px;
 }
 
 .balance .unit {
-  font-size: 22rpx;
-  color: #999;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-mute);
   display: block;
+  margin-top: 4px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .balance.warning .num {
-  color: #FF9800;
+  color: var(--warn);
 }
 
 .balance.danger .num {
-  color: #F44336;
+  color: var(--warn);
+  font-weight: 500;
+}
+
+.balance.danger {
+  position: relative;
+}
+
+.balance.danger::after {
+  content: "";
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--warn);
+  transform: translateY(-50%);
 }

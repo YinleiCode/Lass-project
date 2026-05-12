@@ -1,13 +1,21 @@
+/* ============================================================
+ *  teacher/payment — 缴费登记
+ * ============================================================ */
+
 .form {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 10rpx 30rpx;
-  margin-bottom: 20rpx;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 18px;
 }
 
 .form-item {
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #F0F0F0;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .form-item:last-child {
@@ -15,32 +23,45 @@
 }
 
 .form-item .label {
-  font-size: 26rpx;
-  color: #999;
-  display: block;
-  margin-bottom: 12rpx;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.form-item .input {
-  font-size: 32rpx;
-  color: #333;
+.form-item .input,
+.form-item .picker {
+  font-size: 15px;
+  color: var(--ink);
+  padding: 6px 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  min-height: 24px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.picker {
-  font-size: 32rpx;
-  color: #333;
-  padding: 8rpx 0;
-}
-
+/* === 余额预览(暖橙提示) === */
 .preview {
-  background: #EBF3FC;
-  border-radius: 12rpx;
-  padding: 16rpx 24rpx;
-  font-size: 26rpx;
-  color: #4A90D9;
-  margin-bottom: 24rpx;
+  background: linear-gradient(135deg, #FFF4E6 0%, #FED7AA 100%);
+  border: 1px solid var(--warn-border);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--warn-text);
+  letter-spacing: 0.3px;
 }
 
+.preview text {
+  font-size: 13px;
+}
+
+/* === 保存按钮 === */
 .save-btn {
   width: 100%;
+  letter-spacing: 2px;
 }

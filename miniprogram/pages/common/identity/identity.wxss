@@ -1,120 +1,215 @@
+/* ============================================================
+ *  common/identity — 身份选择(进入小程序的第一个页面)
+ * ============================================================ */
+
 .identity-page {
+  min-height: 100vh;
+  padding: 80px 22px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 120rpx;
-  min-height: 100vh;
-  background: linear-gradient(180deg, #4A90D9 0%, #F6F6F6 50%);
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 100%);
+  position: relative;
 }
 
+/* 装饰: 顶部楷体落款 */
+.identity-page::before {
+  content: "颂恩艺术 · 工作室";
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-script);
+  font-size: 13px;
+  color: var(--ink-mute);
+  letter-spacing: 4px;
+  opacity: 0.6;
+}
+
+/* Logo */
 .logo {
-  font-size: 120rpx;
-  margin-bottom: 20rpx;
+  width: 96px;
+  height: 96px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-mid));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  margin-bottom: 28px;
+  box-shadow: 0 16px 40px -10px rgba(44, 82, 130, 0.45);
 }
 
 .title {
-  font-size: 48rpx;
-  font-weight: bold;
-  color: #ffffff;
-  margin-bottom: 10rpx;
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 6px;
+  text-align: center;
+  margin-bottom: 8px;
+  display: block;
 }
 
 .subtitle {
-  font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 80rpx;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  text-align: center;
+  display: block;
 }
 
+/* === 角色卡片 === */
 .role-cards {
+  width: 100%;
   display: flex;
-  gap: 30rpx;
-  padding: 0 40rpx;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 360px;
 }
 
 .role-card {
-  flex: 1;
-  background: #ffffff;
-  border-radius: 24rpx;
-  padding: 50rpx 30rpx;
-  text-align: center;
-  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.1);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
 }
 
 .role-card:active {
-  transform: scale(0.97);
+  transform: scale(0.985);
+  background: var(--paper-warm);
+}
+
+.role-card::before {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(191, 209, 229, 0.2) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .role-icon {
-  font-size: 80rpx;
-  display: block;
-  margin-bottom: 20rpx;
+  font-size: 36px;
+  margin-bottom: 12px;
 }
 
 .role-name {
-  font-size: 34rpx;
-  font-weight: bold;
-  color: #333;
-  display: block;
-  margin-bottom: 10rpx;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
 }
 
 .role-desc {
-  font-size: 24rpx;
-  color: #999;
-  display: block;
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
 }
 
-.loading {
-  margin-top: 60rpx;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 28rpx;
-}
-
+/* === 邀请码表单 === */
 .invite-form {
-  width: 80%;
-  background: #ffffff;
-  border-radius: 24rpx;
-  padding: 50rpx 40rpx;
-  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 360px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 26px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-md);
 }
 
 .form-title {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #333;
-  display: block;
-  margin-bottom: 10rpx;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 1px;
   text-align: center;
+  display: block;
 }
 
 .form-desc {
-  font-size: 24rpx;
-  color: #999;
-  display: block;
-  margin-bottom: 30rpx;
+  font-size: 12px;
+  color: var(--ink-soft);
   text-align: center;
+  letter-spacing: 0.3px;
+  margin-bottom: 8px;
+  display: block;
 }
 
 .invite-form .input {
   width: 100%;
-  height: 80rpx;
-  border: 2rpx solid #E0E0E0;
-  border-radius: 12rpx;
-  padding: 0 20rpx;
-  font-size: 28rpx;
-  margin-bottom: 20rpx;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  font-family: var(--font-sans);
+  letter-spacing: 0.3px;
   box-sizing: border-box;
 }
 
 .invite-form .btn-primary {
   width: 100%;
-  margin-bottom: 16rpx;
+  margin-top: 4px;
+  letter-spacing: 2px;
 }
 
-.invite-form .btn-link {
-  width: 100%;
+.btn-link {
   background: transparent;
-  color: #999;
-  font-size: 26rpx;
   border: none;
+  color: var(--ink-mute);
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 1px;
+  padding: 8px;
+}
+
+.btn-link::after {
+  border: none;
+}
+
+/* === 加载提示 === */
+.loading {
+  margin-top: 24px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-mute);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.loading::before {
+  content: "·";
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 22px;
+  vertical-align: middle;
+  color: var(--accent);
+  animation: pulse 1.4s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
 }

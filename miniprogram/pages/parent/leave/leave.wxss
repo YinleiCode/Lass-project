@@ -1,13 +1,21 @@
+/* ============================================================
+ *  parent/leave — 请假
+ * ============================================================ */
+
 .form {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 10rpx 30rpx;
-  margin-bottom: 32rpx;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 22px;
 }
 
 .form-item {
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #F0F0F0;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .form-item:last-child {
@@ -15,36 +23,59 @@
 }
 
 .form-item .label {
-  font-size: 26rpx;
-  color: #999;
-  display: block;
-  margin-bottom: 12rpx;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.value-text {
-  font-size: 32rpx;
-  color: #333;
+.form-item .value-text {
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 500;
 }
 
-.picker {
-  font-size: 30rpx;
-  color: #333;
-  padding: 8rpx 0;
+.form-item .picker,
+.form-item .input,
+.form-item .textarea {
+  font-size: 15px;
+  color: var(--ink);
+  padding: 6px 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  min-height: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-item .textarea {
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+/* 请假原因单选 */
+.form-item radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 0;
 }
 
 .radio-label {
-  display: block;
-  margin-bottom: 12rpx;
-  font-size: 28rpx;
-}
-
-.textarea {
-  width: 100%;
-  min-height: 120rpx;
-  font-size: 28rpx;
-  color: #333;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 6px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
 }
 
 .submit-btn {
   width: 100%;
+  letter-spacing: 2px;
 }

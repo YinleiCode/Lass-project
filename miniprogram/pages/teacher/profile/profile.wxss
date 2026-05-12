@@ -1,174 +1,247 @@
-.card .form-item {
-  padding: 16rpx 0;
-  border-bottom: 1rpx solid #F0F0F0;
+/* ============================================================
+ *  teacher/profile — 老师个人中心
+ * ============================================================ */
+
+/* === 通用卡片(覆盖部分全局卡) === */
+.section .card {
+  padding: 0;
+  overflow: hidden;
 }
 
-.card .form-item:last-child {
+.section .card .form-item {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.section .card .form-item:last-of-type {
   border-bottom: none;
 }
 
-.card .label {
-  font-size: 24rpx;
-  color: #999;
+.section .card .form-item .label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.section .card .form-item .input {
+  font-size: 15px;
+  color: var(--ink);
+  padding: 6px 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  min-height: 24px;
+}
+
+.section .card .btn-primary {
+  width: calc(100% - 36px);
+  margin: 10px 18px 16px;
+  letter-spacing: 2px;
+}
+
+/* === 邀请码区块 === */
+.invite-section {
+  padding: 18px;
+  text-align: center;
+}
+
+.invite-title {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
   display: block;
-  margin-bottom: 8rpx;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
 }
 
-.card .input {
-  font-size: 30rpx;
-  color: #333;
+.invite-desc {
+  font-size: 12px;
+  color: var(--ink-soft);
+  display: block;
+  margin-bottom: 14px;
+  letter-spacing: 0.3px;
 }
 
-.card .btn-primary {
-  width: 100%;
-  margin-top: 16rpx;
+.invite-section .btn-secondary {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+  padding: 10px 22px;
+  font-size: 13px;
+  letter-spacing: 1px;
 }
 
-.pkg-row {
+/* === 课程包列表 === */
+.section .card .pkg-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
 }
 
 .pkg-info {
   flex: 1;
+  min-width: 0;
 }
 
 .pkg-name {
-  font-size: 28rpx;
-  color: #333;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
   display: block;
-  font-weight: bold;
+  margin-bottom: 4px;
+  letter-spacing: 0.3px;
 }
 
 .pkg-meta {
-  font-size: 24rpx;
-  color: #999;
-  display: block;
-  margin-top: 4rpx;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.5px;
 }
 
 .pkg-price {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #4A90D9;
+  font-family: var(--font-num);
+  font-size: 20px;
+  color: var(--accent);
+  letter-spacing: -0.3px;
 }
 
+/* "+ 新增"按钮 */
+.section-title .more {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* === 弹窗(继承 calendar 的样式) === */
 .modal-mask {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 99;
+  inset: 0;
+  background: rgba(42, 55, 68, 0.45);
+  backdrop-filter: blur(6px);
+  z-index: 100;
 }
 
 .modal {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-radius: 24rpx 24rpx 0 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 44px);
   max-height: 80vh;
-  overflow-y: auto;
-  z-index: 100;
-  padding: 30rpx;
+  background: var(--cream);
+  border-radius: 20px;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px -16px rgba(44, 82, 130, 0.35);
+  overflow: hidden;
 }
 
 .modal-header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--line-soft);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24rpx;
-  font-size: 34rpx;
-  font-weight: bold;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
 }
 
-.close {
-  font-size: 36rpx;
-  color: #999;
-  padding: 8rpx;
+.modal-header .close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--paper-warm);
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.modal-body {
+  padding: 8px 22px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .modal-body .form-item {
-  margin-bottom: 20rpx;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.modal-body .label {
-  font-size: 26rpx;
-  color: #999;
-  display: block;
-  margin-bottom: 8rpx;
+.modal-body .form-item:last-child {
+  border-bottom: none;
 }
 
-.modal-body .input {
-  font-size: 30rpx;
-  color: #333;
-  border-bottom: 1rpx solid #F0F0F0;
-  padding: 8rpx 0;
+.modal-body .form-item .label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.picker {
-  font-size: 30rpx;
-  color: #333;
-  padding: 8rpx 0;
-  border-bottom: 1rpx solid #F0F0F0;
+.modal-body .form-item .input,
+.modal-body .form-item .picker {
+  font-size: 14px;
+  color: var(--ink);
+  padding: 4px 0;
+}
+
+.modal-footer {
+  padding: 14px 22px 22px;
+  border-top: 1px solid var(--line-soft);
 }
 
 .modal-footer .btn-primary {
   width: 100%;
+  letter-spacing: 2px;
 }
 
-.invite-section {
-  text-align: center;
-  padding: 8rpx 0;
-}
-
-.invite-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #333;
-  display: block;
-  margin-bottom: 8rpx;
-}
-
-.invite-desc {
-  font-size: 24rpx;
-  color: #999;
-  display: block;
-  margin-bottom: 20rpx;
-}
-
-.invite-section .btn-secondary {
-  width: 100%;
-  background: #FFF3E0;
-  color: #FF9800;
-  border: none;
-  font-size: 28rpx;
-}
-
+/* === 邀请码展示弹窗 === */
 .invite-code-body {
   text-align: center;
-  padding: 30rpx 0;
+  padding: 26px 22px;
 }
 
 .invite-code-large {
-  font-size: 80rpx;
-  font-weight: bold;
-  color: #4A90D9;
-  letter-spacing: 12rpx;
   display: block;
-  margin-bottom: 20rpx;
+  font-family: var(--font-num);
+  font-size: 48px;
+  color: var(--accent);
+  letter-spacing: 12px;
+  font-weight: 400;
+  margin-bottom: 14px;
+  padding-left: 12px; /* 视觉居中:抵消最后字符的右间距 */
 }
 
 .invite-expiry {
-  font-size: 24rpx;
-  color: #999;
   display: block;
-  margin-bottom: 12rpx;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
 }
 
 .invite-warning {
-  font-size: 22rpx;
-  color: #F44336;
   display: block;
+  font-size: 12px;
+  color: var(--warn);
+  letter-spacing: 0.3px;
 }
