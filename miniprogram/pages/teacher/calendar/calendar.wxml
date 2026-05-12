@@ -38,9 +38,9 @@
     <view wx:else>
       <view class="schedule-card" wx:for="{{groupedSchedules[selectedDate]}}" wx:key="_id">
         <view class="card-header">
-          <text class="card-time">{{format.time(item.start_time)}}</text>
-          <text class="card-status {{item.status}}">
-            {{item.status === 'pending' ? '待上' : (item.status === 'done' ? '已点名' : '已取消')}}
+          <text class="card-time">{{format.time(item.start_time) || '--:--'}}</text>
+          <text class="card-status {{item.status || ''}}">
+            {{item.status === 'pending' ? '待上' : (item.status === 'done' ? '已点名' : (item.status === 'canceled' ? '已取消' : '待上'))}}
           </text>
         </view>
         <view class="card-body">

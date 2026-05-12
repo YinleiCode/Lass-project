@@ -1,10 +1,18 @@
 // 日期和金额格式化工具
+// 所有日期函数对 null/空字符串/非法日期 一律返回 '',不允许返回 'undefined' 或 'NaN'
 
 const format = {
+  // 内部:把任意输入转成合法 Date 对象,失败返回 null
+  _toDate(d) {
+    if (d === null || d === undefined || d === '') return null
+    const date = new Date(d)
+    return isNaN(date.getTime()) ? null : date
+  },
+
   // 日期格式化 '2026-05-07'
   date(d) {
-    if (!d) return ''
-    const date = new Date(d)
+    const date = this._toDate(d)
+    if (!date) return ''
     const y = date.getFullYear()
     const m = String(date.getMonth() + 1).padStart(2, '0')
     const day = String(date.getDate()).padStart(2, '0')
@@ -13,8 +21,8 @@ const format = {
 
   // 时间格式化 '18:00'
   time(d) {
-    if (!d) return ''
-    const date = new Date(d)
+    const date = this._toDate(d)
+    if (!date) return ''
     const h = String(date.getHours()).padStart(2, '0')
     const m = String(date.getMinutes()).padStart(2, '0')
     return `${h}:${m}`
@@ -22,20 +30,24 @@ const format = {
 
   // 日期+时间 '2026-05-07 18:00'
   datetime(d) {
-    return this.date(d) + ' ' + this.time(d)
+    const dateStr = this.date(d)
+    if (!dateStr) return ''
+    return dateStr + ' ' + this.time(d)
   },
 
   // 友好日期 '5月7日'
   friendlyDate(d) {
-    if (!d) return ''
-    const date = new Date(d)
+    const date = this._toDate(d)
+    if (!date) return ''
     return `${date.getMonth() + 1}月${date.getDate()}日`
   },
 
-  // 星期
+  // 星期 '周一' ... '周日'
   weekday(d) {
+    const date = this._toDate(d)
+    if (!date) return ''
     const days = ['日', '一', '二', '三', '四', '五', '六']
-    return '周' + days[new Date(d).getDay()]
+    return '周' + days[date.getDay()]
   },
 
   // 金额格式化 ¥6,000
@@ -46,8 +58,9 @@ const format = {
 
   // 相对时间 '3分钟前'
   timeAgo(d) {
+    const date = this._toDate(d)
+    if (!date) return ''
     const now = new Date()
-    const date = new Date(d)
     const diff = (now - date) / 1000
 
     if (diff < 60) return '刚刚'

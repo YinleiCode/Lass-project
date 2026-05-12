@@ -181,13 +181,17 @@ Page({
         recurringEnd: scheduleType === 'recurring' ? recurringEnd : ''
       })
 
-      if (result.success) {
+      if (result && result.success) {
         wx.showToast({ title: '排课成功', icon: 'success' })
         this.hideCreate()
         this.loadWeek(this.data.selectedDate)
+      } else {
+        wx.showToast({ title: (result && result.message) || '排课失败', icon: 'none' })
       }
-      console.error("操作失败", err)
     } catch (err) {
+      console.error('排课失败', err)
+      wx.showToast({ title: (err && err.message) || '排课失败', icon: 'none' })
+    } finally {
       this.setData({ submitting: false })
     }
   },
