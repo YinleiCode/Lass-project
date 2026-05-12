@@ -12,6 +12,45 @@
       <text class="greeting-text">Hi, 老师 👋</text>
     </view>
 
+    <!-- 首次引导:无课程包(最高优先级) -->
+    <view class="guide-banner" wx:if="{{showPackagesGuide}}">
+      <view class="guide-content">
+        <text class="guide-icon">📦</text>
+        <view class="guide-text-wrap">
+          <text class="guide-title">先创建课程包</text>
+          <text class="guide-desc">缴费、排课都需要先有课程包</text>
+        </view>
+        <button class="guide-cta" bindtap="goAddPackage">去创建</button>
+      </view>
+      <text class="guide-dismiss" data-type="packages" catchtap="dismissGuide">✕</text>
+    </view>
+
+    <!-- 首次引导:无学员 -->
+    <view class="guide-banner" wx:elif="{{showStudentsGuide}}">
+      <view class="guide-content">
+        <text class="guide-icon">👥</text>
+        <view class="guide-text-wrap">
+          <text class="guide-title">添加第一位学员</text>
+          <text class="guide-desc">从学员开始建立你的工作室</text>
+        </view>
+        <button class="guide-cta" bindtap="goAddStudent">去添加</button>
+      </view>
+      <text class="guide-dismiss" data-type="students" catchtap="dismissGuide">✕</text>
+    </view>
+
+    <!-- 首次引导:无排课 -->
+    <view class="guide-banner" wx:elif="{{showSchedulesGuide}}">
+      <view class="guide-content">
+        <text class="guide-icon">📅</text>
+        <view class="guide-text-wrap">
+          <text class="guide-title">安排第一节课</text>
+          <text class="guide-desc">为学员排课,开始上课流程</text>
+        </view>
+        <button class="guide-cta" bindtap="goAddSchedule">去排课</button>
+      </view>
+      <text class="guide-dismiss" data-type="schedules" catchtap="dismissGuide">✕</text>
+    </view>
+
     <!-- 数据概览卡片 -->
     <view class="stats-grid" wx:if="{{stats}}">
       <view class="stat-card" bindtap="goCalendar">

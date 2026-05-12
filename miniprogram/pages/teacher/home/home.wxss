@@ -3,6 +3,96 @@
  *  设计系统 V1.0
  * ============================================================ */
 
+/* === 首次引导横幅 === */
+.guide-banner {
+  background: linear-gradient(135deg, var(--accent-bg) 0%, #DCE9F5 100%);
+  border: 1px dashed var(--accent-soft);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.guide-banner::before {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(44, 82, 130, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.guide-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.guide-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.guide-text-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.guide-title {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.guide-desc {
+  display: block;
+  font-size: 11px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  letter-spacing: 0.3px;
+}
+
+.guide-cta {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.guide-cta::after {
+  border: none;
+}
+
+.guide-dismiss {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--ink-mute);
+  z-index: 2;
+}
+
 /* === 问候区 === */
 .greeting {
   padding: 8px 0 22px;
