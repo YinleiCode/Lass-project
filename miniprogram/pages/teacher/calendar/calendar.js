@@ -155,6 +155,8 @@ Page({
 
   showCreate() {
     this.setData({ showCreateModal: true })
+    // 每次打开弹窗都重新拉最新课程包和学员(用户可能在别处刚加完)
+    this.loadFormData()
   },
 
   hideCreate() {
