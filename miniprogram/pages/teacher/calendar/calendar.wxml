@@ -26,7 +26,7 @@
   <!-- 当日课程 -->
   <view class="day-schedules">
     <view class="section-title">
-      <text>{{selectedDate ? format.friendlyDate(selectedDate) + ' ' + format.weekday(selectedDate) : ''}}</text>
+      <text>{{selectedDateLabel}}</text>
     </view>
 
     <view wx:if="{{loading}}" class="empty-state">加载中...</view>
@@ -38,10 +38,8 @@
     <view wx:else>
       <view class="schedule-card" wx:for="{{groupedSchedules[selectedDate]}}" wx:key="_id">
         <view class="card-header">
-          <text class="card-time">{{format.time(item.start_time) || '--:--'}}</text>
-          <text class="card-status {{item.status || ''}}">
-            {{item.status === 'pending' ? '待上' : (item.status === 'done' ? '已点名' : (item.status === 'canceled' ? '已取消' : '待上'))}}
-          </text>
+          <text class="card-time">{{item.time_str || '--:--'}}</text>
+          <text class="card-status {{item.status || ''}}">{{item.status_label}}</text>
         </view>
         <view class="card-body">
           <text class="card-students">{{item.student_names || item.package_name || '课程'}}</text>

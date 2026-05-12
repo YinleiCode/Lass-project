@@ -5,6 +5,7 @@ const app = getApp()
 Page({
   data: {
     selectedDate: '',
+    selectedDateLabel: '', // 预先在 JS 里算好,WXML 不能调用函数
     weekInfo: null,
     schedules: [],
     groupedSchedules: {},
@@ -21,16 +22,21 @@ Page({
     startTime: '',
     classroom: '',
     recurringEnd: '',
-    submitting: false,
-    format: format
+    submitting: false
+  },
+
+  // 统一更新 selectedDate + selectedDateLabel
+  _setSelectedDate(date) {
+    this.setData({
+      selectedDate: date,
+      selectedDateLabel: date ? (format.friendlyDate(date) + ' ' + format.weekday(date)) : ''
+    })
   },
 
   onLoad() {
     const today = format.date(new Date())
-    this.setData({
-      selectedDate: today,
-      startDate: today
-    })
+    this._setSelectedDate(today)
+    this.setData({ startDate: today })
     this.loadWeek(today)
     this.loadFormData()
   },
@@ -50,9 +56,16 @@ Page({
         start_time: { $gte: startStr, $lte: endStr }
       })
 
-      // 按日期分组
+      // 按日期分组,并预先算好 WXML 需要的字符串(WXML 不能调用函数)
       const grouped = {}
       for (const s of schedules) {
+        // 预计算 time_str / status_label
+        s.time_str = format.time(s.start_time) || '--:--'
+        s.status_label = s.status === 'pending' ? '待上'
+          : s.status === 'done' ? '已点名'
+          : s.status === 'canceled' ? '已取消'
+          : '待上'
+
         const sDate = s.start_time ? s.start_time.substring(0, 10) : ''
         if (!grouped[sDate]) grouped[sDate] = []
         grouped[sDate].push(s)
@@ -73,7 +86,7 @@ Page({
     const d = new Date(this.data.selectedDate)
     d.setDate(d.getDate() - 7)
     const date = format.date(d)
-    this.setData({ selectedDate: date })
+    this._setSelectedDate(date)
     this.loadWeek(date)
   },
 
@@ -81,19 +94,19 @@ Page({
     const d = new Date(this.data.selectedDate)
     d.setDate(d.getDate() + 7)
     const date = format.date(d)
-    this.setData({ selectedDate: date })
+    this._setSelectedDate(date)
     this.loadWeek(date)
   },
 
   goToday() {
     const today = format.date(new Date())
-    this.setData({ selectedDate: today })
+    this._setSelectedDate(today)
     this.loadWeek(today)
   },
 
   selectDay(e) {
     const date = e.currentTarget.dataset.date
-    this.setData({ selectedDate: date })
+    this._setSelectedDate(date)
   },
 
   // 排课表单

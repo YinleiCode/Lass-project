@@ -117,9 +117,12 @@ Page({
         }
       })
       wx.showToast({ title: '已保存', icon: 'success' })
+      this.setData({ submitting: false })
     } catch (err) {
       console.error('保存失败', err)
       this.setData({ submitting: false })
+      const msg = (err && (err.message || err.errMsg)) || '保存失败,请重试'
+      wx.showToast({ title: msg, icon: 'none' })
     }
   },
 
@@ -226,18 +229,30 @@ Page({
 
     this.setData({ submitting: true })
     try {
-      await api.addPackage({
+      const result = await api.addPackage({
         name: pkgName,
         unit_price: parseInt(pkgPrice),
         duration_min: parseInt(pkgDuration) || 45,
         type: pkgType
       })
+
+      // 防御:云函数可能返回 success:false,也可能返回 undefined(函数未部署等)
+      if (!result || result.success === false) {
+        const msg = (result && result.message) || '添加失败,请重试'
+        wx.showToast({ title: msg, icon: 'none' })
+        this.setData({ submitting: false })
+        return
+      }
+
       wx.showToast({ title: '添加成功', icon: 'success' })
       this.hidePackageForm()
       this.loadData()
     } catch (err) {
       console.error('添加套餐失败', err)
       this.setData({ submitting: false })
+      // 错误信息透传给用户,不再静默吞掉
+      const msg = (err && (err.message || err.errMsg)) || '添加失败,请重试'
+      wx.showToast({ title: msg, icon: 'none' })
     }
   }
 })
