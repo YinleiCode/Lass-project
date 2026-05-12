@@ -26,8 +26,8 @@
         </view>
       </view>
 
-      <!-- 开发者选项:切换为家长视角(仅管理员) -->
-      <view class="card dev-card" wx:if="{{isAdmin}}">
+      <!-- 开发者选项:切换为家长视角(管理员或开发环境) -->
+      <view class="card dev-card" wx:if="{{showDevTools}}">
         <view class="invite-section">
           <text class="invite-title">🧪 开发者工具</text>
           <text class="invite-desc">临时以家长视角进入,用于测试家长端 UI(冷启动后自动恢复)</text>

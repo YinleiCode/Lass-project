@@ -11,6 +11,8 @@ Page({
     name: '',
     phone: '',
     isAdmin: false,
+    isDev: false,        // 开发版 / 体验版 / 开发者工具
+    showDevTools: false, // = isAdmin || isDev
     inviteCode: '',
     inviteExpiresAt: '',
     showInviteCode: false,
@@ -27,6 +29,18 @@ Page({
   },
 
   onShow() {
+    // 检测运行环境(develop=开发版 / trial=体验版 / release=正式版)
+    // 真机扫码预览也是 develop 或 trial
+    let isDev = false
+    try {
+      const info = wx.getAccountInfoSync()
+      const env = info && info.miniProgram && info.miniProgram.envVersion
+      isDev = env === 'develop' || env === 'trial'
+    } catch (e) {
+      // 部分基础库不支持 getAccountInfoSync,降级:总是允许
+      isDev = true
+    }
+    this.setData({ isDev })
     this.loadData()
   },
 
@@ -40,12 +54,15 @@ Page({
         api.getAllPackages()
       ])
 
+      const isAdmin = teacher ? !!teacher.is_admin : false
       this.setData({
         teacher,
         packages,
         name: teacher ? teacher.name : '',
         phone: teacher ? teacher.phone : '',
-        isAdmin: teacher ? !!teacher.is_admin : false,
+        isAdmin,
+        // 开发者工具显示条件:管理员 或 开发环境(发版后只有管理员能用)
+        showDevTools: isAdmin || this.data.isDev,
         loading: false
       })
     } catch (err) {
