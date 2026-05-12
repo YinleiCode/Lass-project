@@ -116,28 +116,28 @@ Page({
         api.getStudents({ status: 'active' }),
         api.getPackages()
       ])
-      this.setData({ students, packages })
+      // 给学员补 checked 字段(WXML 不能调用 indexOf,要预先算)
+      const studentsWithCheck = students.map(s => ({ ...s, checked: false }))
+      this.setData({ students: studentsWithCheck, packages, selectedStudents: [] })
     } catch (e) {
-
       console.error("操作失败", e)
-
       wx.showToast({ title: "操作失败", icon: "none" })
-
     }
-
   },
 
   onScheduleTypeChange(e) {
     this.setData({ scheduleType: e.detail.value === '0' ? 'once' : 'recurring' })
   },
 
+  // 切换学员勾选 — 同步更新 students[i].checked 和 selectedStudents 两份数据
   onStudentToggle(e) {
     const id = e.currentTarget.dataset.id
-    let selected = [...this.data.selectedStudents]
-    const idx = selected.indexOf(id)
-    if (idx >= 0) selected.splice(idx, 1)
-    else selected.push(id)
-    this.setData({ selectedStudents: selected })
+    const students = this.data.students.map(s => {
+      if (s._id === id) return { ...s, checked: !s.checked }
+      return s
+    })
+    const selectedStudents = students.filter(s => s.checked).map(s => s._id)
+    this.setData({ students, selectedStudents })
   },
 
   onPackageChange(e) {

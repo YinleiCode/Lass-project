@@ -79,7 +79,7 @@
         <view class="student-check-list">
           <view class="check-item" wx:for="{{students}}" wx:key="_id" data-id="{{item._id}}" bindtap="onStudentToggle">
             <text>{{item.name}}</text>
-            <text class="check-mark {{selectedStudents.indexOf(item._id) >= 0 ? 'checked' : ''}}">✓</text>
+            <text class="check-mark {{item.checked ? 'checked' : ''}}">✓</text>
           </view>
         </view>
       </view>

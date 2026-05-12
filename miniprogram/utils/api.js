@@ -93,10 +93,22 @@ const api = {
     return this.call('cm_createSchedule', data)
   },
 
+  // 范围查询排课(走云函数,自动 enrich student_names/package_name/time_str)
+  // 兼容旧调用方:仍支持 filter 对象,优先取里面的 start_time 时间范围
   getSchedules(filter = {}) {
-    const db = wx.cloud.database()
-    return db.collection('schedules').where(filter)
-      .orderBy('start_time', 'asc').get().then(res => res.data)
+    let startDate = ''
+    let endDate = ''
+    // 兼容旧用法 filter = { start_time: { $gte: '..00:00', $lte: '..23:59' } }
+    if (filter && filter.start_time) {
+      if (filter.start_time.$gte) startDate = String(filter.start_time.$gte).substring(0, 10)
+      if (filter.start_time.$lte) endDate = String(filter.start_time.$lte).substring(0, 10)
+    }
+    return this.call('cm_getSchedules', { startDate, endDate }).then(res => (res && res.data) || [])
+  },
+
+  // 单条排课(用于点名/反馈页),返回 enriched schedule 或 null
+  getSchedule(scheduleId) {
+    return this.call('cm_getSchedules', { scheduleId }).then(res => (res && res.data) || null)
   },
 
   // ===== 点名 =====

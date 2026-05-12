@@ -21,12 +21,17 @@ Page({
   async loadData(scheduleId) {
     this.setData({ loading: true })
     try {
-      const db = wx.cloud.database()
-      const scheduleRes = await db.collection('schedules').doc(scheduleId).get()
-      const schedule = scheduleRes.data
+      // 走云函数读取 — 绕过 schedules 集合权限,确保能读到云函数写入的排课
+      const schedule = await api.getSchedule(scheduleId)
+      if (!schedule) {
+        wx.showToast({ title: '排课不存在或无权访问', icon: 'none' })
+        this.setData({ loading: false })
+        return
+      }
 
       const allStudents = await api.getStudents({})
-      const enrolledStudents = allStudents.filter(s => schedule.student_ids.includes(s._id))
+      const studentIds = Array.isArray(schedule.student_ids) ? schedule.student_ids : []
+      const enrolledStudents = allStudents.filter(s => studentIds.includes(s._id))
 
       // 批量加载余额（替代原来的 N+1 查询）
       const ids = enrolledStudents.map(s => s._id)
@@ -48,7 +53,10 @@ Page({
         loading: false
       })
     } catch (err) {
+      console.error('点名页加载失败', err)
       this.setData({ loading: false })
+      const msg = (err && (err.message || err.errMsg)) || '加载失败,请重试'
+      wx.showToast({ title: msg, icon: 'none' })
     }
   },
 

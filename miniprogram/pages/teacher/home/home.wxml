@@ -62,7 +62,7 @@
         <text class="label">本月课消</text>
       </view>
       <view class="stat-card" bindtap="goCalendar">
-        <text class="value">{{format.money(stats.monthIncome)}}</text>
+        <text class="value">{{stats.monthIncome_str || '¥0'}}</text>
         <text class="label">本月收入</text>
       </view>
       <view class="stat-card" bindtap="goStudents">
@@ -84,7 +84,7 @@
 
       <view class="schedule-list" wx:else>
         <view class="list-item" wx:for="{{todaySchedules}}" wx:key="_id">
-          <view class="schedule-time">{{format.time(item.start_time)}}</view>
+          <view class="schedule-time">{{item.time_str || '--:--'}}</view>
           <view class="schedule-info">
             <text class="schedule-name">{{item.student_names || '课程'}}</text>
             <text class="schedule-meta" wx:if="{{item.package_name}}">{{item.package_name}}</text>
