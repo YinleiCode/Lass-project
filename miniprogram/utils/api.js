@@ -51,6 +51,16 @@ const api = {
     return this.call('cm_addPackage', data)
   },
 
+  updatePackage(packageId, data) {
+    return this.call('cm_updatePackage', { packageId, data })
+  },
+
+  // 获取所有课程包(含已停用,管理用)
+  getAllPackages() {
+    const db = wx.cloud.database()
+    return db.collection('course_packages').get().then(res => res.data)
+  },
+
   // ===== 缴费 =====
   createOrder(data) {
     return this.call('cm_createOrder', data)

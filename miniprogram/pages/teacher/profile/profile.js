@@ -36,7 +36,8 @@ Page({
       const openid = app.globalData.openid
       const [teacher, packages] = await Promise.all([
         api.getTeacher(openid),
-        api.getPackages()
+        // 管理页用 getAllPackages,包含已停用的(否则停用后看不到无法启用)
+        api.getAllPackages()
       ])
 
       this.setData({
@@ -49,6 +50,35 @@ Page({
       })
     } catch (err) {
       this.setData({ loading: false })
+    }
+  },
+
+  // 启用/停用课程包
+  async onTogglePackage(e) {
+    const { id, active } = e.currentTarget.dataset
+    if (!id) return
+    const isActive = active === true || active === 'true'
+    const nextActive = !isActive
+    const action = nextActive ? '启用' : '停用'
+
+    const confirmRes = await new Promise(resolve => {
+      wx.showModal({
+        title: `${action}课程包`,
+        content: nextActive
+          ? '启用后将在缴费、排课时可选'
+          : '停用后将不能在缴费、排课时选择(已使用此包的历史数据不受影响)',
+        success: r => resolve(r.confirm)
+      })
+    })
+    if (!confirmRes) return
+
+    try {
+      await api.updatePackage(id, { is_active: nextActive })
+      wx.showToast({ title: `已${action}`, icon: 'success' })
+      this.loadData()
+    } catch (err) {
+      console.error('切换课程包状态失败', err)
+      wx.showToast({ title: err.message || '操作失败', icon: 'none' })
     }
   },
 
