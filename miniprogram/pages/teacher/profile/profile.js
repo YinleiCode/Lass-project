@@ -189,8 +189,10 @@ Page({
       app.globalData.userInfo = targetStudent
 
       wx.showToast({ title: '已切换为家长视角', icon: 'success' })
+      // reLaunch 而不是 switchTab,清空页面栈,确保 tab-bar 实例彻底重建
+      // (switchTab 在自定义 tabBar 时可能复用旧的 tab-bar 实例,导致 tabs 不刷新)
       setTimeout(() => {
-        wx.switchTab({ url: '/pages/parent/home/home' })
+        wx.reLaunch({ url: '/pages/parent/home/home' })
       }, 600)
     } catch (err) {
       console.error('切换视角失败', err)

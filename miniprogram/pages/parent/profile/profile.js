@@ -56,8 +56,9 @@ Page({
         app.globalData._switchedFromTeacher = false
         app.globalData._originalTeacherInfo = null
         wx.showToast({ title: '已切回', icon: 'success' })
+        // reLaunch 清栈,避免 tab-bar 复用家长视角的 tabs
         setTimeout(() => {
-          wx.switchTab({ url: '/pages/teacher/home/home' })
+          wx.reLaunch({ url: '/pages/teacher/home/home' })
         }, 600)
       }
     })

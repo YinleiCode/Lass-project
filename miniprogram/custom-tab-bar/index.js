@@ -9,29 +9,28 @@ Component({
 
   lifetimes: {
     attached() {
+      this.refresh()
+    }
+  },
+
+  pageLifetimes: {
+    // 每次宿主页面 show 都强制刷新,避免 globalData.role 变更后 tab-bar 不同步
+    // (尤其是开发者工具'切换视角'后,role 变了但 tabs 没刷新的 bug)
+    show() {
+      this.refresh()
+    }
+  },
+
+  methods: {
+    refresh() {
       const role = app.globalData.role
       this.setData({
         role,
         tabs: this.getTabs(role),
         selected: this.getSelectedIndex(role)
       })
-    }
-  },
+    },
 
-  pageLifetimes: {
-    show() {
-      const role = app.globalData.role
-      if (role !== this.data.role) {
-        this.setData({
-          role,
-          tabs: this.getTabs(role),
-          selected: this.getSelectedIndex(role)
-        })
-      }
-    }
-  },
-
-  methods: {
     getTabs(role) {
       if (role === 'teacher') {
         return [
