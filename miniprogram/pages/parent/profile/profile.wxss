@@ -136,3 +136,39 @@
   color: var(--ink-mute);
   font-size: 16px;
 }
+
+/* === 开发者工具:切回老师视角 === */
+.setting-item.dev-item {
+  background: var(--warn-bg);
+}
+
+.setting-item.dev-item .setting-label {
+  color: var(--warn-text);
+}
+
+.setting-item.dev-item .setting-arrow {
+  color: var(--warn);
+}
+
+/* 测试模式横幅 */
+.dev-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--warn-bg) 0%, #FFE8D0 100%);
+  border: 1px dashed var(--warn-border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+}
+
+.dev-banner-icon {
+  font-size: 16px;
+}
+
+.dev-banner-text {
+  font-size: 12px;
+  color: var(--warn-text);
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}

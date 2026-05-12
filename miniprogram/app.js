@@ -16,7 +16,11 @@ App({
   globalData: {
     openid: '',
     role: '',      // 'teacher' | 'parent' | ''
-    userInfo: null
+    userInfo: null,
+    // 开发/测试用:管理员临时切换为家长视角时为 true,冷启动后失效
+    _switchedFromTeacher: false,
+    // 切换前保存的老师信息,用于切回
+    _originalTeacherInfo: null
   },
 
   // 获取openid

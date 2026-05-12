@@ -6,6 +6,12 @@
   </view>
 
   <view wx:else>
+    <!-- 测试模式横幅 -->
+    <view class="dev-banner" wx:if="{{switchedFromTeacher}}">
+      <text class="dev-banner-icon">🧪</text>
+      <text class="dev-banner-text">家长视角测试模式</text>
+    </view>
+
     <!-- 学员信息 -->
     <view class="card">
       <view class="profile-header">
@@ -23,8 +29,12 @@
 
     <!-- 设置项 -->
     <view class="settings-list">
-      <view class="setting-item" bindtap="rebind">
+      <view class="setting-item" bindtap="rebind" wx:if="{{!switchedFromTeacher}}">
         <text class="setting-label">重新绑定</text>
+        <text class="setting-arrow">→</text>
+      </view>
+      <view class="setting-item dev-item" bindtap="onSwitchBackToTeacher" wx:if="{{switchedFromTeacher}}">
+        <text class="setting-label">🧪 切回老师视角</text>
         <text class="setting-arrow">→</text>
       </view>
     </view>

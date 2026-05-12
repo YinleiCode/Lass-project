@@ -44,10 +44,31 @@
   letter-spacing: 2px;
 }
 
-/* === 邀请码区块 === */
+/* === 邀请码 / 开发者工具区块 === */
 .invite-section {
   padding: 18px;
   text-align: center;
+}
+
+/* 开发者工具卡(浅橙警示风,与邀请码区分) */
+.dev-card {
+  background: linear-gradient(135deg, var(--warn-bg) 0%, #FFE8D0 100%);
+  border: 1px dashed var(--warn-border);
+}
+
+.dev-card .invite-title {
+  color: var(--warn-text);
+}
+
+.dev-card .invite-desc {
+  color: var(--warn-text);
+  opacity: 0.85;
+}
+
+.dev-card .btn-secondary {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border: 1px solid var(--warn-border);
 }
 
 .invite-title {

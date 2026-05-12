@@ -152,6 +152,52 @@ Page({
     this.setData({ showInviteCode: false })
   },
 
+  // === 开发者工具: 切换为家长视角 ===
+  async onSwitchToParent() {
+    try {
+      const students = await api.getStudents({ status: 'active' })
+      if (!students.length) {
+        wx.showToast({ title: '没有可模拟的学员', icon: 'none' })
+        return
+      }
+
+      // 弹 actionSheet 让管理员选要模拟哪个学员
+      const studentNames = students.map(s => s.name || '未命名')
+      const tapRes = await new Promise(resolve => {
+        wx.showActionSheet({
+          itemList: studentNames,
+          success: r => resolve(r.tapIndex),
+          fail: () => resolve(-1)
+        })
+      })
+      if (tapRes < 0 || tapRes >= students.length) return
+
+      const targetStudent = students[tapRes]
+      const confirmRes = await new Promise(resolve => {
+        wx.showModal({
+          title: '切换为家长视角',
+          content: `将以「${targetStudent.name}」的家长身份进入,仅用于测试,冷启动后恢复。\n\n确定继续吗?`,
+          success: r => resolve(r.confirm)
+        })
+      })
+      if (!confirmRes) return
+
+      // 保存原老师信息 → 修改 globalData → switchTab
+      app.globalData._originalTeacherInfo = app.globalData.userInfo
+      app.globalData._switchedFromTeacher = true
+      app.globalData.role = 'parent'
+      app.globalData.userInfo = targetStudent
+
+      wx.showToast({ title: '已切换为家长视角', icon: 'success' })
+      setTimeout(() => {
+        wx.switchTab({ url: '/pages/parent/home/home' })
+      }, 600)
+    } catch (err) {
+      console.error('切换视角失败', err)
+      wx.showToast({ title: '切换失败', icon: 'none' })
+    }
+  },
+
   async onAddPackage() {
     const { pkgName, pkgPrice, pkgDuration, pkgType } = this.data
     if (!pkgName || !pkgPrice) {
