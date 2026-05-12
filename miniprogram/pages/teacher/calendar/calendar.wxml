@@ -88,9 +88,16 @@
 
       <view class="form-item">
         <text class="label">课程包</text>
-        <picker bindchange="onPackageChange" range="{{packages}}" range-key="name">
-          <view class="picker">{{packageId ? '已选' : '请选择课程包'}}</view>
+        <picker
+          wx:if="{{packages.length > 0}}"
+          bindchange="onPackageChange"
+          range="{{packages}}"
+          range-key="name"
+          value="{{packageIndex || 0}}"
+        >
+          <view class="picker">{{packages[packageIndex] ? packages[packageIndex].name : '请选择课程包'}}</view>
         </picker>
+        <view wx:else class="picker disabled">暂无课程包，请先到「我的」→「课程包管理」添加</view>
       </view>
 
       <view class="form-item">

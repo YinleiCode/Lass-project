@@ -14,6 +14,7 @@ Page({
     scheduleType: 'once',
     selectedStudents: [],
     packageId: '',
+    packageIndex: -1,
     packages: [],
     students: [],
     startDate: '',
@@ -127,7 +128,24 @@ Page({
   },
 
   onPackageChange(e) {
-    this.setData({ packageId: this.data.packages[e.detail.value]._id })
+    // 防御性判空：picker 可能在 packages 为空、e.detail 缺失、索引越界时崩溃
+    const packages = this.data.packages || []
+    if (!packages.length) {
+      wx.showToast({ title: '请先创建课程包', icon: 'none' })
+      return
+    }
+    const detail = e && e.detail
+    const idx = detail && detail.value !== undefined ? Number(detail.value) : -1
+    if (isNaN(idx) || idx < 0 || idx >= packages.length) {
+      wx.showToast({ title: '请重新选择课程包', icon: 'none' })
+      return
+    }
+    const pkg = packages[idx]
+    if (!pkg || !pkg._id) {
+      wx.showToast({ title: '课程包数据异常', icon: 'none' })
+      return
+    }
+    this.setData({ packageId: pkg._id, packageIndex: idx })
   },
 
   onDateChange(e) { this.setData({ startDate: e.detail.value }) },

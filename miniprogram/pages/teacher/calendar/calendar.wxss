@@ -291,6 +291,14 @@
   min-height: 22px;
 }
 
+.modal-body .form-item .picker.disabled {
+  color: var(--warn);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.3px;
+  line-height: 1.6;
+}
+
 .radio-label {
   display: inline-flex;
   align-items: center;
