@@ -42,9 +42,14 @@ const api = {
   },
 
   // ===== 课程包 =====
+  // 走云函数(管理端身份读取,绕过集合权限,确保云函数写入的数据能读到)
   getPackages() {
-    const db = wx.cloud.database()
-    return db.collection('course_packages').where({ is_active: true }).get().then(res => res.data)
+    return this.call('cm_getPackages', { activeOnly: true }).then(res => (res && res.data) || [])
+  },
+
+  // 获取所有课程包(含已停用,管理用)
+  getAllPackages() {
+    return this.call('cm_getPackages', { activeOnly: false }).then(res => (res && res.data) || [])
   },
 
   addPackage(data) {
@@ -53,12 +58,6 @@ const api = {
 
   updatePackage(packageId, data) {
     return this.call('cm_updatePackage', { packageId, data })
-  },
-
-  // 获取所有课程包(含已停用,管理用)
-  getAllPackages() {
-    const db = wx.cloud.database()
-    return db.collection('course_packages').get().then(res => res.data)
   },
 
   // ===== 缴费 =====
