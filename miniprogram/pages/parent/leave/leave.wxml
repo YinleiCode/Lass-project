@@ -1,7 +1,12 @@
 <view class="container">
-  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+  <view wx:if="{{loading}}" class="empty-state">正在整理请假课程...</view>
 
   <block wx:else>
+    <view class="leave-hero">
+      <text class="art-kicker">请假手记 · LEAVE NOTE</text>
+      <text class="leave-title">为这一次缺席留个说明</text>
+    </view>
+
     <view class="form">
       <view class="form-item">
         <text class="label">孩子</text>
@@ -10,11 +15,12 @@
 
       <view class="form-item">
         <text class="label">请假课程 *</text>
-        <picker bindchange="onScheduleChange" range="{{schedules}}" range-key="start_time">
+        <picker wx:if="{{hasSchedules}}" bindchange="onScheduleChange" range="{{schedules}}" range-key="labelText">
           <view class="picker">
-            {{selectedScheduleIndex >= 0 ? schedules[selectedScheduleIndex].start_time : '选择即将上的课'}}
+            {{selectedScheduleIndex >= 0 ? schedules[selectedScheduleIndex].labelText : '选择即将上的课'}}
           </view>
         </picker>
+        <view wx:else class="empty-course">暂无可请假的待上课程</view>
       </view>
 
       <view class="form-item">
@@ -32,6 +38,6 @@
       </view>
     </view>
 
-    <button class="btn-primary submit-btn" bindtap="onSubmit" loading="{{submitting}}">提交请假</button>
+    <button class="btn-primary submit-btn" bindtap="onSubmit" loading="{{submitting}}" disabled="{{submitting || !hasSchedules}}">提交请假</button>
   </block>
 </view>

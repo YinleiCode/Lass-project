@@ -1,10 +1,16 @@
 <view class="container">
-  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+  <view wx:if="{{loading}}" class="empty-state">正在整理工作室...</view>
 
   <block wx:else>
+    <view class="profile-hero">
+      <text class="art-kicker">工作室设置 · STUDIO DESK</text>
+      <text class="profile-title">后台手账</text>
+      <text class="art-note">管理老师身份、课程包和测试视角。</text>
+    </view>
+
     <!-- 个人信息 -->
     <view class="section">
-      <view class="section-title">👤 个人信息</view>
+      <view class="section-title">个人信息</view>
       <view class="card">
         <view class="form-item">
           <text class="label">老师姓名</text>
@@ -14,33 +20,77 @@
           <text class="label">联系电话</text>
           <input class="input" type="number" placeholder="选填" value="{{phone}}" bindinput="onPhoneInput" />
         </view>
-        <button class="btn-primary" bindtap="onSaveTeacher" loading="{{submitting}}">保存</button>
+        <button class="btn-primary" bindtap="onSaveTeacher" loading="{{submitting}}" disabled="{{submitting}}">保存</button>
+        <button
+          wx:if="{{isAdmin}}"
+          class="btn-parent-switch"
+          bindtap="onSwitchToParent"
+          loading="{{submitting}}"
+          disabled="{{submitting}}"
+        >校长测试家长端</button>
       </view>
 
       <!-- 邀请码（仅管理员可见） -->
       <view class="card" wx:if="{{isAdmin}}">
         <view class="invite-section">
-          <text class="invite-title">🔑 邀请新老师</text>
-          <text class="invite-desc">生成6位一次性邀请码，24小时有效</text>
-          <button class="btn-secondary" bindtap="onGenerateInviteCode" loading="{{submitting}}">生成邀请码</button>
+          <text class="invite-title">邀请新老师</text>
+          <text class="invite-desc">生成 8 位一次性邀请码，24 小时有效</text>
+          <button class="btn-secondary" bindtap="onGenerateInviteCode" loading="{{submitting}}" disabled="{{submitting}}">生成邀请码</button>
         </view>
       </view>
 
-      <!-- 开发者选项:切换为家长视角(管理员或开发环境) -->
-      <view class="card dev-card" wx:if="{{showDevTools}}">
+      <!-- 开发者选项说明 -->
+      <view class="card dev-card" wx:if="{{showDevTools && isAdmin}}">
         <view class="invite-section">
-          <text class="invite-title">🧪 开发者工具</text>
-          <text class="invite-desc">临时以家长视角进入,用于测试家长端 UI(冷启动后自动恢复)</text>
-          <button class="btn-secondary" bindtap="onSwitchToParent">切换为家长视角</button>
+          <text class="invite-title">测试工具</text>
+          <text class="invite-desc">仅校长/管理员可模拟家长端，普通老师和家长不能切换身份</text>
         </view>
       </view>
     </view>
 
+    <!-- 老师信息（仅管理员可见） -->
+    <view class="section" wx:if="{{isAdmin}}">
+      <view class="section-title">老师信息</view>
+      <view class="card teacher-card" wx:for="{{teachers}}" wx:key="_id">
+        <view class="teacher-row">
+          <view class="teacher-avatar">{{item.name[0] || '?'}}</view>
+          <view class="teacher-info">
+            <view class="teacher-name-row">
+              <text class="teacher-name">{{item.name}}</text>
+              <text class="teacher-role {{item.isAdminRole ? 'admin' : ''}}">{{item.roleText}}</text>
+            </view>
+            <text class="teacher-meta">{{item.phoneText}}{{item.createdText ? ' · 加入 ' + item.createdText : ''}}</text>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{teachers.length === 0}}" class="empty-state guide-card">
+        <text class="empty-text">还没有老师信息</text>
+      </view>
+    </view>
+
+    <!-- 学员操作记录（仅管理员可见） -->
+    <view class="section" wx:if="{{isAdmin}}">
+      <view class="section-title">学员操作记录</view>
+      <view class="card audit-card" wx:for="{{auditLogs}}" wx:key="_id">
+        <view class="audit-row">
+          <view>
+            <text class="audit-main">{{item.teacherText}} {{item.actionText}} {{item.studentText}}</text>
+            <text class="audit-time">{{item.timeText}}</text>
+          </view>
+          <text class="audit-action {{item.action}}">{{item.actionText}}</text>
+        </view>
+      </view>
+      <view wx:if="{{auditLogs.length === 0}}" class="empty-state guide-card">
+        <text class="empty-text">暂无学员操作记录</text>
+        <text class="empty-sub">老师新增、修改、删除学员后会出现在这里</text>
+      </view>
+    </view>
+
     <!-- 课程包管理 -->
-    <view class="section">
+    <view class="section" wx:if="{{isAdmin}}">
       <view class="section-title">
-        <text>📦 课程包管理</text>
-        <text class="more" bindtap="showPackageForm">+ 新增</text>
+        <text>课程包管理</text>
+        <text class="more" bindtap="showPackageForm">新增 ›</text>
       </view>
 
       <view class="card" wx:for="{{packages}}" wx:key="_id">
@@ -65,10 +115,9 @@
       </view>
 
       <view wx:if="{{packages.length === 0}}" class="empty-state guide-card">
-        <text class="empty-icon">📦</text>
         <text class="empty-text">还没有课程包</text>
         <text class="empty-sub">创建课程包后才能登记缴费和排课</text>
-        <button class="btn-accent guide-btn" bindtap="showPackageForm">+ 创建第一个课程包</button>
+        <button class="btn-accent guide-btn" bindtap="showPackageForm">创建第一个课程包</button>
       </view>
     </view>
 
@@ -83,6 +132,30 @@
         <text class="invite-code-large">{{inviteCode}}</text>
         <text class="invite-expiry">有效期至：{{inviteExpiresAt}}</text>
         <text class="invite-warning">一次性使用，请勿泄露给无关人员</text>
+      </view>
+    </view>
+
+    <!-- 切换家长视角弹窗 -->
+    <view class="modal-mask" wx:if="{{showParentSwitchModal}}" bindtap="hideParentSwitchModal"></view>
+    <view class="modal" wx:if="{{showParentSwitchModal}}">
+      <view class="modal-header">
+        <text>选择要模拟的学员</text>
+        <text class="close" bindtap="hideParentSwitchModal">✕</text>
+      </view>
+      <view class="modal-body switch-student-list">
+        <view
+          class="switch-student-item"
+          wx:for="{{switchStudents}}"
+          wx:key="_id"
+          data-index="{{index}}"
+          bindtap="onSelectParentStudent"
+        >
+          <view>
+            <text class="switch-student-name">{{item.name || '未命名'}}</text>
+            <text class="switch-student-phone">{{item.parent_phone || '无手机号'}}</text>
+          </view>
+          <text class="switch-student-arrow">›</text>
+        </view>
       </view>
     </view>
 
@@ -114,7 +187,7 @@
         </view>
       </view>
       <view class="modal-footer">
-        <button class="btn-primary" bindtap="onAddPackage" loading="{{submitting}}">添加</button>
+        <button class="btn-primary" bindtap="onAddPackage" loading="{{submitting}}" disabled="{{submitting}}">保存课程包</button>
       </view>
     </view>
   </block>

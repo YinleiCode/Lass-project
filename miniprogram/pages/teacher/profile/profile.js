@@ -1,21 +1,26 @@
 const api = require('../../../utils/api')
 const format = require('../../../utils/format')
 const constants = require('../../../utils/constants')
+const permission = require('../../../utils/permission')
 const app = getApp()
 
 Page({
   data: {
     loading: true,
     teacher: null,
+    teachers: [],
+    auditLogs: [],
     packages: [],
     name: '',
     phone: '',
     isAdmin: false,
     isDev: false,        // 开发版 / 体验版 / 开发者工具
-    showDevTools: false, // = isAdmin || isDev
+    showDevTools: true,  // 测试阶段老师端固定显示测试工具
     inviteCode: '',
     inviteExpiresAt: '',
     showInviteCode: false,
+    showParentSwitchModal: false,
+    switchStudents: [],
     // 新增套餐
     showPackageForm: false,
     pkgName: '',
@@ -29,6 +34,7 @@ Page({
   },
 
   onShow() {
+    if (this.getTabBar && this.getTabBar()) this.getTabBar().setSelected('/pages/teacher/profile/profile')
     // 检测运行环境(develop=开发版 / trial=体验版 / release=正式版)
     // 真机扫码预览也是 develop 或 trial
     let isDev = false
@@ -47,27 +53,74 @@ Page({
   async loadData() {
     this.setData({ loading: true })
     try {
-      const openid = app.globalData.openid
-      const [teacher, packages] = await Promise.all([
-        api.getTeacher(openid),
+      if (app.globalData._switchedFromTeacher && app.globalData._originalTeacherInfo) {
+        app.globalData.role = 'teacher'
+        app.globalData.userInfo = app.globalData._originalTeacherInfo
+        app.globalData._switchedFromTeacher = false
+        app.globalData._originalTeacherInfo = null
+        app.globalData._pendingTabPath = '/pages/teacher/profile/profile'
+        app.globalData._roleSwitchVersion = (app.globalData._roleSwitchVersion || 0) + 1
+      }
+      try {
+        await app.checkRole({ ignoreSwitch: true })
+      } catch (e) {
+        console.error('刷新身份失败', e)
+      }
+      const userInfo = app.globalData.userInfo
+      const teacher = userInfo && app.globalData.role === 'teacher' ? userInfo : null
+
+      const [packages] = await Promise.all([
         // 管理页用 getAllPackages,包含已停用的(否则停用后看不到无法启用)
         api.getAllPackages()
       ])
 
-      const isAdmin = teacher ? !!teacher.is_admin : false
+      const isAdmin = permission.isAdminUser(teacher)
+      let teachers = []
+      let auditLogs = []
+      if (isAdmin) {
+        const [teacherRes, logs] = await Promise.all([
+          api.getTeachers(),
+          api.getStudentAuditLogs(20)
+        ])
+        teachers = ((teacherRes && teacherRes.data) || []).map(t => ({
+          ...t,
+          isAdminRole: permission.isAdminUser(t),
+          roleText: permission.isAdminUser(t) ? '校长/管理员' : '老师',
+          phoneText: t.phone || '未填手机号',
+          createdText: format.date(t.created_at) || ''
+        }))
+        auditLogs = (logs || []).map(log => ({
+          ...log,
+          actionText: this.formatAuditAction(log.action),
+          timeText: format.datetime(log.created_at) || '',
+          teacherText: log.teacher_name || '老师',
+          studentText: log.student_name || '学员'
+        }))
+      }
       this.setData({
         teacher,
+        teachers,
+        auditLogs,
         packages,
         name: teacher ? teacher.name : '',
         phone: teacher ? teacher.phone : '',
         isAdmin,
-        // 开发者工具显示条件:管理员 或 开发环境(发版后只有管理员能用)
-        showDevTools: isAdmin || this.data.isDev,
+        showDevTools: isAdmin,
         loading: false
       })
     } catch (err) {
+      wx.showToast({ title: (err && err.message) || '加载失败，请重试', icon: 'none' })
       this.setData({ loading: false })
     }
+  },
+
+  formatAuditAction(action) {
+    const map = {
+      create: '新增',
+      update: '修改',
+      delete: '删除'
+    }
+    return map[action] || '操作'
   },
 
   // 启用/停用课程包
@@ -103,20 +156,25 @@ Page({
   onPhoneInput(e) { this.setData({ phone: e.detail.value.trim() }) },
 
   async onSaveTeacher() {
-    const openid = app.globalData.openid
-    if (!openid) return
-
+    if (this.data.submitting) return
+    if (!this.data.name) {
+      wx.showToast({ title: '请填写老师姓名', icon: 'none' })
+      return
+    }
     this.setData({ submitting: true })
     try {
-      const db = wx.cloud.database()
-      await db.collection('teachers').where({ openid }).update({
-        data: {
-          name: this.data.name,
-          phone: this.data.phone,
-          updated_at: db.serverDate()
-        }
+      const result = await api.updateTeacher({
+        name: this.data.name,
+        phone: this.data.phone
       })
+      if (!result || result.success === false) {
+        throw new Error((result && result.message) || '保存失败')
+      }
       wx.showToast({ title: '已保存', icon: 'success' })
+      if (app.globalData.userInfo) {
+        app.globalData.userInfo.name = this.data.name
+        app.globalData.userInfo.phone = this.data.phone
+      }
       this.setData({ submitting: false })
     } catch (err) {
       console.error('保存失败', err)
@@ -174,56 +232,113 @@ Page({
 
   // === 开发者工具: 切换为家长视角 ===
   async onSwitchToParent() {
+    if (!this.data.isAdmin) {
+      wx.showToast({ title: '仅校长/管理员可测试家长端', icon: 'none' })
+      return
+    }
+    this.setData({ submitting: true })
     try {
-      const students = await api.getStudents({ status: 'active' })
+      const students = await api.getStudents({})
       if (!students.length) {
         wx.showToast({ title: '没有可模拟的学员', icon: 'none' })
+        this.setData({ submitting: false })
         return
       }
 
-      // 弹 actionSheet 让管理员选要模拟哪个学员
-      const studentNames = students.map(s => s.name || '未命名')
-      const tapRes = await new Promise(resolve => {
-        wx.showActionSheet({
-          itemList: studentNames,
-          success: r => resolve(r.tapIndex),
-          fail: () => resolve(-1)
-        })
+      this.setData({
+        switchStudents: students,
+        showParentSwitchModal: true,
+        submitting: false
       })
-      if (tapRes < 0 || tapRes >= students.length) return
+    } catch (err) {
+      console.error('加载模拟学员失败', err)
+      wx.showToast({ title: (err && err.message) || '加载学员失败', icon: 'none' })
+      this.setData({ submitting: false })
+    }
+  },
 
-      const targetStudent = students[tapRes]
+  hideParentSwitchModal() {
+    if (this.data.submitting) return
+    this.setData({ showParentSwitchModal: false })
+  },
+
+  async onSelectParentStudent(e) {
+    const index = Number(e.currentTarget.dataset.index)
+    const targetStudent = this.data.switchStudents[index]
+    if (!targetStudent || !targetStudent._id) {
+      wx.showToast({ title: '学员数据异常', icon: 'none' })
+      return
+    }
+
+    this.setData({ submitting: true })
+    let previousState = null
+    try {
       const confirmRes = await new Promise(resolve => {
         wx.showModal({
-          title: '切换为家长视角',
-          content: `将以「${targetStudent.name}」的家长身份进入,仅用于测试,冷启动后恢复。\n\n确定继续吗?`,
+          title: '校长测试家长端',
+          content: `将临时以「${targetStudent.name}」的家长身份查看页面。普通老师和家长不会拥有这个切换能力。\n\n确定继续吗?`,
           success: r => resolve(r.confirm)
         })
       })
-      if (!confirmRes) return
+      if (!confirmRes) {
+        this.setData({ submitting: false })
+        return
+      }
 
-      // 保存原老师信息 → 修改 globalData → switchTab
+      previousState = {
+        role: app.globalData.role,
+        userInfo: app.globalData.userInfo,
+        switchedFromTeacher: app.globalData._switchedFromTeacher,
+        originalTeacherInfo: app.globalData._originalTeacherInfo,
+        pendingTabPath: app.globalData._pendingTabPath
+      }
+
+      // 保存原老师信息 -> 修改 globalData -> reLaunch
       app.globalData._originalTeacherInfo = app.globalData.userInfo
       app.globalData._switchedFromTeacher = true
       app.globalData.role = 'parent'
       app.globalData.userInfo = targetStudent
+      app.globalData._pendingTabPath = '/pages/parent/home/home'
+      app.globalData._roleSwitchVersion = (app.globalData._roleSwitchVersion || 0) + 1
 
-      wx.showToast({ title: '已切换为家长视角', icon: 'success' })
-      // reLaunch 而不是 switchTab,清空页面栈,确保 tab-bar 实例彻底重建
-      // (switchTab 在自定义 tabBar 时可能复用旧的 tab-bar 实例,导致 tabs 不刷新)
-      setTimeout(() => {
-        wx.reLaunch({ url: '/pages/parent/home/home' })
-      }, 600)
+      this.setData({ showParentSwitchModal: false })
+      await new Promise((resolve, reject) => {
+        wx.reLaunch({
+          url: '/pages/parent/home/home',
+          success: resolve,
+          fail: reject
+        })
+      })
+      wx.showToast({ title: '已进入家长端', icon: 'success' })
     } catch (err) {
       console.error('切换视角失败', err)
-      wx.showToast({ title: '切换失败', icon: 'none' })
+      if (previousState) {
+        app.globalData.role = previousState.role
+        app.globalData.userInfo = previousState.userInfo
+        app.globalData._switchedFromTeacher = previousState.switchedFromTeacher
+        app.globalData._originalTeacherInfo = previousState.originalTeacherInfo
+        app.globalData._pendingTabPath = previousState.pendingTabPath
+      }
+      wx.showToast({ title: (err && err.message) || '切换失败', icon: 'none' })
+      this.setData({ submitting: false })
     }
   },
 
   async onAddPackage() {
+    if (this.data.submitting) return
     const { pkgName, pkgPrice, pkgDuration, pkgType } = this.data
-    if (!pkgName || !pkgPrice) {
+    const price = Number(pkgPrice)
+    const duration = Number(pkgDuration)
+    if (!pkgName || !pkgPrice || !pkgDuration) {
       wx.showToast({ title: '请输入完整信息', icon: 'none' })
+      return
+    }
+    if (!Number.isFinite(price) || price <= 0) {
+      wx.showToast({ title: '请输入有效课时单价', icon: 'none' })
+      return
+    }
+    if (!Number.isFinite(duration) || duration <= 0) {
+      wx.showToast({ title: '请输入有效课程时长', icon: 'none' })
       return
     }
 
@@ -231,8 +346,8 @@ Page({
     try {
       const result = await api.addPackage({
         name: pkgName,
-        unit_price: parseInt(pkgPrice),
-        duration_min: parseInt(pkgDuration) || 45,
+        unit_price: price,
+        duration_min: duration,
         type: pkgType
       })
 

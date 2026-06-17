@@ -1,5 +1,14 @@
 // 云函数调用封装
 const api = {
+  parentPayload(data = {}) {
+    const app = getApp()
+    const userInfo = app && app.globalData ? app.globalData.userInfo : null
+    if (app && app.globalData && app.globalData._switchedFromTeacher && userInfo && userInfo._id) {
+      return { ...data, studentId: userInfo._id }
+    }
+    return data
+  },
+
   // 通用调用
   call(name, data = {}) {
     return new Promise((resolve, reject) => {
@@ -23,14 +32,15 @@ const api = {
 
   // ===== 学员相关 =====
   getStudents(filter = {}) {
-    const db = wx.cloud.database()
-    let query = db.collection('students').where(filter)
-    return query.orderBy('created_at', 'desc').get().then(res => res.data)
+    return this.call('cm_getStudents', { filter }).then(res => (res && res.data) || [])
   },
 
   getStudent(id) {
-    const db = wx.cloud.database()
-    return db.collection('students').doc(id).get().then(res => res.data)
+    return this.getStudentDetail(id).then(res => (res && res.student) || null)
+  },
+
+  getStudentDetail(studentId, options = {}) {
+    return this.call('cm_getStudentDetail', { studentId, ...options }).then(res => (res && res.data) || null)
   },
 
   addStudent(data) {
@@ -66,25 +76,23 @@ const api = {
   },
 
   getOrders(studentId) {
-    const db = wx.cloud.database()
-    return db.collection('orders').where({
-      student_id: studentId
-    }).orderBy('created_at', 'desc').get().then(res => res.data)
+    return this.getStudentDetail(studentId, { feedbackLimit: 1 }).then(res => (res && res.orders) || [])
+  },
+
+  getParentOrders() {
+    return this.call('cm_getParentData', this.parentPayload({ action: 'orders' })).then(res => (res && res.data) || [])
   },
 
   // ===== 课时余额 =====
   getBalance(studentId) {
-    const db = wx.cloud.database()
-    return db.collection('course_balance').where({
-      student_id: studentId
-    }).get().then(res => res.data)
+    return this.getStudentDetail(studentId).then(res => (res && res.balances) || [])
   },
 
-  // 批量查询余额 { studentId: totalRemaining, ... }
-  batchGetBalance(studentIds) {
-    return this.call('cm_batchBalance', { studentIds }).then(res => {
+  // 批量查询余额 { studentId: totalRemaining, ... }, includePackages=true 时返回 { totals, byPackage }
+  batchGetBalance(studentIds, options = {}) {
+    return this.call('cm_batchBalance', { studentIds, ...options }).then(res => {
       if (res.success) return res.data
-      return {}
+      return options.includePackages ? { totals: {}, byPackage: {} } : {}
     })
   },
 
@@ -104,6 +112,18 @@ const api = {
       if (filter.start_time.$lte) endDate = String(filter.start_time.$lte).substring(0, 10)
     }
     return this.call('cm_getSchedules', { startDate, endDate }).then(res => (res && res.data) || [])
+  },
+
+  getParentHome() {
+    return this.call('cm_getParentData', this.parentPayload({ action: 'home' })).then(res => (res && res.data) || null)
+  },
+
+  getParentProfile() {
+    return this.call('cm_getParentData', this.parentPayload({ action: 'profile' })).then(res => (res && res.data) || null)
+  },
+
+  getParentSchedules(limit = 20) {
+    return this.call('cm_getParentData', this.parentPayload({ action: 'schedules', limit })).then(res => (res && res.data) || [])
   },
 
   // 单条排课(用于点名/反馈页),返回 enriched schedule 或 null
@@ -126,18 +146,21 @@ const api = {
   },
 
   getFeedback(scheduleId, studentId) {
-    const db = wx.cloud.database()
-    return db.collection('feedbacks').where({
-      schedule_id: scheduleId,
-      student_id: studentId
-    }).get().then(res => res.data[0] || null)
+    return this.getStudentFeedbacks(studentId, 100)
+      .then(feedbacks => feedbacks.find(f => f.schedule_id === scheduleId) || null)
+  },
+
+  getParentFeedbackDetail(scheduleId) {
+    return this.call('cm_getParentData', this.parentPayload({ action: 'feedbackDetail', scheduleId }))
+      .then(res => (res && res.data) || { feedback: null, scheduleInfo: null })
   },
 
   getStudentFeedbacks(studentId, limit = 20) {
-    const db = wx.cloud.database()
-    return db.collection('feedbacks').where({
-      student_id: studentId
-    }).orderBy('created_at', 'desc').limit(limit).get().then(res => res.data)
+    return this.getStudentDetail(studentId, { feedbackLimit: limit }).then(res => (res && res.feedbacks) || [])
+  },
+
+  getParentFeedbacks(limit = 50) {
+    return this.call('cm_getParentData', this.parentPayload({ action: 'feedbacks', limit })).then(res => (res && res.data) || [])
   },
 
   // ===== 统计 =====
@@ -156,9 +179,23 @@ const api = {
   },
 
   // ===== 老师 =====
-  getTeacher(openid) {
-    const db = wx.cloud.database()
-    return db.collection('teachers').where({ openid }).get().then(res => res.data[0] || null)
+  getTeacher() {
+    const app = getApp()
+    return app.checkRole().then(() => {
+      return app.globalData.role === 'teacher' ? app.globalData.userInfo : null
+    })
+  },
+
+  updateTeacher(data) {
+    return this.call('cm_updateTeacher', data)
+  },
+
+  getTeachers() {
+    return this.call('cm_getTeachers')
+  },
+
+  getStudentAuditLogs(limit = 20) {
+    return this.call('cm_getStudentAuditLogs', { limit }).then(res => (res && res.data) || [])
   },
 
   // ===== 删除学员 =====

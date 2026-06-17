@@ -2,6 +2,55 @@
  *  teacher/profile — 老师个人中心
  * ============================================================ */
 
+.profile-hero {
+  background:
+    radial-gradient(circle at 84% 12%, rgba(237, 167, 219, 0.48) 0, transparent 230rpx),
+    radial-gradient(circle at 12% 92%, rgba(255, 255, 255, 0.78) 0, transparent 260rpx),
+    linear-gradient(145deg, rgba(255, 246, 252, 0.94), rgba(244, 235, 241, 0.80));
+  color: var(--ink);
+  border-radius: 38rpx;
+  padding: 34rpx 34rpx 32rpx;
+  margin-bottom: 32rpx;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.78), 0 18rpx 42rpx rgba(181, 107, 162, 0.08);
+  backdrop-filter: blur(16rpx);
+}
+
+.profile-hero::before {
+  content: "";
+  position: absolute;
+  right: -88rpx;
+  bottom: -128rpx;
+  width: 320rpx;
+  height: 320rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(255, 255, 255, 0.58);
+}
+
+.profile-hero .art-kicker {
+  color: var(--ink-mute);
+  position: relative;
+  z-index: 1;
+}
+
+.profile-title {
+  display: block;
+  margin: 14rpx 0 12rpx;
+  font-size: 48rpx;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: 1rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-hero .art-note {
+  color: var(--ink-soft);
+  position: relative;
+  z-index: 1;
+}
+
 /* === 通用卡片(覆盖部分全局卡) === */
 .section .card {
   padding: 0;
@@ -9,11 +58,11 @@
 }
 
 .section .card .form-item {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 28rpx 36rpx;
+  border-bottom: 2rpx solid var(--line-soft);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12rpx;
 }
 
 .section .card .form-item:last-of-type {
@@ -22,80 +71,239 @@
 
 .section .card .form-item .label {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--ink-mute);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
   text-transform: uppercase;
 }
 
 .section .card .form-item .input {
-  font-size: 15px;
+  font-size: 30rpx;
   color: var(--ink);
-  padding: 6px 0;
+  padding: 12rpx 0;
   border: none;
   background: transparent;
   outline: none;
-  min-height: 24px;
+  min-height: 48rpx;
 }
 
 .section .card .btn-primary {
-  width: calc(100% - 36px);
-  margin: 10px 18px 16px;
-  letter-spacing: 2px;
+  width: calc(100% - 72rpx);
+  margin: 20rpx 36rpx 20rpx;
+  letter-spacing: 4rpx;
+}
+
+.btn-parent-switch {
+  width: calc(100% - 72rpx);
+  margin: 0 36rpx 32rpx;
+  background: var(--cream);
+  color: var(--ink);
+  border: none;
+  box-shadow: inset 0 0 0 2rpx rgba(34, 0, 22, 0.07);
+  border-radius: 28rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+}
+
+.btn-parent-switch::after {
+  border: none;
 }
 
 /* === 邀请码 / 开发者工具区块 === */
 .invite-section {
-  padding: 18px;
+  padding: 36rpx;
   text-align: center;
 }
 
 /* 开发者工具卡(浅橙警示风,与邀请码区分) */
 .dev-card {
-  background: linear-gradient(135deg, var(--warn-bg) 0%, #FFE8D0 100%);
-  border: 1px dashed var(--warn-border);
+  background: var(--accent-bg);
+  border: none;
 }
 
 .dev-card .invite-title {
-  color: var(--warn-text);
+  color: var(--ink);
 }
 
 .dev-card .invite-desc {
-  color: var(--warn-text);
-  opacity: 0.85;
+  color: var(--ink-soft);
 }
 
 .dev-card .btn-secondary {
   background: var(--warn-bg);
   color: var(--warn-text);
-  border: 1px solid var(--warn-border);
+  border: 2rpx solid var(--warn-border);
+}
+
+.switch-student-list {
+  max-height: 720rpx;
+  overflow-y: auto;
+  padding: 12rpx 24rpx 28rpx;
+}
+
+.switch-student-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  padding: 26rpx 12rpx;
+  border-bottom: 2rpx solid var(--line-soft);
+}
+
+.switch-student-name {
+  display: block;
+  font-size: 30rpx;
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.switch-student-phone {
+  display: block;
+  margin-top: 6rpx;
+  font-family: var(--font-mono);
+  font-size: 22rpx;
+  color: var(--ink-mute);
+}
+
+.switch-student-arrow {
+  font-size: 48rpx;
+  color: var(--ink-mute);
 }
 
 .invite-title {
   font-family: var(--font-serif);
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 30rpx;
+  font-weight: 900;
   color: var(--ink);
   display: block;
-  margin-bottom: 6px;
-  letter-spacing: 0.5px;
+  margin-bottom: 12rpx;
+  letter-spacing: 1rpx;
 }
 
 .invite-desc {
-  font-size: 12px;
+  font-size: 24rpx;
   color: var(--ink-soft);
   display: block;
-  margin-bottom: 14px;
-  letter-spacing: 0.3px;
+  margin-bottom: 28rpx;
+  letter-spacing: 1rpx;
 }
 
 .invite-section .btn-secondary {
   background: var(--accent-bg);
-  color: var(--accent);
-  border: 1px solid var(--accent-soft);
-  padding: 10px 22px;
-  font-size: 13px;
-  letter-spacing: 1px;
+  color: var(--ink);
+  border: 2rpx solid var(--accent-soft);
+  padding: 20rpx 44rpx;
+  font-size: 26rpx;
+  letter-spacing: 2rpx;
+}
+
+/* === 老师信息 / 操作记录 === */
+.teacher-card,
+.audit-card {
+  padding: 0;
+}
+
+.teacher-row,
+.audit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  padding: 26rpx 32rpx;
+}
+
+.teacher-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(237, 167, 219, 0.78), rgba(255, 240, 250, 0.92));
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.teacher-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.teacher-name-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+.teacher-name {
+  font-size: 30rpx;
+  font-weight: 900;
+  color: var(--ink);
+  max-width: 260rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacher-role,
+.audit-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.66);
+  color: var(--ink-soft);
+  font-size: 20rpx;
+  font-weight: 800;
+  letter-spacing: 1rpx;
+  white-space: nowrap;
+}
+
+.teacher-role.admin {
+  background: var(--accent-bg);
+  color: var(--ink);
+}
+
+.teacher-meta,
+.audit-time {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 22rpx;
+  color: var(--ink-mute);
+  letter-spacing: 1rpx;
+  line-height: 1.4;
+}
+
+.audit-main {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.45;
+  margin-bottom: 8rpx;
+}
+
+.audit-action.create {
+  background: var(--accent-bg);
+  color: var(--ink);
+}
+
+.audit-action.update {
+  background: rgba(255, 249, 236, 0.9);
+  color: var(--warn);
+}
+
+.audit-action.delete {
+  background: rgba(245, 232, 238, 0.9);
+  color: var(--plum);
 }
 
 /* === 课程包列表 === */
@@ -103,8 +311,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
-  gap: 12px;
+  padding: 28rpx 36rpx;
+  gap: 24rpx;
 }
 
 .pkg-info {
@@ -115,15 +323,15 @@
 .pkg-name-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
+  gap: 16rpx;
+  margin-bottom: 8rpx;
 }
 
 .pkg-name {
-  font-size: 15px;
+  font-size: 30rpx;
   font-weight: 500;
   color: var(--ink);
-  letter-spacing: 0.3px;
+  letter-spacing: 1rpx;
 }
 
 .pkg-name.inactive {
@@ -132,21 +340,25 @@
 }
 
 .pkg-status-tag {
-  display: inline-block;
-  background: var(--paper-warm);
-  color: var(--ink-mute);
-  padding: 1px 7px;
-  border-radius: 4px;
-  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40rpx;
+  background: #E5E7EB;
+  color: var(--ink-soft);
+  padding: 0 14rpx;
+  border-radius: 999rpx;
+  font-size: 20rpx;
   font-family: var(--font-mono);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
+  line-height: 1;
 }
 
 .pkg-meta {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--ink-mute);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
   display: block;
 }
 
@@ -154,15 +366,15 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
+  gap: 16rpx;
   flex-shrink: 0;
 }
 
 .pkg-price {
   font-family: var(--font-num);
-  font-size: 20px;
+  font-size: 40rpx;
   color: var(--accent);
-  letter-spacing: -0.3px;
+  letter-spacing: 0;
   line-height: 1;
 }
 
@@ -171,17 +383,21 @@
 }
 
 .pkg-toggle {
-  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
   font-weight: 500;
-  letter-spacing: 0.5px;
-  padding: 4px 10px;
-  border-radius: 100px;
-  border: 1px solid var(--line);
+  letter-spacing: 1rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 200rpx;
+  border: 2rpx solid var(--line);
   background: var(--cream);
 }
 
 .pkg-toggle.on {
   color: var(--ink-soft);
+  background: #F3F4F6;
 }
 
 .pkg-toggle.off {
@@ -192,47 +408,44 @@
 
 /* === 空状态引导卡 === */
 .guide-card {
-  background: linear-gradient(135deg, var(--accent-bg) 0%, #DCE9F5 100%);
-  border: 1px dashed var(--accent-soft);
-  border-radius: 16px;
-  padding: 32px 22px;
+  background: var(--accent-bg);
+  border: none;
+  border-radius: 34rpx;
+  padding: 64rpx 44rpx;
   text-align: center;
-  margin-top: 4px;
+  margin-top: 8rpx;
 }
 
 .guide-card .empty-icon {
-  font-size: 40px;
-  display: block;
-  margin-bottom: 12px;
-  opacity: 0.7;
+  display: none;
 }
 
 .guide-card .empty-text {
   font-family: var(--font-serif);
-  font-size: 16px;
+  font-size: 32rpx;
   color: var(--ink);
   display: block;
-  margin-bottom: 6px;
-  letter-spacing: 0.5px;
+  margin-bottom: 12rpx;
+  letter-spacing: 1rpx;
 }
 
 .guide-card .empty-sub {
-  font-size: 12px;
+  font-size: 24rpx;
   color: var(--ink-soft);
   display: block;
-  margin-bottom: 16px;
-  letter-spacing: 0.3px;
+  margin-bottom: 32rpx;
+  letter-spacing: 1rpx;
 }
 
 .guide-card .guide-btn {
-  background: var(--accent);
-  color: white;
+  background: linear-gradient(145deg, rgba(237, 167, 219, 0.84), rgba(255, 240, 250, 0.92));
+  color: var(--ink);
   border: none;
-  padding: 10px 22px;
-  border-radius: 100px;
-  font-size: 13px;
+  padding: 20rpx 44rpx;
+  border-radius: 200rpx;
+  font-size: 26rpx;
   font-weight: 500;
-  letter-spacing: 1px;
+  letter-spacing: 2rpx;
   display: inline-block;
 }
 
@@ -240,20 +453,20 @@
   border: none;
 }
 
-/* "+ 新增"按钮 */
+/* Section actions */
 .section-title .more {
-  font-size: 12px;
-  color: var(--accent);
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  font-size: 24rpx;
+  color: var(--ink-soft);
+  font-weight: 800;
+  letter-spacing: 1rpx;
 }
 
 /* === 弹窗(继承 calendar 的样式) === */
 .modal-mask {
   position: fixed;
   inset: 0;
-  background: rgba(42, 55, 68, 0.45);
-  backdrop-filter: blur(6px);
+  background: rgba(34, 0, 22, 0.45);
+  backdrop-filter: blur(12rpx);
   z-index: 100;
 }
 
@@ -262,53 +475,53 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: calc(100% - 44px);
+  width: calc(100% - 88rpx);
   max-height: 80vh;
   background: var(--cream);
-  border-radius: 20px;
+  border-radius: 40rpx;
   z-index: 101;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 24px 60px -16px rgba(44, 82, 130, 0.35);
+  box-shadow: 0 48rpx 120rpx -32rpx rgba(34, 0, 22, 0.28);
   overflow: hidden;
 }
 
 .modal-header {
-  padding: 18px 22px 14px;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 36rpx 44rpx 28rpx;
+  border-bottom: 2rpx solid var(--line-soft);
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-serif);
-  font-size: 17px;
+  font-size: 34rpx;
   font-weight: 600;
   color: var(--ink);
 }
 
 .modal-header .close {
-  width: 28px;
-  height: 28px;
+  width: 56rpx;
+  height: 56rpx;
   border-radius: 50%;
   background: var(--paper-warm);
   color: var(--ink-soft);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 24rpx;
 }
 
 .modal-body {
-  padding: 8px 22px;
+  padding: 16rpx 44rpx;
   flex: 1;
   overflow-y: auto;
 }
 
 .modal-body .form-item {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid var(--line-soft);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12rpx;
 }
 
 .modal-body .form-item:last-child {
@@ -317,58 +530,217 @@
 
 .modal-body .form-item .label {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--ink-mute);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
   text-transform: uppercase;
 }
 
 .modal-body .form-item .input,
 .modal-body .form-item .picker {
-  font-size: 14px;
+  font-size: 28rpx;
   color: var(--ink);
-  padding: 4px 0;
+  padding: 8rpx 0;
 }
 
 .modal-footer {
-  padding: 14px 22px 22px;
-  border-top: 1px solid var(--line-soft);
+  padding: 28rpx 44rpx 44rpx;
+  border-top: 2rpx solid var(--line-soft);
 }
 
 .modal-footer .btn-primary {
   width: 100%;
-  letter-spacing: 2px;
+  letter-spacing: 4rpx;
 }
 
 /* === 邀请码展示弹窗 === */
 .invite-code-body {
   text-align: center;
-  padding: 26px 22px;
+  padding: 52rpx 44rpx;
 }
 
 .invite-code-large {
   display: block;
   font-family: var(--font-num);
-  font-size: 48px;
+  font-size: 96rpx;
   color: var(--accent);
-  letter-spacing: 12px;
+  letter-spacing: 24rpx;
   font-weight: 400;
-  margin-bottom: 14px;
-  padding-left: 12px; /* 视觉居中:抵消最后字符的右间距 */
+  margin-bottom: 28rpx;
+  padding-left: 24rpx; /* 视觉居中:抵消最后字符的右间距 */
 }
 
 .invite-expiry {
   display: block;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 24rpx;
   color: var(--ink-soft);
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
+  letter-spacing: 1rpx;
+  margin-bottom: 20rpx;
 }
 
 .invite-warning {
   display: block;
-  font-size: 12px;
+  font-size: 24rpx;
   color: var(--warn);
-  letter-spacing: 0.3px;
+  letter-spacing: 1rpx;
+}
+
+/* === 750rpx 规范覆盖 === */
+.section .card .form-item,
+.section .card .pkg-row {
+  padding: 24rpx 32rpx;
+  gap: 20rpx;
+}
+
+.section .card .form-item .label,
+.modal-body .form-item .label {
+  font-size: 22rpx;
+}
+
+.section .card .form-item .input,
+.modal-body .form-item .input,
+.modal-body .form-item .picker {
+  min-height: 64rpx;
+  font-size: 28rpx;
+  padding: 8rpx 0;
+}
+
+.section .card .btn-primary {
+  width: calc(100% - 64rpx);
+  margin: 20rpx 32rpx 20rpx;
+}
+
+.btn-parent-switch {
+  width: calc(100% - 64rpx);
+  margin: 0 32rpx 28rpx;
+}
+
+.invite-section {
+  padding: 32rpx;
+}
+
+.dev-card {
+  background:
+    radial-gradient(circle at 88% 14%, rgba(255, 224, 175, 0.58) 0, transparent 220rpx),
+    rgba(255, 249, 236, 0.84);
+}
+
+.invite-title,
+.guide-card .empty-text {
+  font-family: var(--font-sans);
+  font-size: 30rpx;
+}
+
+.invite-desc,
+.guide-card .empty-sub,
+.pkg-meta,
+.pkg-toggle {
+  font-size: 22rpx;
+}
+
+.invite-section .btn-secondary,
+.guide-card .guide-btn,
+.pkg-toggle {
+  min-height: 88rpx;
+  padding: 0 32rpx;
+  border-radius: 999rpx;
+}
+
+.pkg-name {
+  font-size: 28rpx;
+  line-height: 1.35;
+}
+
+.pkg-status-tag {
+  border-radius: 999rpx;
+  padding: 0 14rpx;
+  font-size: 20rpx;
+  min-height: 40rpx;
+}
+
+.pkg-name-row {
+  align-items: center;
+  gap: 10rpx;
+}
+
+.pkg-toggle {
+  min-width: 96rpx;
+}
+
+.pkg-right {
+  gap: 12rpx;
+}
+
+.pkg-price {
+  font-size: 40rpx;
+}
+
+.guide-card {
+  border-radius: 32rpx;
+  padding: 56rpx 32rpx;
+}
+
+.guide-card .empty-icon {
+  font-size: 80rpx;
+}
+
+.modal-header {
+  font-family: var(--font-sans);
+  font-size: 34rpx;
+}
+
+.modal-header .close {
+  width: 88rpx;
+  height: 88rpx;
+}
+
+.invite-code-large {
+  font-size: 96rpx;
+}
+
+.invite-expiry,
+.invite-warning {
+  font-size: 24rpx;
+}
+
+/* === Alignment polish === */
+.section .card .form-item,
+.section .card .pkg-row {
+  padding: 20rpx 28rpx;
+  gap: 14rpx;
+}
+
+.section .card .btn-primary {
+  width: calc(100% - 56rpx);
+  margin: 18rpx 28rpx 24rpx;
+}
+
+.invite-section {
+  padding: 28rpx;
+}
+
+.invite-section .btn-secondary,
+.guide-card .guide-btn,
+.pkg-toggle {
+  min-height: 72rpx;
+}
+
+.guide-card {
+  border-radius: 24rpx;
+  padding: 44rpx 28rpx;
+}
+
+.modal {
+  width: calc(100% - 56rpx);
+  border-radius: 28rpx;
+}
+
+.modal-header,
+.modal-footer {
+  padding: 24rpx 28rpx;
+}
+
+.modal-body {
+  padding: 8rpx 28rpx;
 }

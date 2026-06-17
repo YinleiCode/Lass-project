@@ -1,6 +1,9 @@
 {
-  "navigationBarTitleText": "课程管理",
+  "navigationBarTitleText": "颂恩艺术",
+  "navigationBarBackgroundColor": "#FBF8F7",
+  "navigationBarTextStyle": "black",
   "usingComponents": {
-    "empty-state": "/components/empty-state/empty-state"
+    "empty-state": "/components/empty-state/empty-state",
+    "app-tab-bar": "/custom-tab-bar/index"
   }
 }

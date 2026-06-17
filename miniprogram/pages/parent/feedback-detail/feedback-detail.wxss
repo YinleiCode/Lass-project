@@ -2,60 +2,118 @@
  *  parent/feedback-detail — 反馈详情
  * ============================================================ */
 
+.feedback-detail-hero {
+  background:
+    radial-gradient(circle at 84% 8%, rgba(237, 167, 219, 0.48) 0, transparent 230rpx),
+    radial-gradient(circle at 12% 92%, rgba(255, 255, 255, 0.78) 0, transparent 260rpx),
+    linear-gradient(145deg, rgba(255, 246, 252, 0.92), rgba(244, 235, 241, 0.78));
+  color: var(--ink);
+  border-radius: 38rpx;
+  padding: 34rpx 34rpx 40rpx;
+  margin-bottom: 24rpx;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.78), 0 18rpx 42rpx rgba(181, 107, 162, 0.08);
+}
+
+.feedback-detail-hero::before {
+  content: "";
+  position: absolute;
+  right: -88rpx;
+  bottom: -118rpx;
+  width: 310rpx;
+  height: 310rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(255, 255, 255, 0.58);
+}
+
+.feedback-detail-hero .art-kicker {
+  color: var(--ink-mute);
+  position: relative;
+  z-index: 1;
+}
+
+.detail-hero-title {
+  display: block;
+  margin-top: 14rpx;
+  font-size: 44rpx;
+  line-height: 1.12;
+  font-weight: 900;
+  position: relative;
+  z-index: 1;
+}
+
 /* === 课程信息卡 === */
 .container > .card:first-of-type {
-  background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 16px 18px;
-  margin-bottom: 22px;
+  background: rgba(255, 255, 255, 0.72);
+  border: none;
+  border-radius: 32rpx;
+  padding: 28rpx 32rpx;
+  margin-bottom: 34rpx;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12rpx;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 12rpx 32rpx rgba(181, 107, 162, 0.08);
+  backdrop-filter: blur(14rpx);
 }
 
 .info-date {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--ink-mute);
-  letter-spacing: 1px;
+  letter-spacing: 2rpx;
   text-transform: uppercase;
+  line-height: 1.45;
+  word-break: break-all;
 }
 
 .info-pkg {
-  font-family: var(--font-serif);
-  font-size: 17px;
+  font-family: var(--font-sans);
+  font-size: 34rpx;
   font-weight: 600;
   color: var(--ink);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
+  line-height: 1.35;
+}
+
+.info-meta {
+  display: block;
+  font-size: 23rpx;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  font-weight: 800;
 }
 
 /* === 评语卡(带引文样式) === */
 .section .card {
-  background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.72);
+  border: none;
+  border-radius: 32rpx;
+  padding: 32rpx;
+  box-shadow: 0 12rpx 32rpx rgba(181, 107, 162, 0.06);
+  backdrop-filter: blur(14rpx);
 }
 
 .comment-text {
   display: block;
-  font-family: var(--font-serif);
-  font-size: 14px;
+  font-family: var(--font-sans);
+  font-size: 30rpx;
   color: var(--ink);
   line-height: 1.75;
-  letter-spacing: 0.3px;
+  letter-spacing: 1rpx;
   position: relative;
-  padding-left: 16px;
+  padding-left: 24rpx;
 }
 
 .comment-text::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 3px;
-  bottom: 3px;
-  width: 2px;
+  top: 6rpx;
+  bottom: 6rpx;
+  width: 6rpx;
   background: var(--accent-soft);
-  border-radius: 1px;
+  border-radius: 999rpx;
 }

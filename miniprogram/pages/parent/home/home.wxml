@@ -1,74 +1,131 @@
 <view class="container">
-  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+  <view wx:if="{{loading}}" class="empty-state">正在翻开回声...</view>
 
   <block wx:else>
-    <!-- 问候 -->
-    <view class="greeting" wx:if="{{student}}">
-      <text class="greeting-text">你好, {{student.name}}的家长 👋</text>
+    <!-- 家长端弥散视觉首屏 -->
+    <view class="parent-hero" wx:if="{{student}}">
+      <view class="parent-hero-top">
+        <text class="parent-kicker">成长回声 · FAMILY ALBUM</text>
+      </view>
+      <image class="parent-voice-art" src="/images/parent-voice-mist.png" mode="aspectFit"></image>
+      <view class="parent-caption">
+        <text class="art-kicker">今日回声 · VOICE NOTE</text>
+        <text class="art-note">每一次练习，都会慢慢长成孩子自己的表达方式。</text>
+      </view>
     </view>
 
     <!-- 学员概览卡片 -->
-    <view class="card" wx:if="{{student}}">
+    <view class="card student-main-card" wx:if="{{student}}">
       <view class="student-overview">
-        <view class="avatar">{{student.name[0] || '?'}}</view>
+        <view class="avatar">{{avatarText}}</view>
         <view class="overview-info">
-          <text class="student-name">{{student.name}}</text>
+          <text class="student-name">{{studentName}}</text>
           <view class="stats-row">
             <view class="stat">
               <text class="stat-value {{totalRemaining <= 3 ? 'danger' : (totalRemaining <= 5 ? 'warning' : '')}}">{{totalRemaining}}</text>
               <text class="stat-label">剩余课时</text>
             </view>
             <view class="stat">
-              <text class="stat-value">{{student.total_attended || 0}}</text>
+              <text class="stat-value">{{totalAttended}}</text>
               <text class="stat-label">累计上课</text>
             </view>
           </view>
         </view>
       </view>
       <view class="warning-tip" wx:if="{{totalRemaining <= 3}}">
-        <text class="tag tag-danger">课时不足, 请联系老师续费</text>
+        <text class="tag tag-danger">课时不足, 请联系老师</text>
+      </view>
+    </view>
+
+    <view class="parent-mood-panel">
+      <view class="mood-panel-head">
+        <text>声音轨迹</text>
+        <text class="mood-more" bindtap="goRecords">全部 ›</text>
+      </view>
+      <view class="mood-days">
+        <view class="mood-day"><text>2</text><text>Fri</text></view>
+        <view class="mood-day"><text>3</text><text>Sat</text></view>
+        <view class="mood-day"><text>4</text><text>Sun</text></view>
+        <view class="mood-day active"><text>5</text><text>Mon</text></view>
+        <view class="mood-day"><text>6</text><text>Tue</text></view>
+        <view class="mood-day"><text>7</text><text>Wed</text></view>
+      </view>
+      <view class="mood-track"></view>
+      <view class="mood-tags">
+        <text bindtap="goLeave">请假</text>
+        <text class="active" bindtap="goRecords">到课</text>
+        <text bindtap="goFeedbackDetail">反馈</text>
+      </view>
+    </view>
+
+    <!-- 课时余额 -->
+    <view class="section">
+      <view class="section-title">课时档案</view>
+      <view wx:if="{{!hasBalances}}" class="empty-state balance-empty">
+        <text class="empty-text">暂无课时记录</text>
+      </view>
+      <view wx:else>
+        <view class="card balance-card" wx:for="{{balanceCards}}" wx:key="_id">
+          <view class="balance-head">
+            <text class="balance-name">{{item.packageNameText}}</text>
+            <text class="balance-remain {{item.warningClass}}">{{item.remainingText}}</text>
+          </view>
+          <view class="balance-grid">
+            <view class="balance-cell">
+              <text class="balance-num">{{item.purchasedText}}</text>
+              <text class="balance-label">总课时</text>
+            </view>
+            <view class="balance-cell">
+              <text class="balance-num">{{item.usedText}}</text>
+              <text class="balance-label">已上课时</text>
+            </view>
+            <view class="balance-cell">
+              <text class="balance-num">{{item.remainingText}}</text>
+              <text class="balance-label">剩余课时</text>
+            </view>
+          </view>
+        </view>
       </view>
     </view>
 
     <!-- 下次上课 -->
     <view class="section" wx:if="{{upcomingSchedules.length > 0}}">
-      <view class="section-title">📅 下次上课</view>
+      <view class="section-title">下次相见</view>
       <view class="card" wx:for="{{upcomingSchedules}}" wx:key="_id">
-        <text class="schedule-time">{{format.datetime(item.start_time)}}</text>
-        <text class="schedule-classroom" wx:if="{{item.classroom}}">📍 {{item.classroom}}</text>
+        <text class="schedule-time">{{item.startTimeText}}</text>
+        <text class="schedule-classroom" wx:if="{{item.metaText}}">{{item.metaText}}</text>
+        <text class="schedule-classroom" wx:if="{{item.teacherText}}">{{item.teacherText}}</text>
+        <text class="schedule-classroom" wx:if="{{item.classroomText}}">教室 · {{item.classroomText}}</text>
       </view>
     </view>
 
     <!-- 最新反馈 -->
     <view class="section" wx:if="{{latestFeedback}}">
       <view class="section-title">
-        <text>📝 最新反馈</text>
-        <text class="more" bindtap="goFeedbackDetail">查看完整 →</text>
+        <text>课后回声</text>
+        <text class="more" bindtap="goFeedbackDetail">阅读 ›</text>
       </view>
       <view class="card" bindtap="goFeedbackDetail">
-        <text class="feedback-date">{{format.datetime(latestFeedback.created_at)}}</text>
-        <text class="feedback-comment">{{latestFeedback.comment ? latestFeedback.comment.substring(0, 80) + '...' : '无评语'}}</text>
-        <text class="audio-hint" wx:if="{{hasAudio}}">🎵 含录音</text>
+        <text class="feedback-date">{{latestFeedbackDateText}}</text>
+        <text class="feedback-comment">{{latestFeedbackPreview}}</text>
+        <text class="audio-hint" wx:if="{{hasAudio}}">语音回声已附上</text>
       </view>
     </view>
 
-    <!-- 快捷操作 -->
+    <!-- Studio actions -->
     <view class="section">
-      <view class="section-title">快捷操作</view>
+      <view class="section-title">工作室动作</view>
       <view class="quick-actions">
         <view class="action-item" bindtap="goLeave">
-          <text class="action-icon">📋</text>
+          <text class="action-icon">□</text>
           <text class="action-text">请假</text>
         </view>
-        <view class="action-item" bindtap="goPaymentList">
-          <text class="action-icon">💰</text>
-          <text class="action-text">缴费记录</text>
-        </view>
         <view class="action-item" bindtap="goRecords">
-          <text class="action-icon">📖</text>
-          <text class="action-text">全部反馈</text>
+          <text class="action-icon">◇</text>
+          <text class="action-text">反馈集</text>
         </view>
       </view>
     </view>
   </block>
 </view>
+<app-tab-bar />

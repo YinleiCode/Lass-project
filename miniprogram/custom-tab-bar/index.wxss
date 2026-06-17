@@ -1,20 +1,21 @@
 /* ============================================================
- *  Tab Bar — 雾霾蓝 · 毛玻璃质感
+ *  Tab Bar — 粉黑线描 · 白底图标栏
  * ============================================================ */
 .tab-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 70px;
-  background: rgba(244, 247, 250, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--line);
+  height: 150rpx;
+  background: rgba(255, 255, 255, 0.92);
+  border-top: none;
   display: flex;
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 999;
   box-sizing: border-box;
+  box-shadow: 0 -18rpx 44rpx rgba(108, 45, 88, 0.08);
+  backdrop-filter: blur(24rpx);
+  -webkit-backdrop-filter: blur(24rpx);
 }
 
 .tab-item {
@@ -23,53 +24,66 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  color: var(--ink-mute);
-  font-size: 10px;
-  letter-spacing: 0.5px;
+  gap: 4rpx;
+  color: var(--ink);
+  font-size: 20rpx;
+  letter-spacing: 1rpx;
   position: relative;
-  padding: 8px 0;
+  padding: 18rpx 0 12rpx;
 }
 
 .tab-icon {
-  font-size: 22px;
+  width: 62rpx;
+  height: 62rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42rpx;
+  font-weight: 300;
   line-height: 1;
-  filter: grayscale(100%);
-  opacity: 0.55;
-  transition: filter 0.2s, opacity 0.2s;
+  opacity: 0.62;
+  transition: opacity 0.2s, transform 0.2s;
 }
 
 .tab-text {
-  font-size: 10px;
+  font-size: 19rpx;
   color: var(--ink-mute);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
   font-family: var(--font-mono);
 }
 
 /* 选中态 */
 .tab-item.active {
-  color: var(--accent);
+  color: var(--ink);
+  background: transparent;
+  box-shadow: none;
 }
 
 .tab-item.active .tab-icon {
-  filter: none;
   opacity: 1;
+  background:
+    radial-gradient(circle at 34% 24%, rgba(255, 255, 255, 0.86), transparent 42%),
+    linear-gradient(145deg, rgba(237, 167, 219, 0.86), rgba(255, 240, 250, 0.92));
+  color: var(--ink);
+  transform: translateY(-4rpx) scale(1.03);
 }
 
 .tab-item.active .tab-text {
-  color: var(--accent);
-  font-weight: 500;
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 22rpx;
 }
 
-/* 顶部指示条 */
+/* 底部小圆点 */
 .tab-item.active::before {
   content: "";
   position: absolute;
-  top: 0;
+  bottom: 12rpx;
   left: 50%;
   transform: translateX(-50%);
-  width: 24px;
-  height: 3px;
-  background: var(--accent);
-  border-radius: 0 0 2px 2px;
+  width: 8rpx;
+  height: 8rpx;
+  background: var(--plum-soft);
+  border-radius: 50%;
 }

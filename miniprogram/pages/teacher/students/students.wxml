@@ -1,15 +1,29 @@
 <view class="container">
+  <view class="students-hero">
+    <view>
+      <text class="art-kicker">学员册 · STUDIO ROSTER</text>
+      <text class="students-title">声音档案</text>
+    </view>
+    <view class="students-hero-side">
+      <text class="students-count">{{stats.active}}</text>
+      <view class="add-student-btn" bindtap="goAdd">
+        <text class="add-symbol">＋</text>
+        <text class="add-label">新增</text>
+      </view>
+    </view>
+  </view>
+
   <!-- 搜索框 -->
   <view class="search-bar">
-    <text>🔍</text>
-    <input placeholder="搜索姓名/手机号" bindinput="onSearchInput" value="{{searchKeyword}}" />
+    <text class="search-mark">⌕</text>
+    <input placeholder="查找姓名 / 手机号" bindinput="onSearchInput" value="{{searchKeyword}}" />
   </view>
 
   <!-- 标签筛选 -->
   <scroll-view class="tag-scroll" scroll-x enhanced show-scrollbar="{{false}}">
     <view class="tag-row">
       <view class="tag-filter {{activeTag === '' ? 'active' : ''}}" bindtap="onTagTap" data-tag="">全部</view>
-      <view class="tag-filter {{activeTag === tag ? 'active' : ''}}" wx:for="{{allTags}}" wx:key="*this" bindtap="onTagTap" data-tag="{{tag}}">{{tag}}</view>
+      <view class="tag-filter {{activeTag === item ? 'active' : ''}}" wx:for="{{allTags}}" wx:key="*this" bindtap="onTagTap" data-tag="{{item}}">{{item}}</view>
     </view>
   </scroll-view>
 
@@ -20,11 +34,11 @@
 
   <!-- 学员列表 -->
   <view wx:if="{{loading}}" class="empty-state">
-    <text>加载中...</text>
+    <text>正在翻开学员册...</text>
   </view>
 
   <view wx:elif="{{filteredStudents.length === 0}}" class="empty-state">
-    <text class="empty-text">暂无学员</text>
+    <text class="empty-text">这里还没有声音档案。</text>
   </view>
 
   <view wx:else>
@@ -33,13 +47,10 @@
       wx:key="_id"
       student="{{item}}"
       remaining="{{item.remaining}}"
+      show-owner="{{isAdmin}}"
       bindtap="goDetail"
       bindlongpress="onStudentLongPress"
     />
   </view>
 
-  <!-- 浮动添加按钮 -->
-  <view class="fab" bindtap="goAdd">
-    <text>+</text>
-  </view>
 </view>

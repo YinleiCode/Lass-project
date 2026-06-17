@@ -3,7 +3,7 @@
   <block wx:if="{{readonly}}">
     <view class="audio-row" wx:if="{{value}}">
       <view class="play-btn {{playing ? 'active' : ''}}" bindtap="togglePlay">
-        <text>{{playing ? '⏸' : '▶'}}</text>
+        <text>{{playing ? 'Ⅱ' : '›'}}</text>
       </view>
       <text class="duration">录音 {{playing ? '播放中' : ''}}</text>
     </view>
@@ -17,30 +17,35 @@
     <!-- 空闲状态 -->
     <view class="record-area" wx:if="{{state === 'idle'}}">
       <view class="record-btn" bindtap="startRecord">
-        <text class="record-icon">🎤</text>
-        <text class="record-text">按住录音</text>
+        <text class="record-icon">◉</text>
+        <text class="record-text">点按开始录音</text>
       </view>
+      <text class="record-tip" wx:if="{{recordingTip}}">{{recordingTip}}</text>
     </view>
 
     <!-- 录音中 -->
     <view class="record-area recording" wx:elif="{{state === 'recording'}}">
       <view class="record-btn active" bindtap="stopRecord">
-        <text class="record-icon">⏹</text>
+        <text class="record-icon">■</text>
         <text class="record-text">停止 {{recordingTime}}s</text>
       </view>
+      <text class="record-tip">{{recordingTip}}</text>
     </view>
 
     <!-- 完成状态 -->
     <view class="audio-row" wx:elif="{{state === 'done'}}">
       <view class="play-btn {{playing ? 'active' : ''}}" bindtap="togglePlay">
-        <text>{{playing ? '⏸' : '▶'}}</text>
+        <text>{{playing ? 'Ⅱ' : '›'}}</text>
       </view>
-      <text class="duration">{{duration}}秒</text>
+      <view class="audio-meta">
+        <text class="duration">{{duration || recordingTime}}秒录音</text>
+        <text class="upload-state">{{uploading ? '正在上传' : (uploadDone || value ? '已保存，可试听' : '本地录音，可试听')}}</text>
+      </view>
       <view class="del-btn" bindtap="deleteRecord">
-        <text>🗑 删除</text>
+        <text>删除</text>
       </view>
     </view>
 
-    <view class="hint" wx:if="{{state === 'uploading'}}">上传中...</view>
+    <view class="hint" wx:if="{{state === 'uploading'}}">正在上传</view>
   </block>
 </view>

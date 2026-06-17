@@ -2,51 +2,56 @@
  *  teacher/students/detail — 学员详情
  * ============================================================ */
 
-/* === 学员信息主卡(深色 ink 主题) === */
+/* === 学员信息主卡 === */
 .container > .card:first-of-type {
-  background: var(--ink);
-  color: var(--paper);
-  border: 1px solid var(--ink);
-  border-radius: 20px;
-  padding: 20px 22px;
+  background:
+    radial-gradient(circle at 86% 0%, rgba(237, 167, 219, 0.44) 0, transparent 230rpx),
+    radial-gradient(circle at 8% 100%, rgba(255, 255, 255, 0.72) 0, transparent 260rpx),
+    linear-gradient(145deg, rgba(255, 246, 252, 0.92), rgba(246, 235, 242, 0.82));
+  color: var(--ink);
+  border: none;
+  border-radius: 40rpx;
+  padding: 40rpx 44rpx;
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.76), 0 18rpx 44rpx rgba(108, 45, 88, 0.07);
+  backdrop-filter: blur(16rpx);
 }
 
 .container > .card:first-of-type::before {
   content: "";
   position: absolute;
-  right: -30px;
-  top: -30px;
-  width: 140px;
-  height: 140px;
-  background: radial-gradient(circle, rgba(191, 209, 229, 0.18) 0%, transparent 70%);
+  right: -60rpx;
+  top: -60rpx;
+  width: 280rpx;
+  height: 280rpx;
+  background: radial-gradient(circle, rgba(237, 167, 219, 0.42) 0%, transparent 70%);
   pointer-events: none;
 }
 
 .student-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 14px;
+  gap: 32rpx;
+  margin-bottom: 28rpx;
   position: relative;
   z-index: 1;
 }
 
 .student-header .avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, var(--accent-mid), var(--accent));
-  color: white;
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--ink);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: 44rpx;
+  font-weight: 900;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10rpx 24rpx -10rpx rgba(108, 45, 88, 0.36);
 }
 
 .student-meta {
@@ -55,99 +60,114 @@
 }
 
 .student-name {
-  font-family: var(--font-serif);
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--paper);
-  letter-spacing: 0.5px;
+  font-family: var(--font-sans);
+  font-size: 40rpx;
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: 1rpx;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 8rpx;
 }
 
 .student-phone {
   font-family: var(--font-mono);
-  font-size: 12px;
-  color: rgba(244, 247, 250, 0.65);
-  letter-spacing: 0.5px;
+  font-size: 24rpx;
+  color: var(--ink-soft);
+  letter-spacing: 1rpx;
   display: block;
 }
 
 .student-date {
   font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(244, 247, 250, 0.45);
-  letter-spacing: 1px;
+  font-size: 20rpx;
+  color: var(--ink-mute);
+  letter-spacing: 2rpx;
   text-transform: uppercase;
-  margin-top: 4px;
+  margin-top: 8rpx;
   display: block;
 }
 
+.student-owner {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: var(--ink-soft);
+  letter-spacing: 1rpx;
+  line-height: 1.4;
+}
+
 .more-btn {
-  width: 32px;
-  height: 32px;
+  width: 64rpx;
+  height: 64rpx;
   border-radius: 50%;
-  background: rgba(244, 247, 250, 0.1);
+  background: rgba(255, 255, 255, 0.68);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--paper);
-  font-size: 18px;
+  color: var(--ink-soft);
+  font-size: 36rpx;
   flex-shrink: 0;
 }
 
 .container > .card:first-of-type .tag-row {
   display: flex;
-  gap: 6px;
+  gap: 12rpx;
   flex-wrap: wrap;
-  margin-top: 12px;
+  margin-top: 24rpx;
   position: relative;
   z-index: 1;
 }
 
 .container > .card:first-of-type .tag {
-  background: rgba(244, 247, 250, 0.12);
-  color: var(--paper);
-  padding: 3px 10px;
-  border-radius: 100px;
-  font-size: 11px;
-  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--ink);
+  padding: 6rpx 20rpx;
+  border-radius: 200rpx;
+  font-size: 22rpx;
+  letter-spacing: 1rpx;
 }
 
 .status-badge {
   display: inline-block;
-  margin-top: 12px;
-  padding: 4px 12px;
-  border-radius: 100px;
-  font-size: 11px;
+  margin-top: 24rpx;
+  padding: 8rpx 24rpx;
+  border-radius: 200rpx;
+  font-size: 22rpx;
   font-family: var(--font-mono);
-  letter-spacing: 1px;
+  letter-spacing: 2rpx;
   text-transform: uppercase;
   position: relative;
   z-index: 1;
 }
 
 .status-badge.active {
-  background: rgba(76, 124, 15, 0.18);
-  color: #BEF264;
-  border: 1px solid rgba(76, 124, 15, 0.3);
+  background: rgba(237, 167, 219, 0.26);
+  color: var(--ink);
+  border: 2rpx solid rgba(237, 167, 219, 0.34);
 }
 
 .status-badge.archived {
-  background: rgba(244, 247, 250, 0.08);
-  color: rgba(244, 247, 250, 0.5);
-  border: 1px solid rgba(244, 247, 250, 0.12);
+  background: rgba(255, 255, 255, 0.54);
+  color: var(--ink-mute);
+  border: 2rpx solid rgba(108, 45, 88, 0.08);
 }
 
 /* === 操作行 === */
 .action-row {
-  margin: 18px 0 24px;
+  margin: 36rpx 0 48rpx;
+}
+
+.stats-grid .stat-card .money-value {
+  font-size: 36rpx;
+  line-height: 1.2;
+  word-break: break-all;
 }
 
 .action-row .btn-primary {
   width: 100%;
-  border-radius: 14px;
-  padding: 14px;
-  letter-spacing: 2px;
+  border-radius: 28rpx;
+  padding: 28rpx;
+  letter-spacing: 4rpx;
 }
 
 /* === 课时明细 / 缴费记录 行 === */
@@ -160,17 +180,18 @@
 }
 
 .balance-pkg {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 28rpx;
+  font-weight: 900;
   color: var(--ink);
-  letter-spacing: 0.3px;
+  letter-spacing: 1rpx;
 }
 
 .balance-num {
   font-family: var(--font-num);
-  font-size: 22px;
-  color: var(--accent);
-  letter-spacing: -0.5px;
+  font-size: 44rpx;
+  color: var(--ink);
+  font-weight: 900;
+  letter-spacing: 0;
 }
 
 .balance-num.warning,
@@ -179,42 +200,51 @@
 }
 
 .balance-detail {
-  margin-top: 8px;
+  margin-top: 16rpx;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--ink-mute);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
 }
 
 .order-date,
 .feedback-date {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--ink-mute);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
 }
 
 .order-amount {
   font-family: var(--font-num);
-  font-size: 18px;
+  font-size: 36rpx;
   color: var(--ink);
-  letter-spacing: -0.3px;
+  letter-spacing: 0;
 }
 
 .order-detail {
   display: block;
-  margin-top: 6px;
-  font-size: 12px;
-  color: var(--accent);
-  font-weight: 500;
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: var(--ink-soft);
+  font-weight: 800;
 }
 
 .feedback-comment {
   display: block;
-  margin-top: 6px;
+  margin-top: 12rpx;
   font-family: var(--font-serif);
-  font-size: 13px;
+  font-size: 26rpx;
   color: var(--ink);
   line-height: 1.6;
-  letter-spacing: 0.2px;
+  letter-spacing: 0rpx;
+}
+
+.feedback-card {
+  transition: transform 0.16s ease, background 0.16s ease;
+}
+
+.feedback-card:active {
+  transform: scale(0.99);
+  background: var(--paper-warm);
 }

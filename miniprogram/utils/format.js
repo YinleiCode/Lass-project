@@ -5,7 +5,12 @@ const format = {
   // 内部:把任意输入转成合法 Date 对象,失败返回 null
   _toDate(d) {
     if (d === null || d === undefined || d === '') return null
-    const date = new Date(d)
+    const normalized = typeof d === 'string'
+      ? d
+        .replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$1/$2/$3')
+        .replace(/^(\d{4})-(\d{2})-(\d{2})\s+/, '$1/$2/$3 ')
+      : d
+    const date = new Date(normalized)
     return isNaN(date.getTime()) ? null : date
   },
 
@@ -72,7 +77,7 @@ const format = {
 
   // 获取本周起止日期
   getWeekRange(date) {
-    const d = new Date(date)
+    const d = this._toDate(date) || new Date()
     const day = d.getDay() || 7 // 周日=7
     const monday = new Date(d)
     monday.setDate(d.getDate() - day + 1)

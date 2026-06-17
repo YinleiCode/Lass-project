@@ -8,12 +8,14 @@
       </view>
     </view>
     <view class="meta">
-      <text class="phone">{{student.parent_phone}}</text>
-      <text class="date">{{student.enroll_date}}</text>
+      <text class="phone">{{student.parent_phone || '未填写手机号'}}</text>
+      <text class="date">{{student.enroll_date || '未记录入学日期'}}</text>
+      <text wx:if="{{showOwner && student.ownerText}}" class="owner">{{student.ownerText}}</text>
     </view>
   </view>
   <view class="balance {{balanceClass}}">
     <text class="num">{{remaining}}</text>
     <text class="unit">节</text>
   </view>
+  <text class="card-arrow">›</text>
 </view>

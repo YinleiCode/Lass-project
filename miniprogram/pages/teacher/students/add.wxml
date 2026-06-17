@@ -26,12 +26,12 @@
       <text class="label">标签</text>
       <view class="tag-input-row">
         <input class="input" placeholder="输入标签" value="{{tagInput}}" bindinput="onTagInput" />
-        <button class="btn-secondary small" bindtap="addTag">添加</button>
+        <button class="btn-secondary small" bindtap="addTag" disabled="{{loading}}">添加</button>
       </view>
       <view class="tag-row" wx:if="{{tags.length}}">
         <view class="tag-item" wx:for="{{tags}}" wx:key="*this">
           <text>{{item}}</text>
-          <text class="tag-close" bindtap="removeTag" data-tag="{{item}}">✕</text>
+          <text class="tag-close" bindtap="removeTag" data-tag="{{item}}">×</text>
         </view>
       </view>
     </view>
@@ -42,7 +42,7 @@
     </view>
   </view>
 
-  <button class="btn-primary save-btn" bindtap="onSave" loading="{{loading}}">
+  <button class="btn-primary save-btn" bindtap="onSave" loading="{{loading}}" disabled="{{loading}}">
     {{isEdit ? '保存修改' : '保存'}}
   </button>
 </view>

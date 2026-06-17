@@ -3,8 +3,8 @@
   <view class="week-nav" wx:if="{{weekInfo}}">
     <view class="nav-btn" bindtap="prevWeek">‹</view>
     <view class="week-label" bindtap="goToday">
-      {{weekInfo.start}} ~ {{weekInfo.end}}
-      <text class="today-btn"> 今天</text>
+      <text class="week-date">{{weekInfo.start}} ~ {{weekInfo.end}}</text>
+      <text class="today-btn">今天</text>
     </view>
     <view class="nav-btn" bindtap="nextWeek">›</view>
   </view>
@@ -27,47 +27,51 @@
   <view class="day-schedules">
     <view class="section-title">
       <text>{{selectedDateLabel}}</text>
+      <view class="schedule-add-btn" bindtap="showCreate">＋排课</view>
     </view>
 
-    <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+    <view wx:if="{{loading}}" class="empty-state">正在整理课表...</view>
 
     <view wx:elif="{{!groupedSchedules[selectedDate] || groupedSchedules[selectedDate].length === 0}}" class="empty-state">
-      <text class="empty-text">当天没有课程</text>
+      <text class="empty-text">今天留白，暂无排课。</text>
     </view>
 
     <view wx:else>
-      <view class="schedule-card" wx:for="{{groupedSchedules[selectedDate]}}" wx:key="_id">
-        <view class="card-header">
+      <view class="schedule-card {{item.status || ''}}" wx:for="{{groupedSchedules[selectedDate]}}" wx:key="_id">
+        <view class="schedule-card-main">
           <text class="card-time">{{item.time_str || '--:--'}}</text>
-          <text class="card-status {{item.status || ''}}">{{item.status_label}}</text>
-        </view>
-        <view class="card-body">
           <text class="card-students">{{item.student_names || item.package_name || '课程'}}</text>
-          <text class="card-classroom" wx:if="{{item.classroom}}">{{item.classroom}}</text>
+          <view class="card-meta-row">
+            <text class="card-chip">{{item.class_display || item.class_type_label || '课程'}}</text>
+            <text class="card-chip" wx:if="{{item.duration_text}}">{{item.duration_text}}</text>
+            <text class="card-chip">{{item.delivery_mode_label || '线下课'}}</text>
+          </view>
+          <text class="card-classroom">授课老师：{{item.teacher_name || '授课老师'}}{{item.classroom ? ' · ' + item.classroom : ''}}</text>
         </view>
-        <view class="card-actions">
-          <button wx:if="{{item.status === 'pending'}}" class="btn-primary small" data-id="{{item._id}}" bindtap="goCheckin">点名</button>
-          <button wx:if="{{item.status === 'done'}}" class="btn-secondary small" data-id="{{item._id}}" bindtap="goFeedback">反馈</button>
+        <view class="schedule-card-side">
+          <text class="card-status {{item.status || ''}}">{{item.status_label}}</text>
+          <view wx:if="{{item.status === 'pending'}}" class="schedule-action-pill checkin" data-id="{{item._id}}" bindtap="goCheckin">
+            <text>点名</text>
+            <text class="action-arrow">›</text>
+          </view>
+          <view wx:if="{{item.status === 'done'}}" class="schedule-action-pill feedback" data-id="{{item._id}}" bindtap="goFeedback">
+            <text>反馈</text>
+            <text class="action-arrow">›</text>
+          </view>
         </view>
       </view>
     </view>
   </view>
-
-  <!-- 浮动排课按钮 -->
-  <view class="fab" bindtap="showCreate">
-    <text>+</text>
-  </view>
-
   <!-- 排课弹窗 -->
   <view class="modal-mask" wx:if="{{showCreateModal}}" bindtap="hideCreate"></view>
   <view class="modal" wx:if="{{showCreateModal}}">
     <view class="modal-header">
-      <text>新增排课</text>
+      <text>写入排课</text>
       <text class="close" bindtap="hideCreate">✕</text>
     </view>
     <view class="modal-body">
       <view class="form-item">
-        <text class="label">排课类型</text>
+        <text class="label">排课方式</text>
         <radio-group bindchange="onScheduleTypeChange">
           <label class="radio-label"><radio value="0" checked="{{scheduleType === 'once'}}" /> 单次</label>
           <label class="radio-label"><radio value="1" checked="{{scheduleType === 'recurring'}}" /> 每周固定</label>
@@ -75,27 +79,32 @@
       </view>
 
       <view class="form-item">
-        <text class="label">学员</text>
-        <view class="student-check-list">
+        <text class="label">声音学员</text>
+        <view wx:if="{{students.length === 0}}" class="picker disabled">暂无学员，请先添加学员</view>
+        <view wx:else class="student-check-list">
           <view class="check-item" wx:for="{{students}}" wx:key="_id" data-id="{{item._id}}" bindtap="onStudentToggle">
-            <text>{{item.name}}</text>
+            <view class="check-info">
+              <text class="check-name">{{item.name}}</text>
+              <text class="check-sub">总余课 {{item.remaining || 0}} 节</text>
+            </view>
             <text class="check-mark {{item.checked ? 'checked' : ''}}">✓</text>
           </view>
         </view>
       </view>
 
       <view class="form-item">
-        <text class="label">课程包</text>
+        <text class="label">课时档案</text>
         <picker
-          wx:if="{{packages.length > 0}}"
+          wx:if="{{selectedStudents.length > 0 && packages.length > 0}}"
           bindchange="onPackageChange"
           range="{{packages}}"
-          range-key="name"
-          value="{{packageIndex || 0}}"
+          range-key="displayName"
+          value="{{packageIndex >= 0 ? packageIndex : 0}}"
         >
-          <view class="picker">{{packages[packageIndex] ? packages[packageIndex].name : '请选择课程包'}}</view>
+          <view class="picker">{{packages[packageIndex] ? packages[packageIndex].displayName : '请选择课程包'}}</view>
         </picker>
-        <view wx:else class="picker disabled">暂无课程包，请先到「我的」→「课程包管理」添加</view>
+        <view wx:else class="picker disabled">{{packageHint}}</view>
+        <text class="form-tip" wx:if="{{selectedStudents.length > 0}}">{{packageHint}}</text>
       </view>
 
       <view class="form-item">
@@ -113,8 +122,37 @@
       </view>
 
       <view class="form-item">
+        <text class="label">班型</text>
+        <picker bindchange="onClassTypeChange" range="{{scheduleClassTypes}}" range-key="label" value="{{classTypeIndex}}">
+          <view class="picker">{{classTypeLabel}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">上课方式</text>
+        <picker bindchange="onDeliveryModeChange" range="{{deliveryModes}}" range-key="label" value="{{deliveryModeIndex}}">
+          <view class="picker">{{deliveryModeLabel}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">授课老师</text>
+        <picker
+          wx:if="{{isAdmin && teachers.length > 0}}"
+          bindchange="onTeacherChange"
+          range="{{teachers}}"
+          range-key="name"
+          value="{{teacherIndex >= 0 ? teacherIndex : 0}}"
+        >
+          <view class="picker">{{teacherName || '请选择授课老师'}}</view>
+        </picker>
+        <view wx:elif="{{teachers.length > 0}}" class="picker readonly">{{teacherName || teachers[0].name || '授课老师'}}</view>
+        <view wx:else class="picker disabled">暂无授课老师</view>
+      </view>
+
+      <view class="form-item">
         <text class="label">教室(选填)</text>
-        <input class="input" placeholder="如：1号教室" value="{{classroom}}" bindinput="onClassroomInput" />
+        <input class="input" placeholder="如：一号教室" value="{{classroom}}" bindinput="onClassroomInput" />
       </view>
 
       <view class="form-item" wx:if="{{scheduleType === 'recurring'}}">
@@ -126,7 +164,7 @@
     </view>
 
     <view class="modal-footer">
-      <button class="btn-primary" bindtap="onCreateSchedule" loading="{{submitting}}">保存</button>
+      <button class="btn-primary" bindtap="onCreateSchedule" loading="{{submitting}}" disabled="{{submitting || selectedStudents.length === 0 || packages.length === 0}}">保存排课</button>
     </view>
   </view>
 </view>

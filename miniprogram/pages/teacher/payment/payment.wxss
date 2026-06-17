@@ -2,20 +2,58 @@
  *  teacher/payment — 缴费登记
  * ============================================================ */
 
-.form {
-  background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 16px;
+.payment-hero {
+  background:
+    radial-gradient(circle at 82% 16%, rgba(237, 167, 219, 0.52) 0, transparent 230rpx),
+    radial-gradient(circle at 14% 86%, rgba(255, 255, 255, 0.78) 0, transparent 260rpx),
+    linear-gradient(145deg, rgba(255, 246, 252, 0.94), rgba(244, 235, 241, 0.80));
+  border-radius: 38rpx;
+  padding: 34rpx 34rpx 40rpx;
+  margin-bottom: 24rpx;
+  position: relative;
   overflow: hidden;
-  margin-bottom: 18px;
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.78), 0 18rpx 42rpx rgba(181, 107, 162, 0.08);
+  backdrop-filter: blur(16rpx);
+}
+
+.payment-hero::before {
+  content: "";
+  position: absolute;
+  right: -86rpx;
+  top: -106rpx;
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(34, 0, 22, 0.08);
+}
+
+.payment-title {
+  display: block;
+  margin: 14rpx 0 12rpx;
+  font-size: 46rpx;
+  line-height: 1.1;
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.form {
+  background: rgba(255, 255, 255, 0.72);
+  border: none;
+  border-radius: 34rpx;
+  overflow: hidden;
+  margin-bottom: 36rpx;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 12rpx 32rpx rgba(181, 107, 162, 0.08);
+  backdrop-filter: blur(14rpx);
 }
 
 .form-item {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 28rpx 36rpx;
+  border-bottom: 2rpx solid var(--line-soft);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12rpx;
 }
 
 .form-item:last-child {
@@ -24,44 +62,60 @@
 
 .form-item .label {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--ink-mute);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
   text-transform: uppercase;
 }
 
 .form-item .input,
 .form-item .picker {
-  font-size: 15px;
+  font-size: 30rpx;
   color: var(--ink);
-  padding: 6px 0;
-  background: transparent;
+  padding: 18rpx 22rpx;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(255, 255, 255, 0.86), transparent 160rpx),
+    rgba(255, 240, 250, 0.50);
   border: none;
+  border-radius: 24rpx;
   outline: none;
-  min-height: 24px;
+  min-height: 76rpx;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* === 余额预览(暖橙提示) === */
+.form-item .picker.disabled {
+  color: var(--ink-mute);
+  font-size: 24rpx;
+  line-height: 1.55;
+  word-break: break-all;
+}
+
+/* === 余额预览 === */
 .preview {
-  background: linear-gradient(135deg, #FFF4E6 0%, #FED7AA 100%);
-  border: 1px solid var(--warn-border);
-  border-radius: 14px;
-  padding: 14px 18px;
-  margin-bottom: 18px;
-  text-align: center;
-  font-size: 13px;
-  color: var(--warn-text);
-  letter-spacing: 0.3px;
+  background:
+    radial-gradient(circle at 88% 10%, rgba(237, 167, 219, 0.42) 0, transparent 220rpx),
+    rgba(255, 255, 255, 0.72);
+  border: none;
+  border-radius: 32rpx;
+  padding: 28rpx 36rpx;
+  margin-bottom: 36rpx;
+  font-size: 26rpx;
+  color: var(--ink);
+  letter-spacing: 1rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
 }
 
 .preview text {
-  font-size: 13px;
+  font-size: 26rpx;
+  line-height: 1.45;
+  color: var(--ink-soft);
 }
 
 /* === 保存按钮 === */
 .save-btn {
   width: 100%;
-  letter-spacing: 2px;
+  letter-spacing: 4rpx;
 }

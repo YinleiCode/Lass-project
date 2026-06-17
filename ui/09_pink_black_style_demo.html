@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>颂恩艺术 · 粉黑疗愈风 UI 演示</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper: #fbf8f7;
+    --paper-2: #f2f2f4;
+    --ink: #220016;
+    --ink-2: #3d1930;
+    --muted: #8d8089;
+    --pink: #eda7db;
+    --pink-2: #f7d4ed;
+    --pink-3: #fff0fa;
+    --line: #eee7ec;
+    --green: #cfe8cf;
+    --warn: #ffe0af;
+    --shadow: 0 18px 40px rgba(34, 0, 22, .12);
+    --radius-lg: 34px;
+    --radius-md: 24px;
+    --radius-sm: 18px;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(237,167,219,.34), transparent 26%),
+      radial-gradient(circle at 86% 80%, rgba(255,240,250,.9), transparent 28%),
+      #dddfe5;
+    color: var(--ink);
+    padding: 42px 28px;
+    overflow-x: hidden;
+  }
+
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -12%;
+    pointer-events: none;
+    background:
+      repeating-radial-gradient(ellipse at 30% 40%, transparent 0 78px, rgba(255,255,255,.62) 79px 80px);
+    opacity: .55;
+  }
+
+  body::after {
+    background:
+      linear-gradient(112deg, transparent 0 46%, rgba(255,255,255,.52) 46.2% 46.5%, transparent 46.8% 100%);
+    opacity: .8;
+  }
+
+  .stage {
+    position: relative;
+    z-index: 1;
+    max-width: 1260px;
+    margin: 0 auto;
+  }
+
+  .headline {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    align-items: end;
+    margin-bottom: 34px;
+  }
+
+  .headline h1 {
+    font-size: clamp(34px, 5vw, 74px);
+    line-height: .92;
+    letter-spacing: -3px;
+    max-width: 780px;
+  }
+
+  .headline p {
+    color: var(--ink-2);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 320px;
+  }
+
+  .phones {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(280px, 390px));
+    gap: 28px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .phone {
+    width: min(100%, 390px);
+    height: 812px;
+    background: #09070a;
+    border-radius: 48px;
+    padding: 12px;
+    box-shadow:
+      0 28px 80px rgba(34,0,22,.35),
+      inset 0 0 0 1px rgba(255,255,255,.12);
+    position: relative;
+  }
+
+  .phone:nth-child(1) { transform: translateY(34px) rotate(-2.5deg); }
+  .phone:nth-child(2) { transform: translateY(-8px); z-index: 2; }
+  .phone:nth-child(3) { transform: translateY(34px) rotate(2.5deg); }
+
+  .screen {
+    height: 100%;
+    border-radius: 38px;
+    background: var(--paper);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .notch {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 102px;
+    height: 28px;
+    border-radius: 99px;
+    background: #050305;
+    z-index: 6;
+  }
+
+  .content {
+    height: 100%;
+    overflow: hidden;
+    padding: 62px 22px 92px;
+    position: relative;
+  }
+
+  .hero-line {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .7;
+  }
+
+  .hero-line::before {
+    content: "";
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border: 2px solid rgba(34,0,22,.12);
+    border-radius: 50%;
+    right: -60px;
+    top: 86px;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 22px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .title {
+    font-size: 48px;
+    line-height: .94;
+    letter-spacing: -2px;
+    font-weight: 900;
+  }
+
+  .hello {
+    display: inline-block;
+    transform: translateY(-2px);
+  }
+
+  .round-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    border: 0;
+    background: var(--ink);
+    color: white;
+    font-size: 21px;
+    box-shadow: var(--shadow);
+  }
+
+  .search {
+    height: 58px;
+    border-radius: 24px;
+    background: #f0eff1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 18px;
+    color: #716870;
+    margin-bottom: 22px;
+    box-shadow: inset 0 -8px 18px rgba(255,255,255,.75);
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .soft-card {
+    border: 0;
+    border-radius: var(--radius-md);
+    background: #f4f3f4;
+    padding: 20px 18px;
+    min-height: 168px;
+    box-shadow: 0 16px 30px rgba(34,0,22,.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .soft-card.pink { background: var(--pink-3); }
+  .soft-card.dark {
+    background: var(--ink);
+    color: white;
+  }
+
+  .card-title {
+    font-size: 28px;
+    line-height: 1.02;
+    letter-spacing: -1px;
+    font-weight: 850;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    border-radius: 99px;
+    padding: 0 14px;
+    background: white;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 750;
+  }
+
+  .play {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 0;
+    background: var(--pink);
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    box-shadow: 0 10px 18px rgba(237,167,219,.4);
+  }
+
+  .card-bottom {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 68px;
+    min-height: 256px;
+    background: var(--ink);
+    color: white;
+    border-radius: 34px 34px 0 0;
+    padding: 25px 20px 28px;
+  }
+
+  .handle {
+    width: 56px;
+    height: 5px;
+    border-radius: 99px;
+    background: rgba(255,255,255,.8);
+    margin: -16px auto 18px;
+  }
+
+  .sheet-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .sheet-title {
+    font-size: 25px;
+    font-weight: 850;
+    letter-spacing: -1px;
+  }
+
+  .see {
+    color: rgba(255,255,255,.76);
+    font-size: 14px;
+  }
+
+  .lesson {
+    background: #f5f3f5;
+    color: var(--ink);
+    border-radius: 22px;
+    padding: 16px;
+    margin-bottom: 13px;
+  }
+
+  .lesson-title {
+    font-size: 17px;
+    font-weight: 760;
+    margin-bottom: 14px;
+  }
+
+  .lesson-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .bottom-nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 76px;
+    background: #fff;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    padding: 0 20px 8px;
+    z-index: 5;
+    box-shadow: 0 -12px 32px rgba(34,0,22,.08);
+  }
+
+  .nav-i {
+    display: grid;
+    place-items: center;
+    gap: 3px;
+    color: var(--ink);
+    font-size: 24px;
+  }
+
+  .nav-i span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ink);
+  }
+
+  .illustration {
+    height: 265px;
+    border-bottom: 1px solid var(--ink);
+    margin: -10px -22px 26px;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sofa {
+    position: absolute;
+    width: 216px;
+    height: 86px;
+    border-radius: 34px 34px 16px 16px;
+    background: var(--pink);
+    bottom: 30px;
+    left: 112px;
+  }
+
+  .person {
+    position: absolute;
+    left: 130px;
+    bottom: 86px;
+    width: 130px;
+    height: 76px;
+    border-radius: 80px 80px 20px 20px;
+    border: 4px solid var(--ink);
+    border-bottom: 0;
+    transform: rotate(-12deg);
+    background: #fff;
+  }
+
+  .lamp {
+    position: absolute;
+    left: 34px;
+    top: 46px;
+    width: 70px;
+    height: 80px;
+    border: 2px solid var(--ink);
+    clip-path: polygon(30% 0, 70% 0, 100% 80%, 0 80%);
+  }
+
+  .start-title {
+    font-size: 31px;
+    line-height: 1.04;
+    letter-spacing: -1px;
+    font-weight: 900;
+    margin-bottom: 20px;
+  }
+
+  .cta {
+    height: 64px;
+    border-radius: 99px;
+    border: 0;
+    background: var(--ink);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 28px;
+    font-size: 21px;
+    font-weight: 800;
+    width: 255px;
+  }
+
+  .cta b {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--pink);
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    font-size: 28px;
+  }
+
+  .mood-page {
+    background: #f9dff3;
+  }
+
+  .face-wrap {
+    position: relative;
+    height: 505px;
+    display: grid;
+    place-items: center;
+  }
+
+  .face {
+    width: 278px;
+    height: 278px;
+    border-radius: 50%;
+    background: var(--pink);
+    position: relative;
+  }
+
+  .face::before {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 140px;
+    left: 48px;
+    top: -78px;
+    border-top: 7px solid var(--ink);
+    border-radius: 70% 70% 0 0;
+    transform: rotate(-8deg);
+  }
+
+  .eyes {
+    position: absolute;
+    left: 70px;
+    top: 92px;
+    width: 138px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .eyes i {
+    width: 42px;
+    height: 18px;
+    border-bottom: 5px solid var(--ink);
+    border-radius: 0 0 99px 99px;
+  }
+
+  .nose {
+    position: absolute;
+    left: 126px;
+    top: 122px;
+    width: 30px;
+    height: 76px;
+    border-left: 5px solid var(--ink);
+    border-bottom: 5px solid var(--ink);
+    border-radius: 0 0 0 18px;
+  }
+
+  .mouth {
+    position: absolute;
+    width: 76px;
+    height: 36px;
+    border-bottom: 5px solid var(--ink);
+    border-radius: 0 0 99px 99px;
+    left: 102px;
+    bottom: 58px;
+  }
+
+  .calendar-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 292px;
+    border-radius: 34px 34px 0 0;
+    background: var(--ink);
+    color: white;
+    padding: 32px 20px;
+  }
+
+  .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .day {
+    color: rgba(255,255,255,.75);
+    font-size: 14px;
+  }
+
+  .day strong {
+    display: block;
+    color: white;
+    font-size: 25px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .day.active strong { color: var(--pink); }
+
+  .track {
+    height: 3px;
+    background: rgba(255,255,255,.78);
+    position: relative;
+    margin: 12px 10px 30px;
+  }
+
+  .track::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--pink);
+    right: 88px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .moods {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .mood {
+    height: 56px;
+    border-radius: 99px;
+    background: #fff;
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    font-weight: 750;
+  }
+
+  .mood.active { background: var(--pink); }
+
+  .mini-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .student-strip {
+    display: flex;
+    gap: 10px;
+    margin: 18px 0;
+  }
+
+  .chip {
+    min-height: 42px;
+    border-radius: 99px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    background: #f0eef0;
+    font-weight: 800;
+  }
+
+  .chip.active {
+    background: var(--pink);
+  }
+
+  .check-card {
+    background: #f1eff2;
+    border-radius: 24px;
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 12px 24px rgba(34,0,22,.08);
+  }
+
+  .student-name {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 14px;
+  }
+
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+  }
+
+  .status {
+    height: 45px;
+    border-radius: 99px;
+    background: white;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 14px;
+  }
+
+  .status.active { background: var(--ink); color: white; }
+
+  .submit-bar {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 92px;
+    height: 70px;
+    border-radius: 99px;
+    background: var(--ink);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px 0 24px;
+    font-size: 18px;
+    font-weight: 850;
+    box-shadow: var(--shadow);
+  }
+
+  .submit-bar b {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--pink);
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+  }
+
+  @media (max-width: 1050px) {
+    .phones { grid-template-columns: 1fr; }
+    .phone,
+    .phone:nth-child(1),
+    .phone:nth-child(2),
+    .phone:nth-child(3) {
+      transform: none;
+      margin: 0 auto;
+    }
+    .headline { display: block; }
+    .headline p { margin-top: 16px; }
+  }
+</style>
+</head>
+<body>
+  <main class="stage">
+    <section class="headline">
+      <div>
+        <h1>颂恩艺术<br>粉黑疗愈风</h1>
+      </div>
+      <p>把参考图里的奶油白、深葡萄黑、粉色圆形、线描插画和大圆角卡片，转成课程管理小程序的老师端和家长端界面。</p>
+    </section>
+
+    <section class="phones">
+      <article class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="content">
+            <div class="illustration">
+              <div class="lamp"></div>
+              <div class="sofa"></div>
+              <div class="person"></div>
+            </div>
+            <div class="student-strip">
+              <span class="chip active">播音</span>
+              <span class="chip">主持</span>
+              <span class="chip">朗诵</span>
+            </div>
+            <h2 class="start-title">Elevate Your<br>Voice Class Journey</h2>
+            <button class="cta">Get Started <b>↗</b></button>
+          </div>
+        </div>
+      </article>
+
+      <article class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="hero-line"></div>
+          <div class="content">
+            <div class="top">
+              <h2 class="title"><span class="hello">Hello,</span><br>王老师 👋</h2>
+              <button class="round-btn">♬</button>
+            </div>
+            <div class="search">⌕ <span>Search student or lesson</span></div>
+            <div class="grid-2">
+              <div class="soft-card">
+                <div class="card-title">今日<br>待上</div>
+                <div class="card-bottom">
+                  <span class="pill">4 节课</span>
+                  <button class="play">▶</button>
+                </div>
+              </div>
+              <div class="soft-card pink">
+                <div class="card-title">课时<br>预警</div>
+                <div class="card-bottom">
+                  <span class="pill">3 人</span>
+                  <button class="play">▶</button>
+                </div>
+              </div>
+            </div>
+            <div class="sheet">
+              <div class="handle"></div>
+              <div class="sheet-head">
+                <div class="sheet-title">Practices</div>
+                <div class="see">See All ›</div>
+              </div>
+              <div class="lesson">
+                <div class="lesson-title">16:00 少儿主持基础班</div>
+                <div class="lesson-row">
+                  <span class="pill" style="background:var(--ink);color:white;">45 min</span>
+                  <span class="pill">点名</span>
+                  <button class="play">▶</button>
+                </div>
+              </div>
+              <div class="lesson">
+                <div class="lesson-title">18:30 朗诵表达一对一</div>
+                <div class="lesson-row">
+                  <span class="pill" style="background:var(--ink);color:white;">60 min</span>
+                  <span class="pill">反馈</span>
+                  <button class="play">▶</button>
+                </div>
+              </div>
+            </div>
+            <nav class="bottom-nav">
+              <div class="nav-i">⌂<span></span></div>
+              <div class="nav-i">▷</div>
+              <div class="nav-i">▤</div>
+              <div class="nav-i">⚙</div>
+            </nav>
+          </div>
+        </div>
+      </article>
+
+      <article class="phone">
+        <div class="notch"></div>
+        <div class="screen mood-page">
+          <div class="content">
+            <button class="round-btn" style="position:absolute;left:20px;top:58px;width:38px;height:38px;">←</button>
+            <div class="face-wrap">
+              <div class="face">
+                <div class="eyes"><i></i><i></i></div>
+                <div class="nose"></div>
+                <div class="mouth"></div>
+              </div>
+            </div>
+            <div class="calendar-panel">
+              <div class="days">
+                <div class="day"><strong>2</strong>Fri</div>
+                <div class="day"><strong>3</strong>Sat</div>
+                <div class="day"><strong>4</strong>Sun</div>
+                <div class="day active"><strong>5</strong>Mon</div>
+                <div class="day"><strong>6</strong>Tue</div>
+                <div class="day"><strong>7</strong>Wed</div>
+                <div class="day"><strong>8</strong>Thu</div>
+              </div>
+              <div class="track"></div>
+              <div class="moods">
+                <div class="mood">请假</div>
+                <div class="mood active">已到课</div>
+                <div class="mood">缺席</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

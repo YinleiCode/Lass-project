@@ -2,39 +2,81 @@
  *  parent/records — 上课记录(反馈列表)
  * ============================================================ */
 
+.records-hero {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(237, 167, 219, 0.58) 0, transparent 210rpx),
+    linear-gradient(145deg, rgba(255, 240, 250, 0.92), rgba(246, 250, 250, 0.78));
+  border-radius: 38rpx;
+  padding: 34rpx 34rpx 32rpx;
+  margin-bottom: 24rpx;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.78), 0 18rpx 42rpx rgba(181, 107, 162, 0.08);
+}
+
+.records-hero::before {
+  content: "";
+  position: absolute;
+  right: -84rpx;
+  top: -110rpx;
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(108, 45, 88, 0.08);
+}
+
+.records-title {
+  display: block;
+  margin-top: 14rpx;
+  font-size: 44rpx;
+  line-height: 1.1;
+  font-weight: 900;
+  color: var(--ink);
+  position: relative;
+  z-index: 1;
+}
+
+.records-hero .art-kicker {
+  position: relative;
+  z-index: 1;
+}
+
 /* === 筛选 Tabs === */
 .filter-bar {
   display: flex;
-  background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 100px;
-  padding: 4px;
-  margin-bottom: 18px;
-  gap: 4px;
+  background: rgba(255, 255, 255, 0.62);
+  border: none;
+  border-radius: 999rpx;
+  padding: 6rpx;
+  margin-bottom: 28rpx;
+  gap: 8rpx;
+  box-shadow: inset 0 0 0 2rpx rgba(108, 45, 88, 0.04), 0 12rpx 30rpx rgba(181, 107, 162, 0.06);
+  backdrop-filter: blur(16rpx);
 }
 
 .filter-item {
   flex: 1;
   text-align: center;
-  padding: 8px 0;
-  font-size: 12px;
-  font-weight: 500;
+  padding: 14rpx 0;
+  font-size: 24rpx;
+  font-weight: 800;
   color: var(--ink-soft);
-  border-radius: 100px;
-  letter-spacing: 0.5px;
-  transition: all 0.15s;
+  border-radius: 20rpx;
+  letter-spacing: 1rpx;
+  transition: all 0.2s ease-in-out;
 }
 
 .filter-item.active {
-  background: var(--ink);
-  color: var(--paper);
+   background: linear-gradient(145deg, rgba(237, 167, 219, 0.82), rgba(255, 240, 250, 0.92));
+   color: var(--ink);
+   box-shadow: 0 8rpx 20rpx rgba(181, 107, 162, 0.12);
 }
 
 /* === 时间线列表 === */
 .record-item {
   display: flex;
-  gap: 14px;
-  padding: 16px 0;
+  gap: 24rpx;
+  padding: 22rpx 0;
   position: relative;
 }
 
@@ -42,11 +84,11 @@
 .record-item::before {
   content: "";
   position: absolute;
-  left: 5px;
-  top: 32px;
-  bottom: -16px;
-  width: 1px;
-  background: var(--line);
+  left: 11rpx;
+  top: 56rpx;
+  bottom: -28rpx;
+  width: 2rpx;
+  background: var(--accent-soft);
 }
 
 .record-item:last-child::before {
@@ -54,30 +96,27 @@
 }
 
 .record-dot {
-  width: 11px;
-  height: 11px;
+  width: 22rpx;
+  height: 22rpx;
   border-radius: 50%;
-  background: var(--cream);
-  border: 2.5px solid var(--accent);
+  background: rgba(255, 255, 255, 0.92);
+  border: 5rpx solid var(--accent);
   flex-shrink: 0;
-  margin-top: 5px;
+  margin-top: 10rpx;
   position: relative;
   z-index: 1;
-  box-shadow: 0 0 0 4px rgba(44, 82, 130, 0.08);
-}
-
-.record-dot.green {
-  border-color: var(--green);
-  box-shadow: 0 0 0 4px rgba(77, 124, 15, 0.12);
+  box-shadow: 0 0 0 8rpx rgba(237, 167, 219, 0.18);
 }
 
 .record-content {
   flex: 1;
-  background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.72);
+  border: none;
+  box-shadow: 0 12rpx 32rpx rgba(181, 107, 162, 0.06);
+  border-radius: 32rpx;
+  padding: 24rpx 28rpx;
   min-width: 0;
+  backdrop-filter: blur(14rpx);
 }
 
 .record-content:active {
@@ -86,37 +125,45 @@
 
 .record-date {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--ink-mute);
-  letter-spacing: 1px;
+  letter-spacing: 2rpx;
   text-transform: uppercase;
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 16rpx;
+}
+
+.record-title {
+  display: block;
+  font-size: 26rpx;
+  color: var(--ink-soft);
+  margin-bottom: 10rpx;
+  letter-spacing: 1rpx;
 }
 
 .record-comment {
   display: block;
   font-family: var(--font-serif);
-  font-size: 14px;
+  font-size: 28rpx;
   color: var(--ink);
   line-height: 1.6;
-  letter-spacing: 0.3px;
-  margin-bottom: 10px;
+  letter-spacing: 1rpx;
+  margin-bottom: 16rpx;
 }
 
 .record-tags {
   display: flex;
-  gap: 6px;
+  gap: 12rpx;
   flex-wrap: wrap;
 }
 
 .record-tags .tag {
   background: var(--accent-bg);
-  color: var(--accent);
-  border: 1px solid var(--accent-soft);
-  padding: 3px 9px;
-  border-radius: 100px;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
+  color: var(--ink);
+  border: none;
+  padding: 6rpx 18rpx;
+  border-radius: 200rpx;
+  font-size: 20rpx;
+  font-weight: 800;
+  letter-spacing: 1rpx;
 }

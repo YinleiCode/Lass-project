@@ -1,28 +1,32 @@
 <view class="container identity-page">
-  <view class="logo">🎤</view>
-  <text class="title">课程管理</text>
-  <text class="subtitle">播音主持培训助手</text>
+  <image class="identity-hero-img" src="/images/hero-start.png" mode="aspectFit"></image>
+  <text class="art-kicker identity-kicker">颂恩艺术 · VOICE ATELIER</text>
+  <text class="title">进入颂恩</text>
+  <text class="title">声音工作室</text>
+  <text class="subtitle">选一个入口，继续今天的声场手账</text>
 
   <view wx:if="{{showInviteForm}}" class="invite-form">
     <text class="form-title">输入邀请码</text>
     <text class="form-desc">请联系管理员获取邀请码</text>
-    <input class="input" placeholder="6位数字邀请码" maxlength="6" type="number" bindinput="onCodeInput" />
+    <input class="input" placeholder="8位邀请码" maxlength="8" bindinput="onCodeInput" />
     <input class="input" placeholder="您的姓名" bindinput="onNameInput" />
-    <button class="btn-primary" bindtap="onVerifyCode" loading="{{verifying}}">验证并注册</button>
-    <button class="btn-link" bindtap="cancelInviteForm">返回</button>
+    <button class="btn-primary" bindtap="onVerifyCode" loading="{{verifying}}" disabled="{{verifying || bootstrapping}}">验证并注册</button>
+    <button class="btn-link" bindtap="cancelInviteForm" disabled="{{verifying || bootstrapping}}">返回</button>
   </view>
 
   <view class="role-cards" wx:else>
     <view class="role-card" bindtap="selectTeacher">
-      <text class="role-icon">👨‍🏫</text>
-      <text class="role-name">我是老师</text>
-      <text class="role-desc">管理学员、排课、点名</text>
+      <text class="role-index">01</text>
+      <text class="role-icon">♬</text>
+      <text class="role-name">校长 / 老师入口</text>
+      <text class="role-desc">排课、点名与今日课时</text>
     </view>
 
     <view class="role-card" bindtap="selectParent">
-      <text class="role-icon">👨‍👩‍👧</text>
-      <text class="role-name">我是家长</text>
-      <text class="role-desc">查看孩子学习情况</text>
+      <text class="role-index">02</text>
+      <text class="role-icon">◌</text>
+      <text class="role-name">家长 / 学员入口</text>
+      <text class="role-desc">课时、反馈与成长回声</text>
     </view>
   </view>
 

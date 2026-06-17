@@ -1,0 +1,38 @@
+<svg width="680" height="360" viewBox="0 0 680 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="680" height="360" rx="46" fill="#FFFFFF"/>
+
+  <!-- room details -->
+  <path d="M74 86L112 24H154L192 86H74Z" fill="#FFFFFF" stroke="#220016" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M133 86V292" stroke="#220016" stroke-width="5" stroke-linecap="round"/>
+  <path d="M103 292H163" stroke="#220016" stroke-width="5" stroke-linecap="round"/>
+  <rect x="510" y="28" width="112" height="78" rx="2" fill="#FFFFFF" stroke="#220016" stroke-width="4"/>
+  <path d="M525 43L608 91M608 43L525 91" stroke="#220016" stroke-width="2.5" opacity=".42"/>
+
+  <!-- couch -->
+  <path d="M152 247H524C546 247 564 265 564 287V306H112V287C112 265 130 247 152 247Z" fill="#EDA7DB"/>
+  <path d="M112 287H564" stroke="#220016" stroke-width="8" stroke-linecap="round"/>
+  <path d="M138 306V330M536 306V330" stroke="#220016" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="306" cy="275" r="12" fill="#FFFFFF" stroke="#220016" stroke-width="3"/>
+  <circle cx="488" cy="275" r="12" fill="#FFFFFF" stroke="#220016" stroke-width="3"/>
+
+  <!-- person head -->
+  <path d="M384 132C407 96 456 86 492 112C527 138 526 192 491 217C456 242 399 229 379 191C368 170 370 153 384 132Z" fill="#FFFFFF" stroke="#220016" stroke-width="5"/>
+  <path d="M459 101C482 83 513 92 524 119C494 122 475 116 459 101Z" fill="#220016"/>
+  <path d="M415 160C433 175 457 174 475 157" stroke="#220016" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="485" cy="151" r="5" fill="#220016"/>
+
+  <!-- body as one soft line -->
+  <path d="M377 204C340 194 297 185 251 184C213 184 174 197 139 219" stroke="#220016" stroke-width="15" stroke-linecap="round"/>
+  <path d="M249 184C299 205 360 220 431 225" stroke="#220016" stroke-width="17" stroke-linecap="round"/>
+  <path d="M139 219L90 258" stroke="#220016" stroke-width="11" stroke-linecap="round"/>
+  <path d="M90 258H60" stroke="#220016" stroke-width="11" stroke-linecap="round"/>
+  <path d="M430 225L508 263" stroke="#220016" stroke-width="15" stroke-linecap="round"/>
+  <path d="M508 263H560" stroke="#220016" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- voice bubble -->
+  <circle cx="308" cy="108" r="45" fill="#F7D4ED"/>
+  <text x="276" y="82" fill="#220016" font-family="Arial, sans-serif" font-size="18" font-weight="700">voice</text>
+  <path d="M280 110C294 94 315 94 328 110" stroke="#220016" stroke-width="5" stroke-linecap="round"/>
+  <path d="M328 110C342 94 363 94 376 110" stroke="#220016" stroke-width="5" stroke-linecap="round"/>
+  <path d="M302 132C319 144 343 144 360 132" stroke="#220016" stroke-width="4" stroke-linecap="round"/>
+</svg>

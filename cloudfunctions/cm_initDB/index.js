@@ -1,4 +1,4 @@
-// 初始化数据库 - 创建所有集合 + 引导首位管理员 + 默认课程包
+// 初始化数据库 - 创建所有集合 + 默认课程包；首位管理员需提供 INIT_SECRET
 const cloud = require('wx-server-sdk')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
@@ -9,11 +9,39 @@ const DEFAULT_PACKAGES = [
   { name: '体验课 · 30分钟', unit_price: 0,   duration_min: 30, type: 'trial',       is_active: true }
 ]
 
+function isAdminTeacher(teacher) {
+  if (!teacher) return false
+  const role = String(teacher.role || teacher.user_role || '').toLowerCase()
+  return teacher.is_admin === true ||
+    teacher.is_admin === 1 ||
+    teacher.is_admin === 'true' ||
+    teacher.is_admin === '1' ||
+    teacher.isAdmin === true ||
+    teacher.isAdmin === 1 ||
+    teacher.isAdmin === 'true' ||
+    teacher.isAdmin === '1' ||
+    ['admin', 'super_admin', 'principal', 'owner'].includes(role)
+}
+
 exports.main = async (event, context) => {
+  const { OPENID } = cloud.getWXContext()
+  const expectedSecret = process.env.INIT_SECRET
+  const hasInitSecret = !!(OPENID && expectedSecret && event.secret === expectedSecret)
+
+  if (!hasInitSecret) {
+    const adminRes = await db.collection('teachers')
+      .where({ openid: OPENID })
+      .limit(1)
+      .get()
+    if (!OPENID || adminRes.data.length === 0 || !isAdminTeacher(adminRes.data[0])) {
+      return { success: false, message: '无权限：仅管理员可初始化数据库', code: 403 }
+    }
+  }
+
   const collections = [
     'teachers', 'students', 'course_packages', 'orders',
     'course_balance', 'schedules', 'attendance', 'feedbacks', 'leaves',
-    'invite_codes'
+    'invite_codes', 'invite_attempts', 'parent_bind_attempts', 'student_audit_logs'
   ]
 
   const results = []
@@ -32,9 +60,8 @@ exports.main = async (event, context) => {
     }
   }
 
-  // 2. Bootstrap: 仅当 teachers 表为空时，把当前调用者写入为首位管理员
-  const { OPENID } = cloud.getWXContext()
-  if (OPENID) {
+  // 2. Bootstrap: 仅当 teachers 表为空且提供 INIT_SECRET 时，把当前调用者写入为首位管理员
+  if (hasInitSecret) {
     const teacherRes = await db.collection('teachers').limit(1).get()
     if (teacherRes.data.length === 0) {
       await db.collection('teachers').add({
@@ -50,7 +77,7 @@ exports.main = async (event, context) => {
       results.push({ name: 'teachers', status: 'bootstrap-skipped-already-has-teachers' })
     }
   } else {
-    results.push({ name: 'teachers', status: 'bootstrap-skipped-no-openid' })
+    results.push({ name: 'teachers', status: 'bootstrap-skipped-secret-required' })
   }
 
   // 3. 默认课程包初始化: 仅当 course_packages 表为空时插入

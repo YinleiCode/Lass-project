@@ -2,20 +2,63 @@
  *  parent/leave — 请假
  * ============================================================ */
 
-.form {
-  background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 16px;
+.leave-hero {
+  background:
+    radial-gradient(circle at 82% 16%, rgba(237, 167, 219, 0.56) 0, transparent 210rpx),
+    linear-gradient(145deg, rgba(255, 240, 250, 0.92), rgba(246, 250, 250, 0.78));
+  border-radius: 38rpx;
+  padding: 34rpx 34rpx 40rpx;
+  margin-bottom: 24rpx;
+  position: relative;
   overflow: hidden;
-  margin-bottom: 22px;
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.78), 0 18rpx 42rpx rgba(181, 107, 162, 0.08);
+}
+
+.leave-hero::before {
+  content: "";
+  position: absolute;
+  right: -88rpx;
+  top: -110rpx;
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(108, 45, 88, 0.08);
+}
+
+.leave-title {
+  display: block;
+  margin-top: 14rpx;
+  font-size: 42rpx;
+  line-height: 1.14;
+  font-weight: 900;
+  color: var(--ink);
+  position: relative;
+  z-index: 1;
+}
+
+.leave-hero .art-kicker {
+  position: relative;
+  z-index: 1;
+}
+
+.form {
+  background: rgba(255, 255, 255, 0.72);
+  border: none;
+  border-radius: 32rpx;
+  overflow: hidden;
+  margin-bottom: 32rpx;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 12rpx 32rpx rgba(181, 107, 162, 0.08);
+  backdrop-filter: blur(14rpx);
 }
 
 .form-item {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 24rpx 32rpx;
+  border-bottom: 2rpx solid var(--line-soft);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12rpx;
 }
 
 .form-item:last-child {
@@ -24,14 +67,14 @@
 
 .form-item .label {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--ink-mute);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
   text-transform: uppercase;
 }
 
 .form-item .value-text {
-  font-size: 15px;
+  font-size: 30rpx;
   color: var(--ink);
   font-weight: 500;
 }
@@ -39,43 +82,62 @@
 .form-item .picker,
 .form-item .input,
 .form-item .textarea {
-  font-size: 15px;
+  font-size: 28rpx;
   color: var(--ink);
-  padding: 6px 0;
+  padding: 8rpx 0;
   background: transparent;
   border: none;
   outline: none;
-  min-height: 24px;
+  min-height: 64rpx;
   width: 100%;
   box-sizing: border-box;
 }
 
+.form-item .picker {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(255, 255, 255, 0.86), transparent 160rpx),
+    rgba(255, 240, 250, 0.54);
+  border-radius: 24rpx;
+  padding: 20rpx 24rpx;
+  min-height: 78rpx;
+}
+
 .form-item .textarea {
-  min-height: 80px;
+  min-height: 180rpx;
   line-height: 1.6;
+}
+
+.empty-course {
+  font-size: 26rpx;
+  color: var(--ink-mute);
+  background: var(--paper-warm);
+  border: 2rpx dashed var(--line);
+  border-radius: 20rpx;
+  padding: 22rpx 24rpx;
 }
 
 /* 请假原因单选 */
 .form-item radio-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  padding: 6px 0;
+  gap: 16rpx;
+  padding: 8rpx 0;
 }
 
 .radio-label {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 13px;
+  gap: 8rpx;
+  font-size: 26rpx;
   color: var(--ink);
-  background: var(--paper);
-  padding: 6px 12px;
-  border-radius: 100px;
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+  padding: 0 24rpx;
+  border-radius: 999rpx;
+  border: none;
+  box-shadow: inset 0 0 0 2rpx rgba(108, 45, 88, 0.04), 0 8rpx 18rpx rgba(181, 107, 162, 0.05);
 }
 
 .submit-btn {
   width: 100%;
-  letter-spacing: 2px;
+  letter-spacing: 4rpx;
 }

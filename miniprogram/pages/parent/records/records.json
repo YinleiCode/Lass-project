@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "上课记录",
   "usingComponents": {
-    "empty-state": "/components/empty-state/empty-state"
+    "empty-state": "/components/empty-state/empty-state",
+    "app-tab-bar": "/custom-tab-bar/index"
   }
 }

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "学员声音轨迹",
+  "usingComponents": {
+    "empty-state": "/components/empty-state/empty-state"
+  }
+}

@@ -1,45 +1,53 @@
 const api = require('../../../utils/api')
 const format = require('../../../utils/format')
 const constants = require('../../../utils/constants')
+const role = require('../../../utils/role')
 const app = getApp()
 
 Page({
   data: {
     loading: true,
     studentId: '',
+    teacherMode: false,
+    pageTitle: '孩子的声音轨迹',
     feedbacks: [],
     filter: 'all', // all | thisMonth | lastMonth
     filteredFeedbacks: [],
     format: format
   },
 
-  onLoad(options) {
-    const studentId = options.studentId || (app.globalData.userInfo && app.globalData.userInfo._id) || ''
-    this.setData({ studentId })
-    if (studentId) {
-      this.loadData(studentId)
+  async onLoad(options = {}) {
+    const studentId = options.studentId || ''
+    this.setData({
+      studentId,
+      teacherMode: !!studentId,
+      pageTitle: studentId ? '学员声音轨迹' : '孩子的声音轨迹'
+    })
+    const ok = await role.ensureParentAccess({ teacherMode: !!studentId })
+    if (!ok) {
+      this.setData({ loading: false })
+      return
     }
+    this.loadData()
   },
 
   onShow() {
-    if (this.data.studentId) {
-      this.loadData(this.data.studentId)
-    } else {
-      const studentId = app.globalData.userInfo && app.globalData.userInfo._id
-      if (studentId) {
-        this.setData({ studentId })
-        this.loadData(studentId)
-      }
-    }
+    if (!this.data.teacherMode && this.getTabBar && this.getTabBar()) this.getTabBar().setSelected('/pages/parent/records/records')
+    if (!this.data.loading) this.loadData()
   },
 
-  async loadData(studentId) {
+  async loadData() {
     this.setData({ loading: true })
     try {
-      const feedbacks = await api.getStudentFeedbacks(studentId, 50)
-      this.setData({ feedbacks, loading: false })
+      const feedbacks = this.data.teacherMode
+        ? await api.getStudentFeedbacks(this.data.studentId, 100)
+        : await api.getParentFeedbacks(50)
+      const displayFeedbacks = feedbacks.map(f => this.buildFeedbackItem(f))
+      this.setData({ feedbacks: displayFeedbacks, loading: false })
       this.applyFilter()
     } catch (err) {
+      console.error('上课记录加载失败', err)
+      wx.showToast({ title: '加载失败，请重试', icon: 'none' })
       this.setData({ loading: false })
     }
   },
@@ -81,12 +89,38 @@ Page({
     return feedbacks
   },
 
-  goFeedbackDetail(e) {
-    const { scheduleid, studentid } = e.currentTarget.dataset
-    if (scheduleid && studentid) {
-      wx.navigateTo({
-        url: `/pages/parent/feedback-detail/feedback-detail?scheduleId=${scheduleid}&studentId=${studentid}`
-      })
+  buildFeedbackItem(f) {
+    const ratings = f.ratings || {}
+    const scoreValues = Object.keys(ratings).map(k => Number(ratings[k])).filter(v => Number.isFinite(v) && v > 0)
+    const avg = scoreValues.length
+      ? Math.round(scoreValues.reduce((sum, v) => sum + v, 0) / scoreValues.length)
+      : 0
+    const comment = f.comment ? String(f.comment) : ''
+    const dateSource = f.schedule_time || f.created_at
+    return {
+      ...f,
+      dateText: format.datetime(dateSource) || format.datetime(f.created_at) || '',
+      titleText: f.package_name || '上课反馈',
+      commentPreview: comment ? (comment.length > 40 ? comment.substring(0, 40) + '...' : comment) : '暂无文字评语',
+      scoreText: avg ? `评分 ${avg}/5` : '',
+      audioText: f.audio_files && f.audio_files.length ? '语音回声' : ''
     }
+  },
+
+  goFeedbackDetail(e) {
+    const { scheduleid } = e.currentTarget.dataset
+    if (!scheduleid) {
+      wx.showToast({ title: '回声数据不完整', icon: 'none' })
+      return
+    }
+    if (this.data.teacherMode) {
+      wx.navigateTo({
+        url: `/pages/teacher/feedback/feedback?scheduleId=${scheduleid}&studentId=${this.data.studentId}`
+      })
+      return
+    }
+    wx.navigateTo({
+      url: `/pages/parent/feedback-detail/feedback-detail?scheduleId=${scheduleid}`
+    })
   }
 })

@@ -17,3 +17,6 @@ npm-debug.log*
 
 # UI 改造前的备份
 *.wxss.bak
+
+# 自动化/预览截图产物
+preview/

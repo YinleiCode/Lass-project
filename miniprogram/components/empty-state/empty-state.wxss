@@ -3,21 +3,21 @@
  * ============================================================ */
 .empty-state {
   text-align: center;
-  padding: 60px 22px;
+  padding: 120rpx 44rpx;
 }
 
 .empty-state .icon {
-  font-size: 44px;
+  font-size: 88rpx;
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: 32rpx;
   opacity: 0.45;
   line-height: 1;
 }
 
 .empty-state .text {
   font-family: var(--font-serif);
-  font-size: 14px;
+  font-size: 28rpx;
   color: var(--ink-soft);
   display: block;
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
 }

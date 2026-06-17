@@ -6,7 +6,8 @@ Page({
     showInviteForm: false,
     inviteCode: '',
     inviteName: '',
-    verifying: false
+    verifying: false,
+    bootstrapping: false
   },
 
   onLoad() {
@@ -30,6 +31,7 @@ Page({
   },
 
   selectTeacher() {
+    if (this.data.loading || this.data.verifying || this.data.bootstrapping) return
     this.setData({
       showInviteForm: true,
       inviteCode: '',
@@ -46,10 +48,12 @@ Page({
   },
 
   cancelInviteForm() {
+    if (this.data.verifying || this.data.bootstrapping) return
     this.setData({ showInviteForm: false })
   },
 
   async onVerifyCode() {
+    if (this.data.verifying || this.data.bootstrapping) return
     const { inviteCode, inviteName } = this.data
 
     if (!inviteCode || !inviteName) {
@@ -57,8 +61,8 @@ Page({
       return
     }
 
-    if (!/^\d{6}$/.test(inviteCode)) {
-      wx.showToast({ title: '邀请码为6位数字', icon: 'none' })
+    if (!/^[0-9a-fA-F]{8}$/.test(inviteCode)) {
+      wx.showToast({ title: '邀请码为8位字母数字组合', icon: 'none' })
       return
     }
 
@@ -87,6 +91,7 @@ Page({
   },
 
   selectParent() {
+    if (this.data.loading || this.data.verifying || this.data.bootstrapping) return
     wx.navigateTo({ url: '/pages/common/bindparent/bindparent' })
   }
 })

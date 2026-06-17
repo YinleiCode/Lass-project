@@ -4,8 +4,10 @@
 .rating-stars {
   display: flex;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line-soft);
+  justify-content: space-between;
+  gap: 20rpx;
+  padding: 22rpx 0;
+  border-bottom: 2rpx solid rgba(108, 45, 88, 0.055);
 }
 
 .rating-stars:last-of-type {
@@ -13,26 +15,38 @@
 }
 
 .label {
-  font-size: 13px;
-  color: var(--ink-soft);
-  width: 90px;
+  font-size: 27rpx;
+  color: var(--ink);
+  width: 188rpx;
   flex-shrink: 0;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.25;
 }
 
 .stars {
   display: flex;
-  gap: 6px;
+  justify-content: flex-end;
+  gap: 6rpx;
+  min-width: 0;
+  flex: 1;
 }
 
 .star {
-  font-size: 20px;
-  color: var(--line);
+  width: 54rpx;
+  height: 54rpx;
+  color: rgba(181, 107, 162, 0.20);
   transition: color 0.15s, transform 0.15s;
   line-height: 1;
+  font-size: 46rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 4rpx 10rpx rgba(255, 255, 255, 0.78);
 }
 
 .star.active {
-  color: var(--accent);
+  color: #D95FB9;
+  text-shadow: 0 8rpx 18rpx rgba(181, 107, 162, 0.26);
+  transform: translateY(-2rpx) scale(1.03);
 }

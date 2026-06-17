@@ -1,29 +1,80 @@
 <view class="container" wx:if="{{loading}}">
-  <view class="empty-state">加载中...</view>
+  <view class="empty-state">正在整理课后回声...</view>
 </view>
 
-<view class="container" wx:else>
+<view class="container" wx:elif="{{missingContext}}">
+  <view class="feedback-hero">
+    <text class="art-kicker">课后回声 · VOICE NOTE</text>
+    <text class="feedback-hero-title">先选择一节课</text>
+    <text class="art-note">课后回声需要绑定具体课程和学员，从课表或今日排课进入后再记录。</text>
+  </view>
+  <view class="context-empty-card">
+    <text class="context-empty-title">没有可编辑的回声</text>
+    <text class="context-empty-desc">这不是错误，只是当前入口缺少课程信息。</text>
+    <button class="btn-primary context-empty-btn" bindtap="goCalendar">去课表选择</button>
+  </view>
+</view>
+
+<view class="container" wx:elif="{{loadError}}">
+  <view class="feedback-hero">
+    <text class="art-kicker">课后回声 · VOICE NOTE</text>
+    <text class="feedback-hero-title">这节课暂时打不开</text>
+    <text class="art-note">可能是课程已删除、学员档案变更，或当前账号没有访问权限。</text>
+  </view>
+  <view class="context-empty-card">
+    <text class="context-empty-title">无法编辑回声</text>
+    <text class="context-empty-desc">{{loadErrorMessage || '加载失败，请回到课表重新选择课程。'}}</text>
+    <button class="btn-primary context-empty-btn" bindtap="goCalendar">回到课表</button>
+  </view>
+</view>
+
+<view class="container feedback-page" wx:else>
+  <view class="feedback-hero">
+    <view class="feedback-hero-copy">
+      <text class="art-kicker">课后回声 · VOICE NOTE</text>
+      <text class="feedback-hero-title">写给今天的声音</text>
+      <text class="art-note">亮点、卡点和下一次要靠近的方向，收成一份清楚的回声。</text>
+    </view>
+    <view class="feedback-progress">
+      <text class="progress-num">{{ratingSummary}}</text>
+      <text class="progress-label">评分完成</text>
+    </view>
+  </view>
+
   <!-- 课程信息 -->
-  <view class="card" wx:if="{{schedule}}">
+  <view class="feedback-course-card" wx:if="{{schedule}}">
     <view class="feedback-header">
-      <text class="feedback-title">{{schedule.package_name || '课程'}}</text>
+      <view>
+        <text class="feedback-title">{{schedule.package_name || '课程'}}</text>
+        <text class="current-student" wx:if="{{student}}">当前回声 · {{student.name}}</text>
+      </view>
       <text class="feedback-date">{{schedule.start_time}}</text>
+    </view>
+    <view class="feedback-meta-row">
+      <text>{{schedule.class_display || schedule.class_type_label || '课程'}}</text>
+      <text wx:if="{{schedule.duration_text}}">{{schedule.duration_text}}</text>
+      <text>{{schedule.delivery_mode_label || '线下课'}}</text>
+      <text>授课老师：{{schedule.teacher_name || '授课老师'}}</text>
     </view>
 
     <!-- 学员切换 -->
     <view class="student-switch" wx:if="{{students.length > 1}}">
-      <view class="switch-item {{s._id === studentId ? 'active' : ''}}" wx:for="{{students}}" wx:key="_id" data-index="{{index}}" bindtap="switchStudent">
-        <text>{{s.name}}</text>
+      <view class="switch-item {{item._id === studentId ? 'active' : ''}}" wx:for="{{students}}" wx:key="_id" data-index="{{index}}" bindtap="switchStudent">
+        <text>{{item.name}}</text>
       </view>
     </view>
-
-    <text class="current-student" wx:if="{{student}}">反馈: {{student.name}}</text>
   </view>
 
   <!-- 维度评分 -->
-  <view class="section">
-    <view class="section-title">📊 维度评分</view>
-    <view class="card">
+  <view class="feedback-section score-section">
+    <view class="feedback-section-head">
+      <view>
+        <text class="feedback-section-title">维度观察</text>
+        <text class="feedback-section-sub">至少完成一项评分</text>
+      </view>
+      <text class="score-pill">{{ratingSummary}}</text>
+    </view>
+    <view class="score-panel">
       <view wx:for="{{dimensions}}" wx:key="key">
         <rating-stars
           label="{{item.label}}"
@@ -36,26 +87,49 @@
   </view>
 
   <!-- 评语 -->
-  <view class="section">
-    <view class="section-title">📝 评语</view>
+  <view class="feedback-section">
+    <view class="feedback-section-head">
+      <view>
+        <text class="feedback-section-title">文字回声</text>
+        <text class="feedback-section-sub">给家长看的练习重点</text>
+      </view>
+    </view>
     <view class="template-row">
       <text class="template-btn" data-type="encourage" bindtap="useTemplate">鼓励型</text>
       <text class="template-btn" data-type="problem" bindtap="useTemplate">问题点</text>
       <text class="template-btn" data-type="homework" bindtap="useTemplate">作业建议</text>
     </view>
-    <textarea class="comment-input" placeholder="输入评语或选择快捷模板" value="{{comment}}" bindinput="onCommentInput" maxlength="500" />
+    <textarea class="comment-input" placeholder="写下今天的声音状态、练习重点和回家方向" value="{{comment}}" bindinput="onCommentInput" maxlength="500" />
   </view>
 
   <!-- 录音 -->
-  <view class="section">
-    <view class="section-title">🎤 录音(选填)</view>
-    <view class="card">
-      <audio-recorder value="{{audioFileId}}" readonly="{{false}}" bindchange="onAudioChange" />
+  <view class="feedback-section audio-section">
+    <view class="feedback-section-head">
+      <view>
+        <text class="feedback-section-title">语音回声</text>
+        <text class="feedback-section-sub">{{hasAudio && !replacingAudio ? '已有录音，可试听' : '录一段给家长的口头反馈'}}</text>
+      </view>
+      <text class="section-link" wx:if="{{hasAudio && !replacingAudio}}" bindtap="onReplaceAudio">重新录音</text>
+      <text class="section-link" wx:if="{{replacingAudio && hasAudio}}" bindtap="onCancelReplaceAudio">取消</text>
+    </view>
+    <view class="audio-card audio-existing-card" wx:if="{{hasAudio && !replacingAudio}}">
+      <audio-recorder
+        wx:for="{{audioFiles}}"
+        wx:key="*this"
+        value="{{item}}"
+        readonly="{{true}}"
+      />
+    </view>
+    <view class="audio-card" wx:else>
+      <audio-recorder value="{{audioFileId}}" readonly="{{false}}" bindchange="onAudioChange" binduploading="onAudioUploading" />
     </view>
   </view>
 
   <!-- 保存 -->
-  <button class="btn-primary save-btn" bindtap="onSave" loading="{{submitting}}">
-    {{studentId ? '保存并继续' : '保存'}}
-  </button>
+  <view class="feedback-save-bar">
+    <text class="save-hint">{{saveHint}}</text>
+    <button class="btn-primary save-btn {{canSave ? 'ready' : 'disabled'}}" bindtap="onSave" loading="{{submitting || audioUploading}}" disabled="{{submitting || !canSave}}">
+      {{studentId ? '保存回声并继续' : '保存回声'}}
+    </button>
+  </view>
 </view>

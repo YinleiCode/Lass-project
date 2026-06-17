@@ -1,16 +1,18 @@
 <view class="container" wx:if="{{loading}}">
-  <view class="empty-state">加载中...</view>
+  <view class="empty-state">正在翻开学员档案...</view>
 </view>
 
 <view class="container" wx:else>
   <!-- 学员信息卡片 -->
   <view class="card" wx:if="{{student}}">
     <view class="student-header">
-      <view class="avatar">{{student.name[0] || '?'}}</view>
+      <view class="avatar">{{avatarText}}</view>
       <view class="student-meta">
-        <text class="student-name">{{student.name}}</text>
-        <text class="student-phone">{{student.parent_phone}}</text>
-        <text class="student-date" wx:if="{{student.enroll_date}}">入学 {{student.enroll_date}}</text>
+        <text class="student-name">{{studentName}}</text>
+        <text class="student-phone">{{studentPhone}}</text>
+        <text class="student-date" wx:if="{{enrollDateText}}">{{enrollDateText}}</text>
+        <text class="student-owner" wx:if="{{isAdmin && ownerTeacherText}}">{{ownerTeacherText}}</text>
+        <text class="student-owner" wx:if="{{isAdmin && accessTeacherText}}">{{accessTeacherText}}</text>
       </view>
       <view class="more-btn" bindtap="goEdit">
         <text>⋯</text>
@@ -21,8 +23,8 @@
       <text class="tag" wx:for="{{student.tags}}" wx:key="*this">{{item}}</text>
     </view>
 
-    <view class="status-badge {{student.status === 'active' ? 'active' : 'archived'}}">
-      {{student.status === 'active' ? '在读' : '结业'}}
+    <view class="status-badge {{statusClass}}">
+      {{statusText}}
     </view>
   </view>
 
@@ -33,11 +35,11 @@
       <text class="label">剩余课时</text>
     </view>
     <view class="stat-card">
-      <text class="value">{{student.total_attended || 0}}</text>
+      <text class="value">{{totalAttended}}</text>
       <text class="label">累计上课</text>
     </view>
-    <view class="stat-card">
-      <text class="value">{{format.money(totalPaid)}}</text>
+    <view class="stat-card" wx:if="{{isAdmin}}">
+      <text class="value money-value">{{totalPaidText}}</text>
       <text class="label">累计缴费</text>
     </view>
     <view class="stat-card">
@@ -47,39 +49,39 @@
   </view>
 
   <!-- 操作按钮 -->
-  <view class="action-row">
-    <button class="btn-primary" bindtap="goPayment">💰 登记缴费</button>
+  <view class="action-row" wx:if="{{isAdmin}}">
+    <button class="btn-primary" bindtap="goPayment">登记缴费</button>
   </view>
 
   <!-- 课时明细 -->
   <view class="section">
-    <view class="section-title"><text>📊 课时明细</text></view>
+    <view class="section-title"><text>课时明细</text></view>
     <view class="card" wx:for="{{balances}}" wx:key="_id">
       <view class="balance-row">
-        <text class="balance-pkg">{{item.package_name || '课程包'}}</text>
-        <text class="balance-num {{item.remaining <= 3 ? 'danger' : (item.remaining <= 5 ? 'warning' : '')}}">{{item.remaining}}节</text>
+        <text class="balance-pkg">{{item.packageNameText}}</text>
+        <text class="balance-num {{item.balanceClass}}">{{item.remainingText}}</text>
       </view>
       <view class="balance-detail">
-        <text>已购 {{item.total_purchased || 0}} · 已用 {{item.total_used || 0}}</text>
+        <text>{{item.detailText}}</text>
       </view>
     </view>
     <view wx:if="{{balances.length === 0}}" class="empty-state">
-      <text class="empty-text">暂无课时, 请先登记缴费</text>
+      <text class="empty-text">{{isAdmin ? '暂无课时, 请先登记缴费' : '暂无课时'}}</text>
     </view>
   </view>
 
   <!-- 缴费记录 -->
-  <view class="section">
+  <view class="section" wx:if="{{isAdmin}}">
     <view class="section-title">
-      <text>💰 最近缴费</text>
-      <text class="more" bindtap="goAllOrders">全部 →</text>
+      <text>最近缴费</text>
+      <text class="more" bindtap="goAllOrders">全部 ›</text>
     </view>
     <view class="card" wx:for="{{orders}}" wx:key="_id">
       <view class="order-row">
-        <text class="order-date">{{item.pay_date}}</text>
-        <text class="order-amount">{{format.money(item.amount)}}</text>
+        <text class="order-date">{{item.payDateText}}</text>
+        <text class="order-amount">{{item.amountText}}</text>
       </view>
-      <text class="order-detail">+{{item.course_count}}节</text>
+      <text class="order-detail">{{item.courseCountText}}</text>
     </view>
     <view wx:if="{{orders.length === 0}}" class="empty-state">
       <text class="empty-text">暂无缴费记录</text>
@@ -89,13 +91,13 @@
   <!-- 最近上课 -->
   <view class="section">
     <view class="section-title">
-      <text>📝 最近上课</text>
-      <text class="more" bindtap="goAllFeedbacks">全部 →</text>
+      <text>最近上课</text>
+      <text class="more" bindtap="goAllFeedbacks">全部 ›</text>
     </view>
-    <view class="card" wx:for="{{feedbacks}}" wx:key="_id">
+    <view class="card feedback-card" wx:for="{{feedbacks}}" wx:key="_id" data-scheduleid="{{item.scheduleId}}" bindtap="goFeedback">
       <view class="feedback-row">
-        <text class="feedback-date">{{format.datetime(item.created_at)}}</text>
-        <text class="feedback-comment">{{item.comment ? item.comment.substring(0, 30) + '...' : '无评语'}}</text>
+        <text class="feedback-date">{{item.dateText}}</text>
+        <text class="feedback-comment">{{item.commentPreview}}</text>
       </view>
     </view>
     <view wx:if="{{feedbacks.length === 0}}" class="empty-state">

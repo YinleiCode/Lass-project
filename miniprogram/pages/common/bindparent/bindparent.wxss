@@ -3,50 +3,50 @@
  * ============================================================ */
 
 .container {
-  padding: 40px 22px 24px;
-  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 100%);
+  padding: 80rpx 32rpx 48rpx;
+  background: linear-gradient(180deg, var(--paper) 0%, var(--accent-bg) 100%);
   min-height: 100vh;
 }
 
 .header {
-  margin-bottom: 32px;
+  margin-bottom: 56rpx;
   text-align: center;
 }
 
 .title {
-  font-family: var(--font-serif);
-  font-size: 28px;
+  font-family: var(--font-sans);
+  font-size: 48rpx;
   font-weight: 500;
   color: var(--ink);
-  letter-spacing: 4px;
+  letter-spacing: 4rpx;
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 20rpx;
 }
 
 .desc {
-  font-size: 13px;
+  font-size: 26rpx;
   color: var(--ink-soft);
   line-height: 1.7;
-  letter-spacing: 0.3px;
+  letter-spacing: 1rpx;
   display: block;
-  padding: 0 12px;
+  padding: 0 24rpx;
 }
 
 .form {
   background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 18px;
+  border: 2rpx solid var(--line);
+  border-radius: 36rpx;
   overflow: hidden;
-  margin-bottom: 22px;
+  margin-bottom: 32rpx;
   box-shadow: var(--shadow-sm);
 }
 
 .form-item {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 28rpx 32rpx;
+  border-bottom: 2rpx solid var(--line-soft);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12rpx;
 }
 
 .form-item:last-child {
@@ -55,41 +55,41 @@
 
 .form-item .label {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--ink-mute);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
   text-transform: uppercase;
 }
 
 .form-item .input {
-  font-size: 16px;
+  font-size: 30rpx;
   color: var(--ink);
-  padding: 6px 0;
+  padding: 8rpx 0;
   background: transparent;
   border: none;
   outline: none;
-  min-height: 24px;
-  letter-spacing: 0.3px;
+  min-height: 64rpx;
+  letter-spacing: 1rpx;
 }
 
 .bind-btn {
   width: 100%;
-  letter-spacing: 2px;
+  letter-spacing: 4rpx;
 }
 
 /* === 提示 === */
 .tips {
-  margin-top: 22px;
-  padding: 12px 16px;
+  margin-top: 32rpx;
+  padding: 24rpx 28rpx;
   background: var(--warn-bg);
-  border: 1px solid var(--warn-soft);
-  border-radius: 12px;
+  border: 2rpx solid var(--warn-soft);
+  border-radius: 24rpx;
   text-align: center;
 }
 
 .tips text {
-  font-size: 12px;
+  font-size: 24rpx;
   color: var(--warn-text);
   line-height: 1.5;
-  letter-spacing: 0.3px;
+  letter-spacing: 1rpx;
 }

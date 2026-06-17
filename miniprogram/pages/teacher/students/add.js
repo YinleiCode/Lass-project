@@ -41,6 +41,7 @@ Page({
         loading: false
       })
     } catch (err) {
+      wx.showToast({ title: (err && err.message) || '学员加载失败，请重试', icon: 'none' })
       this.setData({ loading: false })
     }
   },
@@ -57,12 +58,15 @@ Page({
 
   addTag() {
     const tag = this.data.tagInput.trim()
-    if (tag && !this.data.tags.includes(tag)) {
-      this.setData({
-        tags: [...this.data.tags, tag],
-        tagInput: ''
-      })
+    if (!tag) return
+    if (this.data.tags.includes(tag)) {
+      wx.showToast({ title: '标签已存在', icon: 'none' })
+      return
     }
+    this.setData({
+      tags: [...this.data.tags, tag],
+      tagInput: ''
+    })
   },
 
   removeTag(e) {
@@ -73,6 +77,7 @@ Page({
   },
 
   async onSave() {
+    if (this.data.loading) return
     const { name, parentPhone, parentName, enrollDate, tags, remark } = this.data
 
     if (!name) {
@@ -81,6 +86,10 @@ Page({
     }
     if (!parentPhone || !format.isPhone(parentPhone)) {
       wx.showToast({ title: '请输入正确的手机号', icon: 'none' })
+      return
+    }
+    if (this.data.isEdit && !this.data.studentId) {
+      wx.showToast({ title: '学员数据不完整', icon: 'none' })
       return
     }
 
@@ -97,14 +106,23 @@ Page({
 
     try {
       if (this.data.isEdit) {
-        await api.updateStudent(this.data.studentId, data)
+        const result = await api.updateStudent(this.data.studentId, data)
+        if (!result || result.success === false) {
+          throw new Error((result && result.message) || '更新失败')
+        }
         wx.showToast({ title: '已更新', icon: 'success' })
       } else {
-        await api.addStudent(data)
+        const result = await api.addStudent(data)
+        if (!result || result.success === false) {
+          throw new Error((result && result.message) || '添加失败')
+        }
         wx.showToast({ title: '添加成功', icon: 'success' })
       }
       setTimeout(() => wx.navigateBack(), 1500)
     } catch (err) {
+      console.error('保存学员失败', err)
+      const msg = (err && (err.message || err.errMsg)) || '保存失败，请重试'
+      wx.showToast({ title: msg, icon: 'none' })
       this.setData({ loading: false })
     }
   }

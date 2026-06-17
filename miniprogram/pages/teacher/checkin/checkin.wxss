@@ -2,58 +2,183 @@
  *  teacher/checkin — 点名
  * ============================================================ */
 
-/* === 课程信息卡(深色) === */
-.container > .card:first-of-type {
-  background: var(--ink);
-  color: var(--paper);
-  border: 1px solid var(--ink);
-  border-radius: 16px;
-  padding: 18px 20px;
-  margin-bottom: 18px;
+/* === 课程信息卡 === */
+.checkin-hero {
+  background:
+    radial-gradient(circle at 80% 16%, rgba(237, 167, 219, 0.52) 0, transparent 250rpx),
+    radial-gradient(circle at 18% 88%, rgba(255, 255, 255, 0.76) 0, transparent 280rpx),
+    linear-gradient(145deg, rgba(255, 246, 252, 0.94), rgba(244, 235, 241, 0.80));
+  border-radius: 44rpx;
+  min-height: 420rpx;
+  overflow: hidden;
+  position: relative;
+  margin: -2rpx 0 0;
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.78), 0 18rpx 42rpx rgba(181, 107, 162, 0.08);
+}
+
+.checkin-hero::before {
+  content: "";
+  position: absolute;
+  right: -110rpx;
+  top: -50rpx;
+  width: 320rpx;
+  height: 320rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(255, 255, 255, 0.54);
+}
+
+.checkin-hero::after {
+  content: "";
+  position: absolute;
+  left: 72rpx;
+  right: 72rpx;
+  bottom: 28rpx;
+  height: 86rpx;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(237, 167, 219, 0.18), transparent 70%);
+  filter: blur(2rpx);
+  pointer-events: none;
+}
+
+.checkin-hero-text {
+  position: absolute;
+  left: 28rpx;
+  right: 28rpx;
+  top: 26rpx;
+  z-index: 2;
+}
+
+.checkin-hero-text .art-kicker {
+  margin-bottom: 8rpx;
+}
+
+.checkin-hero-text .art-note {
+  max-width: 390rpx;
+}
+
+.checkin-art-frame {
+  position: absolute;
+  right: 34rpx;
+  bottom: 16rpx;
+  width: 520rpx;
+  height: 292rpx;
+  border-radius: 46rpx;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(237, 167, 219, 0.22), transparent 58%),
+    rgba(255, 233, 248, 0.42);
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.48), 0 22rpx 44rpx rgba(181, 107, 162, 0.055);
+}
+
+.checkin-face {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 292rpx;
+  height: 292rpx;
+  transform: translate(-50%, -50%);
+  opacity: 0.94;
+}
+
+.container > .card:first-of-type,
+.checkin-course-card {
+  background:
+    radial-gradient(circle at 88% 4%, rgba(237, 167, 219, 0.42) 0, transparent 220rpx),
+    radial-gradient(circle at 8% 100%, rgba(255, 255, 255, 0.70) 0, transparent 260rpx),
+    linear-gradient(145deg, rgba(255, 246, 252, 0.90), rgba(246, 235, 242, 0.82));
+  color: var(--ink);
+  border: none;
+  border-radius: 40rpx;
+  padding: 28rpx 32rpx;
+  margin: -48rpx 0 24rpx;
   position: relative;
   overflow: hidden;
+  z-index: 2;
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.72), 0 18rpx 44rpx rgba(108, 45, 88, 0.07);
+  backdrop-filter: blur(16rpx);
 }
 
 .container > .card:first-of-type::before {
   content: "";
   position: absolute;
-  right: -20px;
-  top: -20px;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle, rgba(191, 209, 229, 0.16) 0%, transparent 70%);
+  right: -40rpx;
+  top: -40rpx;
+  width: 240rpx;
+  height: 240rpx;
+  background: radial-gradient(circle, rgba(237, 167, 219, 0.4) 0%, transparent 70%);
 }
 
 .schedule-header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 14rpx;
   position: relative;
   z-index: 1;
 }
 
 .schedule-header .schedule-time {
   font-family: var(--font-num);
-  font-size: 26px;
-  color: var(--paper);
-  letter-spacing: -0.5px;
+  font-size: 50rpx;
+  color: var(--ink);
+  letter-spacing: 0;
   line-height: 1;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .schedule-header .schedule-pkg {
   font-family: var(--font-mono);
-  font-size: 11px;
-  color: rgba(244, 247, 250, 0.65);
-  letter-spacing: 1px;
+  font-size: 22rpx;
+  color: var(--ink-mute);
+  letter-spacing: 2rpx;
   text-transform: uppercase;
+  max-width: 180rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+  flex-shrink: 0;
 }
 
 .schedule-hint {
-  font-size: 12px;
-  color: rgba(244, 247, 250, 0.55);
+  font-size: 24rpx;
+  color: var(--ink-soft);
   font-family: var(--font-mono);
-  letter-spacing: 0.3px;
+  letter-spacing: 0.7rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.schedule-meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin: 0 0 12rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.schedule-meta-line text {
+  min-height: 42rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.66);
+  color: var(--ink-soft);
+  font-size: 21rpx;
+  font-weight: 850;
+  display: inline-flex;
+  align-items: center;
+}
+
+.schedule-teacher {
+  margin-bottom: 12rpx;
+  color: var(--ink);
+  font-size: 24rpx;
+  font-weight: 850;
   position: relative;
   z-index: 1;
 }
@@ -62,46 +187,50 @@
 .student-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 22px;
+  gap: 18rpx;
+  margin-bottom: 24rpx;
 }
 
 .checkin-item {
-  background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.72);
+  border: none;
+  border-radius: 34rpx;
+  padding: 22rpx 24rpx;
+  box-shadow: 0 12rpx 32rpx rgba(181, 107, 162, 0.06);
+  backdrop-filter: blur(14rpx);
 }
 
 .student-info {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
 }
 
 .student-info .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-mid));
-  color: white;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--ink);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-serif);
-  font-size: 16px;
+  font-size: 32rpx;
   font-weight: 600;
   flex-shrink: 0;
-  transition: background 0.2s;
+  transition: all 0.2s ease-in-out;
 }
 
 .student-info .avatar.absent {
-  background: linear-gradient(135deg, var(--red), #DC2626);
+  background: var(--red-bg);
+  color: var(--red);
 }
 
 .student-info .avatar.leave {
-  background: linear-gradient(135deg, var(--warn), #F59E0B);
+  background: var(--warn-bg);
+  color: var(--warn-text);
 }
 
 .info {
@@ -109,44 +238,57 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8rpx;
 }
 
 .info .name {
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 30rpx;
+  font-weight: 900;
   color: var(--ink);
-  letter-spacing: 0.3px;
+  letter-spacing: 1rpx;
 }
 
 .info .tag-danger {
   align-self: flex-start;
 }
 
+.balance-note {
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: 20rpx;
+  line-height: 1.2;
+  letter-spacing: 0.5rpx;
+}
+
 /* === 状态选择器 === */
 .status-selector {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 6px;
+  gap: 10rpx;
 }
 
 .status-btn {
   text-align: center;
-  padding: 9px 0;
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: 100px;
-  background: var(--paper-warm);
+  min-height: 88rpx;
+  padding: 0;
+  font-size: 24rpx;
+  font-weight: 850;
+  border-radius: 999rpx;
+  background: #F3F0F3;
   color: var(--ink-soft);
-  border: 1px solid var(--line);
-  letter-spacing: 1px;
-  transition: all 0.15s;
+  border: none;
+  letter-spacing: 1.2rpx;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .status-btn.active.present {
-  background: var(--green-bg);
-  color: var(--green);
-  border-color: var(--green);
+  background: linear-gradient(145deg, rgba(237, 167, 219, 0.84), rgba(255, 240, 250, 0.92));
+  color: var(--ink);
+  border-color: transparent;
+  box-shadow: 0 8rpx 20rpx rgba(181, 107, 162, 0.12);
 }
 
 .status-btn.active.absent {
@@ -163,36 +305,39 @@
 
 /* === 扣减预览 === */
 .deduct-preview {
-  background: linear-gradient(135deg, var(--accent-bg) 0%, #DCE9F5 100%);
-  border: 1px solid var(--accent-soft);
-  border-radius: 14px;
-  padding: 14px 18px;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.74), transparent 58%),
+    rgba(255, 240, 250, 0.86);
+  border: none;
+  border-radius: 32rpx;
+  padding: 20rpx 24rpx;
   text-align: center;
-  margin-bottom: 22px;
-  font-size: 13px;
+  margin-bottom: 24rpx;
+  font-size: 26rpx;
   color: var(--ink);
-  letter-spacing: 0.3px;
+  letter-spacing: 0.8rpx;
+  box-shadow: inset 0 0 0 2rpx rgba(34, 0, 22, 0.035);
 }
 
 .deduct-num {
   font-family: var(--font-num);
-  font-size: 22px;
-  color: var(--accent);
+  font-size: 44rpx;
+  color: var(--ink);
   font-weight: 500;
-  margin: 0 4px;
-  letter-spacing: -0.5px;
+  margin: 0 8rpx;
+  letter-spacing: 0;
 }
 
 /* === 操作区 === */
 .action-area {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20rpx;
 }
 
 .action-area .btn-primary {
   width: 100%;
-  letter-spacing: 2px;
+  letter-spacing: 4rpx;
 }
 
 .action-area .btn-secondary,
@@ -200,9 +345,157 @@
   width: 100%;
   background: var(--cream);
   color: var(--red);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 12px;
-  font-size: 13px;
-  letter-spacing: 0.5px;
+  border: 2rpx solid var(--line);
+  border-radius: 28rpx;
+  padding: 24rpx;
+  font-size: 26rpx;
+  letter-spacing: 1rpx;
+}
+
+/* === 提交确认底部弹层 === */
+.sheet-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(31, 41, 55, 0.42);
+  z-index: 1000;
+  transition: all 0.2s ease-in-out;
+}
+
+.confirm-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 48vh;
+  background:
+    radial-gradient(circle at 82% 0%, rgba(237, 167, 219, 0.22) 0, transparent 240rpx),
+    var(--cream);
+  border-radius: 42rpx 42rpx 0 0;
+  padding: 18rpx 28rpx calc(28rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  z-index: 1001;
+  box-shadow: 0 -24rpx 64rpx rgba(34, 0, 22, 0.18);
+  transition: all 0.2s ease-in-out;
+}
+
+.sheet-handle {
+  width: 72rpx;
+  height: 8rpx;
+  border-radius: 999rpx;
+  background: var(--line);
+  margin: 0 auto 28rpx;
+}
+
+.sheet-head {
+  margin-bottom: 24rpx;
+}
+
+.sheet-title {
+  display: block;
+  font-size: 36rpx;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.sheet-desc {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: var(--ink-soft);
+}
+
+.deduct-final {
+  background: var(--accent-bg);
+  border: none;
+  border-radius: 30rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.deduct-label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--ink-soft);
+  margin-bottom: 8rpx;
+}
+
+.deduct-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+}
+
+.deduct-value {
+  font-size: 64rpx;
+  line-height: 1;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.deduct-unit {
+  font-size: 28rpx;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.confirm-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12rpx;
+  margin-bottom: 24rpx;
+}
+
+.confirm-stat {
+  border-radius: 22rpx;
+  padding: 18rpx 12rpx;
+  text-align: center;
+  border: 2rpx solid var(--line);
+  background: var(--paper);
+}
+
+.confirm-stat.present {
+  background: var(--green-bg);
+  border-color: rgba(16, 185, 129, 0.22);
+}
+
+.confirm-stat.absent {
+  background: var(--red-bg);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.confirm-stat.leave {
+  background: var(--warn-bg);
+  border-color: rgba(245, 158, 11, 0.22);
+}
+
+.confirm-num {
+  display: block;
+  font-size: 36rpx;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.confirm-label {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: var(--ink-soft);
+}
+
+.sheet-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.sheet-actions .btn-primary,
+.sheet-actions .btn-secondary {
+  width: 100%;
+  min-height: 88rpx;
+  border-radius: 28rpx;
 }

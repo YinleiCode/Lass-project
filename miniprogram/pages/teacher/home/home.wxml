@@ -1,26 +1,45 @@
 <view class="container">
-  <!-- 加载中 -->
+  <!-- Loading -->
   <view class="loading-state" wx:if="{{loading}}">
     <view class="stats-grid">
-      <view class="stat-card skeleton" wx:for="{{4}}" wx:key="*this"><view class="value">--</view><view class="label">加载中</view></view>
+      <view class="stat-card skeleton" wx:for="{{4}}" wx:key="*this"><view class="value">--</view><view class="label">整理中</view></view>
     </view>
   </view>
 
   <block wx:else>
-    <!-- 问候 -->
-    <view class="greeting">
-      <text class="greeting-text">Hi, 老师 👋</text>
+    <!-- 粉黑首屏 -->
+    <view class="teacher-hero">
+      <view class="hero-copy">
+        <text class="art-kicker hero-kicker">声场手账 · DAILY SCORE</text>
+        <view class="hero-top">
+          <view class="greeting">
+            <text class="greeting-text">今日</text>
+            <text class="greeting-text">课时</text>
+          </view>
+          <view class="hero-bell">♬</view>
+        </view>
+      </view>
+      <image class="hero-illustration" src="/images/hero-teacher-mist.png" mode="aspectFit"></image>
+      <view class="today-total" wx:if="{{stats}}">
+        <text class="today-total-main">今天共 {{stats.todayLessonCount || 0}} 节</text>
+        <text class="today-total-sub">{{stats.todayTotalMinutesText || '0分钟'}}</text>
+      </view>
+      <view class="hero-search" bindtap="goStudents">
+        <text class="search-icon">⌕</text>
+        <text class="search-placeholder">查找学员 / 课次 / 回声</text>
+      </view>
+      <text class="art-note hero-note">把今天的课时、点名和课后回声，安静收进手账。</text>
     </view>
 
     <!-- 首次引导:无课程包(最高优先级) -->
     <view class="guide-banner" wx:if="{{showPackagesGuide}}">
       <view class="guide-content">
-        <text class="guide-icon">📦</text>
+        <text class="guide-icon">□</text>
         <view class="guide-text-wrap">
           <text class="guide-title">先创建课程包</text>
-          <text class="guide-desc">缴费、排课都需要先有课程包</text>
+          <text class="guide-desc">{{isAdmin ? '缴费、排课都需要先有课程包' : '课程包由管理员配置后才能排课'}}</text>
         </view>
-        <button class="guide-cta" bindtap="goAddPackage">去创建</button>
+        <button class="guide-cta" bindtap="goAddPackage">{{isAdmin ? '去创建' : '联系管理员'}}</button>
       </view>
       <text class="guide-dismiss" data-type="packages" catchtap="dismissGuide">✕</text>
     </view>
@@ -28,7 +47,7 @@
     <!-- 首次引导:无学员 -->
     <view class="guide-banner" wx:elif="{{showStudentsGuide}}">
       <view class="guide-content">
-        <text class="guide-icon">👥</text>
+        <text class="guide-icon">◎</text>
         <view class="guide-text-wrap">
           <text class="guide-title">添加第一位学员</text>
           <text class="guide-desc">从学员开始建立你的工作室</text>
@@ -41,7 +60,7 @@
     <!-- 首次引导:无排课 -->
     <view class="guide-banner" wx:elif="{{showSchedulesGuide}}">
       <view class="guide-content">
-        <text class="guide-icon">📅</text>
+        <text class="guide-icon">◷</text>
         <view class="guide-text-wrap">
           <text class="guide-title">安排第一节课</text>
           <text class="guide-desc">为学员排课,开始上课流程</text>
@@ -52,48 +71,77 @@
     </view>
 
     <!-- 数据概览卡片 -->
-    <view class="stats-grid" wx:if="{{stats}}">
-      <view class="stat-card" bindtap="goCalendar">
-        <text class="value">{{stats.todayPending || 0}}</text>
-        <text class="label">今日待上</text>
+    <view class="home-feature-grid" wx:if="{{stats}}">
+      <view class="feature-tile" bindtap="goCalendar">
+        <text class="tile-index">01</text>
+        <text class="feature-title">今日</text>
+        <text class="feature-title">课时</text>
+        <view class="feature-bottom">
+          <text class="feature-pill">{{stats.todayPending || 0}} 节待上</text>
+          <text class="feature-play">›</text>
+        </view>
       </view>
-      <view class="stat-card" bindtap="goCalendar">
-        <text class="value">{{stats.monthAttendance || 0}}</text>
-        <text class="label">本月课消</text>
+      <view class="feature-tile pink" bindtap="goStudents">
+        <text class="tile-index">02</text>
+        <text class="feature-title">余课</text>
+        <text class="feature-title">提醒</text>
+        <view class="feature-bottom">
+          <text class="feature-pill">{{stats.warningCount || 0}} 位关注</text>
+          <text class="feature-play">›</text>
+        </view>
       </view>
-      <view class="stat-card" bindtap="goCalendar">
-        <text class="value">{{stats.monthIncome_str || '¥0'}}</text>
-        <text class="label">本月收入</text>
+      <view class="feature-tile slim" bindtap="goCalendar">
+        <text class="feature-num">{{stats.monthAttendance || 0}}</text>
+        <text class="feature-label">本月课消</text>
       </view>
-      <view class="stat-card" bindtap="goStudents">
-        <text class="value {{stats.warningCount > 0 ? 'danger' : ''}}">{{stats.warningCount || 0}}</text>
-        <text class="label">课时预警</text>
+      <view class="feature-tile slim" wx:if="{{isAdmin}}" bindtap="goCalendar">
+        <text class="feature-num money">{{stats.monthIncome_str || '¥0'}}</text>
+        <text class="feature-label">本月收入</text>
+      </view>
+      <view class="feature-tile slim" wx:else bindtap="goCalendar">
+        <text class="feature-num">{{stats.todayTotalMinutes || 0}}</text>
+        <text class="feature-label">今日分钟</text>
       </view>
     </view>
 
     <!-- 今日课表 -->
-    <view class="section">
-      <view class="section-title">
-        <text>📅 今日课表</text>
-        <text class="more" bindtap="goCalendar">全部 →</text>
+    <view class="practice-panel">
+      <view class="practice-handle"></view>
+      <view class="practice-head" bindtap="goCalendar" hover-class="tap-muted">
+        <view>
+          <text class="practice-title">今日排课</text>
+          <text class="practice-sub">VOICE ROOM · DAILY SCHEDULE</text>
+        </view>
+        <text class="practice-more" catchtap="goCalendar">全览 ›</text>
       </view>
 
-      <view wx:if="{{todaySchedules.length === 0}}" class="empty-state">
-        <text class="empty-text">今天没有排课，休息一下吧 ☕️</text>
+      <view wx:if="{{todaySchedules.length === 0}}" class="practice-empty">
+        <text class="empty-text">今天留白，让声音慢慢沉淀。</text>
       </view>
 
-      <view class="schedule-list" wx:else>
-        <view class="list-item" wx:for="{{todaySchedules}}" wx:key="_id">
-          <view class="schedule-time">{{item.time_str || '--:--'}}</view>
-          <view class="schedule-info">
-            <text class="schedule-name">{{item.student_names || '课程'}}</text>
-            <text class="schedule-meta" wx:if="{{item.package_name}}">{{item.package_name}}</text>
+      <view class="practice-list" wx:else>
+        <view class="practice-card" wx:for="{{todaySchedules}}" wx:key="_id">
+          <view class="practice-info">
+            <text class="practice-name">{{item.time_str || '--:--'}} {{item.student_names || '课程'}}</text>
+            <view class="practice-meta-row">
+              <text class="practice-time">{{item.class_display || item.class_type_label || '课程'}}</text>
+              <text class="practice-meta" wx:if="{{item.duration_text}}">{{item.duration_text}}</text>
+              <text class="practice-meta">授课老师：{{item.teacher_name || '授课老师'}}</text>
+              <text class="practice-meta">{{item.delivery_mode_label || '线下课'}}</text>
+              <text class="tag tag-warning" wx:if="{{item.has_leave}}">{{item.leave_label}}</text>
+            </view>
           </view>
           <view class="schedule-action" wx:if="{{item.status === 'pending'}}">
-            <button class="btn-primary small" data-id="{{item._id}}" bindtap="goCheckin">点名</button>
+            <view class="practice-action-pill" data-id="{{item._id}}" bindtap="goCheckin">
+              <text>点名</text>
+              <text class="practice-action-arrow">›</text>
+            </view>
           </view>
-          <view class="schedule-status" wx:else>
-            <text class="tag tag-success">已完成</text>
+          <view class="schedule-status" wx:else data-id="{{item._id}}" bindtap="goFeedback">
+            <view class="practice-action-pill done">
+              <text>反馈</text>
+              <text class="practice-action-arrow">›</text>
+            </view>
           </view>
         </view>
       </view>
@@ -102,12 +150,12 @@
     <!-- 课时预警 -->
     <view class="section">
       <view class="section-title">
-        <text>⚠️ 课时预警</text>
-        <text class="more" bindtap="goStudents">全部 →</text>
+        <text>余课提醒</text>
+        <text class="more" bindtap="goStudents">学员册 ›</text>
       </view>
 
       <view wx:if="{{warningList.length === 0}}" class="empty-state">
-        <text class="empty-text">所有学员课时充足 ✅</text>
+        <text class="empty-text">课时像呼吸一样平稳。</text>
       </view>
 
       <view wx:else>

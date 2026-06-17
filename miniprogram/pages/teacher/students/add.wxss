@@ -4,18 +4,18 @@
 
 .form {
   background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 16px;
+  border: none;
+  border-radius: 34rpx;
   overflow: hidden;
-  margin-bottom: 22px;
+  margin-bottom: 24rpx;
 }
 
 .form-item {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 20rpx 28rpx;
+  border-bottom: 2rpx solid var(--line-soft);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8rpx;
 }
 
 .form-item:last-child {
@@ -23,29 +23,29 @@
 }
 
 .form-item .label {
-  font-size: 12px;
+  font-size: 22rpx;
   color: var(--ink-mute);
   font-family: var(--font-mono);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
   text-transform: uppercase;
 }
 
 .form-item .input,
 .form-item .picker,
 .form-item .textarea {
-  font-size: 15px;
+  font-size: 28rpx;
   color: var(--ink);
-  padding: 6px 0;
+  padding: 8rpx 0;
   background: transparent;
   border: none;
   outline: none;
-  min-height: 24px;
+  min-height: 64rpx;
   width: 100%;
   box-sizing: border-box;
 }
 
 .form-item .textarea {
-  min-height: 60px;
+  min-height: 160rpx;
   line-height: 1.5;
 }
 
@@ -57,7 +57,7 @@
 /* 标签输入行 */
 .tag-input-row {
   display: flex;
-  gap: 10px;
+  gap: 16rpx;
   align-items: center;
 }
 
@@ -67,38 +67,43 @@
 
 .tag-input-row .btn-secondary.small {
   flex-shrink: 0;
-  padding: 6px 14px;
-  font-size: 12px;
-  border-radius: 100px;
+  padding: 0 28rpx;
+  font-size: 24rpx;
+  border-radius: 999rpx;
   background: var(--accent-bg);
-  color: var(--accent);
-  border: 1px solid var(--accent-soft);
+  color: var(--ink);
+  border: none;
 }
 
 /* 已添加的标签行 */
 .form-item .tag-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
+  gap: 12rpx;
+  margin-top: 16rpx;
 }
 
 .tag-item {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 12rpx;
   background: var(--accent-bg);
-  color: var(--accent);
-  border: 1px solid var(--accent-soft);
-  padding: 4px 10px;
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 500;
+  color: var(--ink);
+  border: none;
+  padding: 0 18rpx 0 24rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  font-weight: 800;
 }
 
 .tag-close {
   color: var(--ink-mute);
-  font-size: 11px;
+  font-size: 22rpx;
+  min-width: 72rpx;
+  min-height: 72rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
@@ -106,6 +111,6 @@
 .save-btn {
   display: block;
   width: 100%;
-  margin-top: 8px;
-  letter-spacing: 2px;
+  margin-top: 16rpx;
+  letter-spacing: 4rpx;
 }

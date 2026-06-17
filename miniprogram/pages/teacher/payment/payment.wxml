@@ -1,20 +1,32 @@
 <view class="container">
-  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+  <view wx:if="{{loading}}" class="empty-state">正在核验权限...</view>
 
-  <block wx:else>
+  <view wx:elif="{{accessDenied}}" class="empty-state">
+    <text class="empty-text">此功能仅校长/管理员可用</text>
+  </view>
+
+  <block wx:elif="{{isAdmin}}">
+    <view class="payment-hero">
+      <text class="art-kicker">课费手账 · PAYMENT NOTE</text>
+      <text class="payment-title">登记一笔课费</text>
+      <text class="art-note">课时、金额和日期会一起写入学员档案。</text>
+    </view>
+
     <view class="form">
       <view class="form-item">
         <text class="label">学员 *</text>
-        <picker bindchange="onStudentChange" range="{{students}}" range-key="name" value="{{selectedStudentIndex}}">
+        <picker wx:if="{{students.length > 0}}" bindchange="onStudentChange" range="{{students}}" range-key="name" value="{{selectedStudentIndex}}">
           <view class="picker">{{selectedStudentIndex >= 0 ? students[selectedStudentIndex].name : '选择学员'}}</view>
         </picker>
+        <view wx:else class="picker disabled">暂无学员，请先添加学员</view>
       </view>
 
       <view class="form-item">
         <text class="label">课程包 *</text>
-        <picker bindchange="onPackageChange" range="{{packages}}" range-key="name" value="{{selectedPackageIndex}}">
+        <picker wx:if="{{packages.length > 0}}" bindchange="onPackageChange" range="{{packages}}" range-key="name" value="{{selectedPackageIndex}}">
           <view class="picker">{{selectedPackageIndex >= 0 ? packages[selectedPackageIndex].name : '选择课程包'}}</view>
         </picker>
+        <view wx:else class="picker disabled">暂无课程包，请先到「我的」添加</view>
       </view>
 
       <view class="form-item">
@@ -47,11 +59,14 @@
       </view>
     </view>
 
-    <!-- 余额预览 -->
-    <view class="preview" wx:if="{{previewRemaining > 0}}">
-      <text>💡 缴费后该学员剩余: {{previewRemaining}} 节</text>
+    <!-- 缴费预览 -->
+    <view class="preview" wx:if="{{studentId}}">
+      <text>当前剩余: {{currentRemaining}} 节</text>
+      <text>累计缴费: {{totalPaidText}}</text>
+      <text wx:if="{{courseCount || amount}}">缴费后剩余: {{previewRemaining}} 节</text>
+      <text wx:if="{{courseCount || amount}}">缴费后累计: {{previewTotalPaidText}}</text>
     </view>
 
-    <button class="btn-primary save-btn" bindtap="onSave" loading="{{submitting}}">保存</button>
+    <button class="btn-primary save-btn" bindtap="onSave" loading="{{submitting}}" disabled="{{submitting || students.length === 0 || packages.length === 0}}">保存缴费</button>
   </block>
 </view>

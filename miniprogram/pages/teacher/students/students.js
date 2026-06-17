@@ -1,5 +1,6 @@
 const api = require('../../../utils/api')
 const format = require('../../../utils/format')
+const permission = require('../../../utils/permission')
 const app = getApp()
 
 Page({
@@ -10,10 +11,12 @@ Page({
     searchKeyword: '',
     activeTag: '',
     allTags: [],
-    stats: { active: 0, archived: 0 }
+    stats: { active: 0, archived: 0 },
+    isAdmin: false
   },
 
   onShow() {
+    if (this.getTabBar && this.getTabBar()) this.getTabBar().setSelected('/pages/teacher/students/students')
     this.loadData()
   },
 
@@ -25,6 +28,8 @@ Page({
     this.setData({ loading: true })
     try {
       const students = await api.getStudents({})
+      const app = getApp()
+      const isAdmin = permission.isAdminUser(app.globalData.userInfo)
       const tags = new Set()
       let active = 0
       let archived = 0
@@ -38,6 +43,7 @@ Page({
       const ids = students.map(s => s._id)
       const balanceMap = await api.batchGetBalance(ids)
       for (const s of students) {
+        s.ownerText = s.owner_teacher_name ? `负责老师：${s.owner_teacher_name}` : ''
         s.remaining = balanceMap[s._id] || 0
       }
 
@@ -45,10 +51,12 @@ Page({
         students,
         filteredStudents: students,
         allTags: [...tags],
+        isAdmin,
         stats: { active, archived },
         loading: false
       })
     } catch (err) {
+      wx.showToast({ title: (err && err.message) || '学员加载失败，请重试', icon: 'none' })
       this.setData({ loading: false })
     }
     wx.stopPullDownRefresh()
@@ -94,7 +102,11 @@ Page({
   },
 
   async deleteStudent(studentId) {
-    wx.showLoading({ title: '删除中...' })
+    if (!studentId) {
+      wx.showToast({ title: '学员数据不完整', icon: 'none' })
+      return
+    }
+    wx.showLoading({ title: '正在删除' })
     try {
       const result = await api.deleteStudent(studentId)
       if (result.success) {
@@ -104,11 +116,16 @@ Page({
       }
     } catch (err) {
       wx.hideLoading()
+      wx.showToast({ title: (err && err.message) || '删除失败', icon: 'none' })
     }
   },
 
   onStudentLongPress(e) {
     const student = e.detail.student
+    if (!student || !student._id) {
+      wx.showToast({ title: '学员数据不完整', icon: 'none' })
+      return
+    }
     wx.showActionSheet({
       itemList: ['编辑信息', student.status === 'active' ? '标记结业' : '标记在读', '删除学员'],
       success: (res) => {
@@ -119,11 +136,16 @@ Page({
           api.updateStudent(student._id, { status: newStatus }).then(() => {
             wx.showToast({ title: '已更新', icon: 'success' })
             this.loadData()
+          }).catch(err => {
+            wx.showToast({ title: (err && err.message) || '更新失败', icon: 'none' })
           })
         } else if (res.tapIndex === 2) {
+          const deleteContent = this.data.isAdmin
+            ? `确定删除学员 ${student.name} 吗？\n将同时删除该学员的课时、缴费、考勤、反馈等所有相关数据。`
+            : `确定删除学员 ${student.name} 吗？\n将删除该学员的教学记录；如有关联记录，需要管理员处理。`
           wx.showModal({
             title: '确认删除',
-            content: `确定删除学员 ${student.name} 吗？\n将同时删除该学员的课时、缴费、考勤、反馈等所有相关数据。`,
+            content: deleteContent,
             success: (r) => {
               if (r.confirm) {
                 this.deleteStudent(student._id)

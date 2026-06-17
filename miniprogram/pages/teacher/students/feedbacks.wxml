@@ -1,0 +1,40 @@
+<view class="container">
+  <view class="feedbacks-hero">
+    <text class="art-kicker">VOICE ARCHIVE</text>
+    <text class="feedbacks-title">{{studentName}}的声音轨迹</text>
+    <text class="art-note">按时间整理每一次课后回声，方便老师继续补写、调整和回看。</text>
+  </view>
+
+  <view class="filter-bar">
+    <view class="filter-item {{filter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="setFilter">全部</view>
+    <view class="filter-item {{filter === 'thisMonth' ? 'active' : ''}}" data-filter="thisMonth" bindtap="setFilter">本月</view>
+    <view class="filter-item {{filter === 'lastMonth' ? 'active' : ''}}" data-filter="lastMonth" bindtap="setFilter">上月</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty-state">正在整理声音轨迹...</view>
+
+  <view wx:elif="{{filteredFeedbacks.length === 0}}" class="empty-state">
+    <empty-state icon="◇" text="暂无上课记录" />
+  </view>
+
+  <view wx:else class="feedback-list">
+    <view
+      class="feedback-item"
+      wx:for="{{filteredFeedbacks}}"
+      wx:key="_id"
+      data-scheduleid="{{item.scheduleId}}"
+      bindtap="goFeedback"
+    >
+      <view class="record-dot"></view>
+      <view class="feedback-content">
+        <text class="feedback-date">{{item.dateText}}</text>
+        <text class="feedback-title">{{item.titleText}}</text>
+        <text class="feedback-comment">{{item.commentPreview}}</text>
+        <view class="record-tags">
+          <text class="tag" wx:if="{{item.scoreText}}">{{item.scoreText}}</text>
+          <text class="tag" wx:if="{{item.audioText}}">{{item.audioText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

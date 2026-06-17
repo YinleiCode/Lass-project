@@ -5,6 +5,14 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 const _ = db.command
 
+function chinaDateString(date = new Date()) {
+  const shifted = new Date(date.getTime() + 8 * 60 * 60 * 1000)
+  const y = shifted.getUTCFullYear()
+  const m = String(shifted.getUTCMonth() + 1).padStart(2, '0')
+  const d = String(shifted.getUTCDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
 exports.main = async (event, context) => {
   try {
     // 定时触发器调用时 OPENID 为空, 跳过身份校验
@@ -14,8 +22,8 @@ exports.main = async (event, context) => {
       await requireTeacher()
     }
 
-    // 请在微信公众平台申请订阅消息模板后, 把模板ID写入下方
-    const TEMPLATE_ID = '' // TODO: 替换为你的订阅消息模板ID
+    // 订阅消息必须先在微信公众平台申请模板，并配置环境变量 COURSE_REMINDER_TEMPLATE_ID
+    const TEMPLATE_ID = process.env.COURSE_REMINDER_TEMPLATE_ID || ''
     if (!TEMPLATE_ID) {
       console.warn('cm_courseReminder: TEMPLATE_ID 未配置, 跳过本次提醒')
       return {
@@ -26,15 +34,16 @@ exports.main = async (event, context) => {
       }
     }
 
-    const now = new Date()
-    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000)
+    const daysBefore = Number(event && event.daysBefore)
+    const offsetDays = Number.isInteger(daysBefore) && daysBefore > 0 ? daysBefore : 1
+    const targetDate = new Date(Date.now() + offsetDays * 24 * 60 * 60 * 1000)
+    const targetDateStr = chinaDateString(targetDate)
+    const startStr = targetDateStr + ' 00:00'
+    const endStr = targetDateStr + ' 23:59'
 
-    const nowStr = now.toISOString().replace('T', ' ').substring(0, 16)
-    const laterStr = oneHourLater.toISOString().replace('T', ' ').substring(0, 16)
-
-    // 查询未来1小时内的待上课程（且未发送提醒）
+    // 查询上课前一天的待上课程（且未发送提醒）
     const schedules = await db.collection('schedules').where({
-      start_time: _.gte(nowStr).and(_.lte(laterStr)),
+      start_time: _.gte(startStr).and(_.lte(endStr)),
       status: 'pending',
       reminder_sent: false
     }).get()
@@ -59,6 +68,13 @@ exports.main = async (event, context) => {
             packageName = pkgRes.data.name || '课程'
           } catch (e) {}
 
+          const courseDesc = [
+            packageName,
+            schedule.class_display || schedule.class_type_label || '',
+            schedule.delivery_mode_label || '',
+            schedule.teacher_name ? `老师:${schedule.teacher_name}` : ''
+          ].filter(Boolean).join(' ')
+
           // 发送订阅消息
           await cloud.openapi.subscribeMessage.send({
             touser: student.parent_openid,
@@ -67,7 +83,7 @@ exports.main = async (event, context) => {
             data: {
               thing1: { value: student.name },
               time2: { value: schedule.start_time },
-              thing3: { value: packageName }
+              thing3: { value: courseDesc.slice(0, 20) }
             }
           })
           scheduleSentCount++
@@ -91,6 +107,7 @@ exports.main = async (event, context) => {
       success: true,
       message: `已发送${totalSent}条提醒`,
       sent: totalSent,
+      targetDate: targetDateStr,
       schedulesProcessed: schedules.data.length
     }
   } catch (err) {

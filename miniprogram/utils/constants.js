@@ -53,10 +53,33 @@ module.exports = {
   // 支付方式
   PAY_METHODS: ['微信', '现金', '转账', '其他'],
 
+  // 排课班型
+  SCHEDULE_CLASS_TYPES: {
+    one_to_one: '一对一',
+    one_to_three: '一对三/小班课'
+  },
+
+  SCHEDULE_CLASS_TYPE_OPTIONS: [
+    { value: 'one_to_one', label: '一对一' },
+    { value: 'one_to_three', label: '一对三/小班课' }
+  ],
+
+  // 上课方式
+  DELIVERY_MODES: {
+    offline: '线下课',
+    online: '线上课'
+  },
+
+  DELIVERY_MODE_OPTIONS: [
+    { value: 'offline', label: '线下课' },
+    { value: 'online', label: '线上课' }
+  ],
+
   // 课程类型
   COURSE_TYPES: {
     '1v1': '一对一',
     'small_class': '小班课',
-    'big_class': '大班课'
+    'big_class': '大班课',
+    'trial': '体验课'
   }
 }

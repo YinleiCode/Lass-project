@@ -1,0 +1,9 @@
+{
+  "name": "cm_getTeachers",
+  "version": "1.0.0",
+  "description": "读取授课老师列表",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

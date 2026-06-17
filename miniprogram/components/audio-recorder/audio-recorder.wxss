@@ -2,29 +2,47 @@
  *  audio-recorder — 录音组件
  * ============================================================ */
 .audio-recorder {
-  padding: 8px 0;
+  padding: 10rpx 0;
 }
 
 .record-area {
-  background: var(--paper-warm);
-  border: 1px dashed var(--line);
-  border-radius: 14px;
-  padding: 22px;
+  background:
+    radial-gradient(circle at 88% 10%, rgba(237, 167, 219, 0.18) 0, transparent 200rpx),
+    rgba(255, 255, 255, 0.70);
+  border: none;
+  border-radius: 28rpx;
+  padding: 36rpx 30rpx;
   text-align: center;
   transition: all 0.2s;
+  box-shadow: inset 0 0 0 2rpx rgba(34, 0, 22, 0.045);
+  position: relative;
+  overflow: hidden;
+}
+
+.record-area::before {
+  content: "";
+  position: absolute;
+  left: -90rpx;
+  bottom: -120rpx;
+  width: 260rpx;
+  height: 260rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(237, 167, 219, 0.24);
 }
 
 .record-area.recording {
   background: var(--warn-bg);
-  border: 1px solid var(--warn-border);
-  border-style: solid;
+  border: none;
 }
 
 .record-btn {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 18rpx;
+  position: relative;
+  z-index: 1;
 }
 
 .record-btn.active .record-icon {
@@ -38,68 +56,104 @@
 }
 
 .record-icon {
-  font-size: 28px;
-  color: var(--accent);
-  line-height: 1;
+  width: 78rpx;
+  height: 78rpx;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.86), transparent 52%),
+    var(--accent);
+  font-size: 38rpx;
+  color: var(--ink);
+  line-height: 78rpx;
+  text-align: center;
+  box-shadow: 0 12rpx 26rpx rgba(181, 107, 162, 0.14);
 }
 
 .record-text {
-  font-size: 12px;
-  color: var(--ink-soft);
-  font-family: var(--font-mono);
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-size: 28rpx;
+  color: var(--ink);
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.record-tip {
+  display: block;
+  margin-top: 18rpx;
+  font-size: 22rpx;
+  color: var(--ink-mute);
+  line-height: 1.4;
 }
 
 .audio-row {
   display: flex;
   align-items: center;
-  background: var(--accent-bg);
-  border: 1px solid var(--accent-soft);
-  border-radius: 100px;
-  padding: 8px 14px 8px 8px;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(237, 167, 219, 0.12) 0, transparent 190rpx),
+    rgba(255, 255, 255, 0.78);
+  border: none;
+  border-radius: 28rpx;
+  padding: 18rpx 22rpx 18rpx 18rpx;
+  box-shadow: inset 0 0 0 2rpx rgba(34, 0, 22, 0.045);
+  min-height: 100rpx;
 }
 
 .play-btn {
-  width: 36px;
-  height: 36px;
+  width: 78rpx;
+  height: 78rpx;
   border-radius: 50%;
-  background: var(--accent);
-  color: white;
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.86), transparent 52%),
+    linear-gradient(145deg, rgba(237, 167, 219, 0.92), rgba(255, 240, 250, 0.98));
+  color: var(--ink);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 44rpx;
   flex-shrink: 0;
+  box-shadow: 0 12rpx 26rpx rgba(181, 107, 162, 0.14);
 }
 
 .play-btn.active {
-  background: var(--warn);
+  background: var(--warn-bg);
+  color: var(--warn-text);
+}
+
+.audio-meta {
+  flex: 1;
+  margin-left: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
 }
 
 .duration {
-  flex: 1;
-  margin-left: 12px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--accent);
-  letter-spacing: 0.5px;
+  font-size: 26rpx;
+  color: var(--ink);
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.upload-state {
+  font-size: 22rpx;
+  color: var(--ink-mute);
+  font-weight: 750;
 }
 
 .del-btn {
-  font-size: 11px;
+  font-size: 22rpx;
   color: var(--red);
-  padding: 4px 10px;
-  border-radius: 100px;
-  background: rgba(185, 28, 28, 0.08);
+  padding: 8rpx 20rpx;
+  border-radius: 200rpx;
+  background: var(--red-bg);
+  font-weight: 800;
 }
 
 .no-audio,
 .hint {
-  font-size: 12px;
+  font-size: 24rpx;
   color: var(--ink-mute);
   text-align: center;
-  padding: 10px 0;
+  padding: 20rpx 0;
   font-family: var(--font-mono);
-  letter-spacing: 0.5px;
+  letter-spacing: 1rpx;
 }

@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "点名"
+  "navigationBarTitleText": "点名",
+  "navigationBarBackgroundColor": "#FBF8F7",
+  "navigationBarTextStyle": "black"
 }

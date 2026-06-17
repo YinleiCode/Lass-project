@@ -1,7 +1,8 @@
 Component({
   properties: {
     student: { type: Object, value: {} },
-    remaining: { type: Number, value: 0 }
+    remaining: { type: Number, value: 0 },
+    showOwner: { type: Boolean, value: false }
   },
   computed: {},
   data: {
